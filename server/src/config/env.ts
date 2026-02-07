@@ -35,4 +35,7 @@ export const env = {
     PORT: Number(process.env.PORT) || 3001,
     // Required
     MONGO_URI: requireEnv("MONGO_URI")
+
+    // Optional: Render will provide it
+    // FRONTEND_URL: process.env.FRONTEND_URL
 };
