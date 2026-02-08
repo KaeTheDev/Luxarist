@@ -97,7 +97,7 @@ app.use(morgan("dev")); // logs details about each HTTP request to console
 // Mount Order Routes Here 👇🏾
 
 // Mount Product Routes Here 👇🏾
-app.use("/app/products", productRoutes);
+app.use("/api/products", productRoutes);
 // Mount Review Routes Here 👇🏾
 
 // Mount Test Routes Here 👇🏾 (DELETE LATER)

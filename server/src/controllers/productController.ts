@@ -49,4 +49,4 @@ export const getActiveProducts = async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({ message: 'Server error fetching products' });
     }
-};
+}
