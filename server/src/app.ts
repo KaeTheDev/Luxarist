@@ -18,9 +18,12 @@
 import express from "express";
 import morgan from "morgan"; // logging middleware
 import cors from "cors";
-import { env } from "./config/env";
 
 // ROUTES GET IMPORTED HERE 👇🏾
+import productRoutes from "./routes/api/productRoutes";
+
+ // TEST ROUTES (DELETE LATER w/ Test Routes and Controllers)
+import productTestRoutes from './routes/api/productTestRoutes';
 
 // Store express in app variable
 const app = express();
@@ -94,7 +97,10 @@ app.use(morgan("dev")); // logs details about each HTTP request to console
 // Mount Order Routes Here 👇🏾
 
 // Mount Product Routes Here 👇🏾
-
+app.use("/api/products", productRoutes);
 // Mount Review Routes Here 👇🏾
+
+// Mount Test Routes Here 👇🏾 (DELETE LATER)
+app.use('/api', productTestRoutes);
 
 export default app;
