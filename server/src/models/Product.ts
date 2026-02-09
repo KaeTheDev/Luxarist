@@ -17,13 +17,14 @@
  *   - Supports population and relationships with other models (e.g., Orders, Reviews)
  */
 
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
 
-export interface IProduct extends Document {
+export interface IProduct {
     name: string;
     subtitle: string;
     category: 'ring' | 'bracelet' | 'watch' | 'necklace' | 'earrings';
     price: number; // store as a number for calculations
+    isNew: boolean; // Used for filtering
     status: 'active' | 'inactive';
 
     primaryImageUrl: string;
@@ -56,6 +57,7 @@ const productSchema = new Schema<IProduct> (
             enum: ['ring', 'bracelet', 'watch', 'necklace', 'earrings'],
         },
         price: { type: Number, required: true },
+        isNew: { type: Boolean, default: false },
         status: { type: String, required: true, enum: ['active', 'inactive'], default: 'active' },
 
         primaryImageUrl: { type: String, required: true },
