@@ -19,7 +19,7 @@ import { Product } from "../models/Product";
 export const getActiveProducts = async (req: Request, res: Response) => {
   try {
     // Step 1: Extract Inputs
-    const { category, limit, skip } = req.query;
+    const { category, limit, skip, new: isNew } = req.query;
 
     // Step 2: Validate Inputs (optional)
     const allowedCategories = [
@@ -33,10 +33,12 @@ export const getActiveProducts = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid category filter" });
     }
 
-    // Step 3: Fetch Primary Resource
+    // Step 3: Fetch Primary Resource / Build Query
     const query: any = { status: "active" };
     if (category) query.category = category;
+    if(isNew === "true") query.isNew = true; // New Arrivals filter
 
+    // Fetch Products
     const products = await Product.find(query)
       .limit(limit ? Number(limit) : 0)
       .skip(skip ? Number(skip) : 0)

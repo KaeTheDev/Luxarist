@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Product } from "../models/Product";
 import dotenv from "dotenv";
+import { is } from "zod/v4/locales";
 dotenv.config();
 
 const products = [
@@ -11,6 +12,7 @@ const products = [
     name: "Diamond Stud Gold Earrings",
     category: "earrings",
     price: 40,
+    isNew: true,
     image: "earring-001-main.jpg",
     slug: "diamond-stud-gold-earrings",
     sku: "EAR001",
