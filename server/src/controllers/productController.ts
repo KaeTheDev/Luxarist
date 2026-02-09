@@ -93,3 +93,45 @@ export const getActiveProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error fetching product" });
   }
 };
+
+// GET /products/category/:category 
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  try {
+    // Step 1: Extract Inputs
+    const { category } = req.params;
+    const { limit, skip } = req.query;
+    
+    // Step 2: Validate Inputs (optionals)
+    const allowedCategories = [
+      "ring",
+      "bracelet",
+      "watch",
+      "necklace",
+      "earrings"
+    ];
+    if(category && !allowedCategories.includes(category as string)) {
+      return res.status(400).json({ message: "Invalid category filter" });
+    }
+
+    // Step 3: Fetch Primary Resource
+    const query: any = { status: "active", category };
+
+    const products = await Product.find(query)
+    .limit(limit ? Number(limit) : 0)
+    .skip(skip ? Number(skip) : 0)
+    .sort({ createdAt: -1 }); // newest first
+
+    // Step 4: Authorize
+    // Not required for public products
+
+    // Step 5: Perform Action
+    // Already done: fetching products and applying optional filters
+        
+    // Step 6: Respond
+    res.status(200).json(products);
+  } catch(error: any) {
+    // Step 7: Catch & Fail Safely
+    console.error(error);
+    res.status(500).json({ message: "Server error fetching products" });
+  }
+}

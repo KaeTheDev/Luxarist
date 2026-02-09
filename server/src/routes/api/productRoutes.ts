@@ -12,7 +12,7 @@
  */
 
 import { Router } from "express";
-import { getActiveProduct, getActiveProducts } from "../../controllers/productController";
+import { getActiveProduct, getActiveProducts, getProductsByCategory } from "../../controllers/productController";
 
 const router = Router();
 
@@ -21,5 +21,8 @@ router.get("/", getActiveProducts);
 
 // Public GET one product
 router.get("/:id", getActiveProduct);
+
+// Public GET a specific category
+router.get("/category/:category", getProductsByCategory);
 
 export default router;
