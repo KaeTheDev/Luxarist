@@ -12,11 +12,14 @@
  */
 
 import { Router } from "express";
-import { getActiveProducts } from "../../controllers/productController";
+import { getActiveProduct, getActiveProducts } from "../../controllers/productController";
 
 const router = Router();
 
 // Public GET all products
 router.get("/", getActiveProducts);
+
+// Public GET one product
+router.get("/:id", getActiveProduct);
 
 export default router;
