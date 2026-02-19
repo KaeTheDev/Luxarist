@@ -1,4 +1,4 @@
-import { Navbar } from "./common/layout/Navbar"
+import { Navbar } from "./common/layout/navigation/Navbar"
 function App() {
   return (
     <>
