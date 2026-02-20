@@ -1,3 +1,18 @@
+/**
+* @name ShopDropdown
+ * @description A toggleable category menu for the desktop navigation bar.
+ * Provides a nested link structure for product discovery without page reloads.
+ * * @state
+ * - `isOpen`: Controls the visibility of the absolute-positioned category list and the trigger's chevron rotation.
+ * * @features
+ * - **Dynamic Injection**: Maps over {@link categories} to ensure the menu stays synced with backend/centralized data.
+ * - **Visual Feedback**: Includes a 180-degree chevron rotation and color shifts to indicate active state.
+ * - **Route Cleanup**: Automatically invokes `closeDropdown()` upon link selection to maintain a clean UI state.
+ * * @styling
+ * - **Positioning**: Uses `absolute` with a custom soft-diffusion shadow for a "floating" luxury depth effect.
+ * - **Transitions**: Managed via Tailwind `duration-200` for smooth entry/exit of the list items.
+*/
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { categories } from "../../../features/categories/data";
