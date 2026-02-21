@@ -17,12 +17,12 @@
  *   - Supports population and relationships with other models (e.g., Orders, Reviews)
  */
 
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 export interface IProduct {
     name: string;
     subtitle: string;
-    category: 'ring' | 'bracelet' | 'watch' | 'necklace' | 'earrings';
+    category: Types.ObjectId;
     price: number; // store as a number for calculations
     isNew: boolean; // Used for filtering
     status: 'active' | 'inactive';
@@ -52,9 +52,9 @@ const productSchema = new Schema<IProduct> (
         name: { type: String, required: true },
         subtitle: { type: String, required: true },
         category: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "Category",
             required: true,
-            enum: ['ring', 'bracelet', 'watch', 'necklace', 'earrings'],
         },
         price: { type: Number, required: true },
         isNew: { type: Boolean, default: false },

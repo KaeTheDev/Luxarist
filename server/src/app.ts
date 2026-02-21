@@ -101,6 +101,8 @@ app.use("/api/products", productRoutes);
 // Mount Review Routes Here 👇🏾
 
 // Mount Test Routes Here 👇🏾 (DELETE LATER)
-app.use('/api', productTestRoutes);
+app.use('/api/test', productTestRoutes);
+
+console.log("app.ts loaded");
 
 export default app;
