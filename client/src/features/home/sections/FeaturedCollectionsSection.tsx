@@ -16,7 +16,7 @@ export function FeaturedCollectionsSection() {
         </div>
 
              <div className="grid gap-4 w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] lg:auto-rows-[300px]">
-                {featuredCategories.map((cat, index) => {
+                {featuredCategories.map((cat) => {
                     return(
                         <Link to={`/collections/${cat.name.toLowerCase().replace(/\s+/g, "-")}`}
                         key={cat.name}
@@ -27,7 +27,7 @@ export function FeaturedCollectionsSection() {
                             alt={cat.name}
                             className="absolute inset-0 w-full h-full object-cover"
                             />
-                            
+
                         {/* Overlay */}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300"></div>
 
