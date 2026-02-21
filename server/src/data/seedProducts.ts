@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Product } from "../models/Product";
+import { Category } from "../models/Category";
 import dotenv from "dotenv";
-import { is } from "zod/v4/locales";
 dotenv.config();
 
 const products = [
@@ -491,19 +491,28 @@ const products = [
   }
   ];
   
-  async function seedProducts() {
+  export async function seedProducts() {
     try {
       await mongoose.connect(process.env.MONGO_URI!);
   
+      // fetch categories from DB
+      const categories = await Category.find();
+      const categoryMap = categories.reduce((acc, category) => {
+        acc[category.slug] = category._id; // map slug -> ObjectId
+        return acc;
+      }, {} as Record<string, mongoose.Types.ObjectId>);
+  
+      // replace string category with ObjectId
+      const formattedProducts = products.map(product => ({
+        ...product,
+        category: categoryMap[product.category],
+      }));
+  
       await Product.deleteMany();
-      await Product.insertMany(products);
+      await Product.insertMany(formattedProducts);
   
       console.log("✅ Products successfully seeded");
-      process.exit();
     } catch (error) {
       console.error("❌ Seeding failed:", error);
-      process.exit(1);
     }
   }
-  
-  seedProducts();  
