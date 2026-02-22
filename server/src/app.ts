@@ -21,6 +21,7 @@ import cors from "cors";
 
 // ROUTES GET IMPORTED HERE 👇🏾
 import productRoutes from "./routes/api/productRoutes";
+import categoryRoutes from "./routes/api/categoryRoutes";
 
  // TEST ROUTES (DELETE LATER w/ Test Routes and Controllers)
 import productTestRoutes from './routes/api/productTestRoutes';
@@ -98,6 +99,10 @@ app.use(morgan("dev")); // logs details about each HTTP request to console
 
 // Mount Product Routes Here 👇🏾
 app.use("/api/products", productRoutes);
+
+// Mount Category Here 👇🏾
+app.use("/api/categories", categoryRoutes);
+
 // Mount Review Routes Here 👇🏾
 
 // Mount Test Routes Here 👇🏾 (DELETE LATER)
