@@ -7,6 +7,6 @@ const router = Router();
  * TEST ROUTE
  * Use only for development verification.
  */
-router.get('/test/products', printProducts);
+router.get('/products', printProducts);
 
 export default router;

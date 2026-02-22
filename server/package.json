@@ -7,7 +7,7 @@
     "dev": "nodemon --watch src --exec ts-node src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "ts-node src/data/seedProducts.ts",
+    "seed": "ts-node src/data/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
