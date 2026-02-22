@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { seedCategories } from "./seedCategories";
 import { seedProducts } from "./seedProducts";
+import { syncCategoryCounts } from "./syncCategoryCounts";
 
 dotenv.config();
 
@@ -14,6 +15,9 @@ async function seedAll() {
 
         console.log("🌱 Seeding products...");
         await seedProducts();
+
+        console.log("🔢 Syncing category counts...");
+        await syncCategoryCounts();
 
         console.log("✅ All data seeded successfully");
         process.exit(0);
