@@ -13,6 +13,7 @@ const products = [
     category: "earrings",
     price: 40,
     isNew: true,
+    status: "active",
     image: "earring-001-main.jpg",
     slug: "diamond-stud-gold-earrings",
     sku: "EAR001",
@@ -29,6 +30,7 @@ const products = [
     name: "Diamond Stud Earrings",
     category: "earrings",
     price: 50,
+    status: "active",
     image: "earring-002-main.jpg",
     slug: "diamond-stud-earrings",
     sku: "EAR002",
@@ -45,6 +47,7 @@ const products = [
     name: "Diamond Ruby Drop Earrings",
     category: "earrings",
     price: 55,
+    status: "active",
     image: "earring-003-main.jpg",
     slug: "diamond-ruby-drop-earrings",
     sku: "EAR003",
@@ -61,6 +64,7 @@ const products = [
     name: "Diamond Gold Ruby Drop Earrings",
     category: "earrings",
     price: 45,
+    status: "active",
     image: "earring-004-main.jpg",
     slug: "diamond-gold-ruby-drop-earrings",
     sku: "EAR004",
@@ -77,6 +81,7 @@ const products = [
     name: "Diamond Bar Earrings",
     category: "earrings",
     price: 48,
+    status: "active",
     image: "earring-005-main.jpg",
     slug: "diamond-bar-earrings",
     sku: "EAR005",
@@ -93,6 +98,7 @@ const products = [
     name: "Everyday Stud Earrings",
     category: "earrings",
     price: 35,
+    status: "active",
     image: "earring-006-main.jpg",
     slug: "everyday-stud-earrings",
     sku: "EAR006",
@@ -113,6 +119,7 @@ const products = [
     name: "Classic Chain Necklace",
     category: "necklace",
     price: 85,
+    status: "active",
     image: "necklace-001-main.jpg",
     slug: "classic-chain-necklace",
     sku: "NEC001",
@@ -129,6 +136,7 @@ const products = [
     name: "Minimal Pendant Necklace",
     category: "necklace",
     price: 90,
+    status: "active",
     image: "necklace-002-main.jpg",
     slug: "minimal-pendant-necklace",
     sku: "NEC002",
@@ -145,6 +153,7 @@ const products = [
     name: "Layered Chain Necklace",
     category: "necklace",
     price: 95,
+    status: "active",
     image: "necklace-003-main.jpg",
     slug: "layered-chain-necklace",
     sku: "NEC003",
@@ -161,6 +170,7 @@ const products = [
     name: "Slim Gold Necklace",
     category: "necklace",
     price: 80,
+    status: "active",
     image: "necklace-004-main.jpg",
     slug: "slim-gold-necklace",
     sku: "NEC004",
@@ -177,6 +187,7 @@ const products = [
     name: "Delicate Charm Necklace",
     category: "necklace",
     price: 88,
+    status: "active",
     image: "necklace-005-main.jpg",
     slug: "delicate-charm-necklace",
     sku: "NEC005",
@@ -193,6 +204,7 @@ const products = [
     name: "Everyday Chain Necklace",
     category: "necklace",
     price: 75,
+    status: "active",
     image: "necklace-006-main.jpg",
     slug: "everyday-chain-necklace",
     sku: "NEC006",
@@ -213,6 +225,7 @@ const products = [
     name: "Classic Chain Bracelet",
     category: "bracelet",
     price: 60,
+    status: "active",
     image: "bracelet-001-main.jpg",
     slug: "classic-chain-bracelet",
     sku: "BRC001",
@@ -229,6 +242,7 @@ const products = [
     name: "Minimal Cuff Bracelet",
     category: "bracelet",
     price: 70,
+    status: "active",
     image: "bracelet-002-main.jpg",
     slug: "minimal-cuff-bracelet",
     sku: "BRC002",
@@ -245,6 +259,7 @@ const products = [
     name: "Slim Gold Bracelet",
     category: "bracelet",
     price: 55,
+    status: "active",
     image: "bracelet-003-main.jpg",
     slug: "slim-gold-bracelet",
     sku: "BRC003",
@@ -261,6 +276,7 @@ const products = [
     name: "Textured Bangle Bracelet",
     category: "bracelet",
     price: 75,
+    status: "active",
     image: "bracelet-004-main.jpg",
     slug: "textured-bangle-bracelet",
     sku: "BRC004",
@@ -277,6 +293,7 @@ const products = [
     name: "Everyday Chain Bracelet",
     category: "bracelet",
     price: 65,
+    status: "active",
     image: "bracelet-005-main.jpg",
     slug: "everyday-chain-bracelet",
     sku: "BRC005",
@@ -293,6 +310,7 @@ const products = [
     name: "Open Cuff Bracelet",
     category: "bracelet",
     price: 72,
+    status: "active",
     image: "bracelet-006-main.jpg",
     slug: "open-cuff-bracelet",
     sku: "BRC006",
@@ -309,6 +327,7 @@ const products = [
     name: "Modern Link Bracelet",
     category: "bracelet",
     price: 80,
+    status: "active",
     image: "bracelet-007-main.jpg",
     slug: "modern-link-bracelet",
     sku: "BRC007",
@@ -329,6 +348,7 @@ const products = [
     name: "Classic Gold Watch",
     category: "watch",
     price: 180,
+    status: "active",
     image: "watch-001-main.jpg",
     slug: "classic-gold-watch",
     sku: "WAT001",
@@ -345,6 +365,7 @@ const products = [
     name: "Minimal Face Watch",
     category: "watch",
     price: 165,
+    status: "active",
     image: "watch-002-main.jpg",
     slug: "minimal-face-watch",
     sku: "WAT002",
@@ -361,6 +382,7 @@ const products = [
     name: "Slim Band Watch",
     category: "watch",
     price: 170,
+    status: "active",
     image: "watch-003-main.jpg",
     slug: "slim-band-watch",
     sku: "WAT003",
@@ -377,6 +399,7 @@ const products = [
     name: "Modern Dial Watch",
     category: "watch",
     price: 190,
+    status: "active",
     image: "watch-004-main.jpg",
     slug: "modern-dial-watch",
     sku: "WAT004",
@@ -393,6 +416,7 @@ const products = [
     name: "Everyday Classic Watch",
     category: "watch",
     price: 160,
+    status: "active",
     image: "watch-005-main.jpg",
     slug: "everyday-classic-watch",
     sku: "WAT005",
@@ -413,6 +437,7 @@ const products = [
     name: "Classic Band Ring",
     category: "ring",
     price: 95,
+    status: "active",
     image: "ring-001-main.jpg",
     slug: "classic-band-ring",
     sku: "RIN001",
@@ -429,6 +454,7 @@ const products = [
     name: "Slim Gold Ring",
     category: "ring",
     price: 90,
+    status: "active",
     image: "ring-002-main.jpg",
     slug: "slim-gold-ring",
     sku: "RIN002",
@@ -445,6 +471,7 @@ const products = [
     name: "Minimal Stackable Ring",
     category: "ring",
     price: 85,
+    status: "active",
     image: "ring-003-main.jpg",
     slug: "minimal-stackable-ring",
     sku: "RIN003",
@@ -461,6 +488,7 @@ const products = [
     name: "Textured Band Ring",
     category: "ring",
     price: 100,
+    status: "active",
     image: "ring-004-main.jpg",
     slug: "textured-band-ring",
     sku: "RIN004",
@@ -477,6 +505,7 @@ const products = [
     name: "Everyday Gold Ring",
     category: "ring",
     price: 92,
+    status: "active",
     image: "ring-005-main.jpg",
     slug: "everyday-gold-ring",
     sku: "RIN005",
@@ -493,7 +522,6 @@ const products = [
   
   export async function seedProducts() {
     try {
-      await mongoose.connect(process.env.MONGO_URI!);
   
       // fetch categories from DB
       const categories = await Category.find();
@@ -503,10 +531,11 @@ const products = [
       }, {} as Record<string, mongoose.Types.ObjectId>);
   
       // replace string category with ObjectId
-      const formattedProducts = products.map(product => ({
-        ...product,
-        category: categoryMap[product.category],
-      }));
+      const formattedProducts = products.map(product => {
+        const catId = categoryMap[product.category];
+        if (!catId) throw new Error(`Category not found: ${product.category}`);
+        return { ...product, category: catId };
+    });
   
       await Product.deleteMany();
       await Product.insertMany(formattedProducts);
@@ -516,3 +545,18 @@ const products = [
       console.error("❌ Seeding failed:", error);
     }
   }
+
+export async function syncCategoryCounts() {
+  const categories = await Category.find();
+
+  for(const category of categories) {
+    const count = await Product.countDocuments({
+      category: category._id,
+      status: "active"
+    });
+
+    category.productCount = count;
+    await category.save();
+  }
+  console.log("🔢 Category product counts synced");
+}
