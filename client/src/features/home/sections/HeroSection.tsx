@@ -31,16 +31,17 @@ export function HeroSection() {
       {/* Video Background for Desktop */}
       <video
         className="hidden lg:block absolute top-0 left-0 w-full h-full object-cover"
-        src="/assets/videos/hero.mp4"
+        src="https://ik.imagekit.io/gwbd4eva2026/hero.mp4"
         autoPlay
         muted
         loop
+        playsInline
       />
 
       {/* Image fallback for tablet & mobile */}
       <img
         className="block lg:hidden absolute top-0 left-0 w-full h-full object-cover"
-        src="/assets/images/hero.png"
+        src="https://ik.imagekit.io/gwbd4eva2026/hero/hero.png"
         alt="Hero"
       />
 
