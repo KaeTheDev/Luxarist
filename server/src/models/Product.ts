@@ -24,7 +24,7 @@ export interface IProduct {
     subtitle: string;
     category: Types.ObjectId;
     price: number; // store as a number for calculations
-    isNew: boolean; // Used for filtering
+    isNewArrival: boolean; // Used for filtering
     status: 'active' | 'inactive';
 
     primaryImageUrl: string;
@@ -57,7 +57,7 @@ const productSchema = new Schema<IProduct> (
             required: true,
         },
         price: { type: Number, required: true },
-        isNew: { type: Boolean, default: false },
+        isNewArrival: { type: Boolean, default: false },
         status: { type: String, required: true, enum: ['active', 'inactive'], default: 'active' },
 
         primaryImageUrl: { type: String, required: true },

@@ -35,7 +35,7 @@ const app = express();
 
 // Create a whitelist of allowed frontend origins
 const allowedOrigins = [
-    // env.FRONTEND_URL, // Uncomment this in production: Render Frontend URL
+    process.env.FRONTEND_URL, // Render Frontend URL
     "http://localhost:5173" // Local Vite dev server
   ].filter(Boolean); // Removes any undefined values to prevent accidental errors
   
