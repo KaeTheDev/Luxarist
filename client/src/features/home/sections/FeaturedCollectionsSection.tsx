@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
-import { featuredCategories } from "../../categories/data"; // will get replaced with API call
+import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
+import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";
 
 export function FeaturedCollectionsSection() {
+    const { categories, loading, error } = useFeaturedCategories();
+
+    if(loading) return <p>Loading featured collections...</p>;
+    if(error) return <p>{error}</p>
+
+    const sorted = [...categories].sort(
+        (a, b) => (CATEGORY_ORDER[a.name] ?? 99) - (CATEGORY_ORDER[b.name] ?? 99)
+      );
+
     return (
        <section className="w-full bg-white py-10 px-4 sm:px-6 lg:px-8">
 
@@ -16,14 +26,16 @@ export function FeaturedCollectionsSection() {
         </div>
 
              <div className="grid gap-4 w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] lg:auto-rows-[300px]">
-                {featuredCategories.map((cat) => {
+                {sorted.map((cat: any) => {
+                    const layoutClasses = CATEGORY_LAYOUTS[cat.name] ?? "col-span-1";
                     return(
-                        <Link to={`/collections/${cat.name.toLowerCase().replace(/\s+/g, "-")}`}
-                        key={cat.name}
-                        className={`relative group bg-gray-200 flex items-end p-4 ${cat.span} overflow-hidden rounded-xl cursor-pointer`}
+                        
+                        <Link to={`/collections/${cat.slug}`}
+                        key={cat._id}
+                        className={`relative group bg-gray-200 flex items-end p-4 ${layoutClasses} overflow-hidden rounded-xl cursor-pointer`}
                         >
                             <img
-                            src={cat.image}
+                            src={cat.featuredImage}
                             alt={cat.name}
                             className="absolute inset-0 w-full h-full object-cover"
                             />
@@ -44,7 +56,7 @@ export function FeaturedCollectionsSection() {
 
                                     {/* Number of Items */}
                                     <span className="opacity-0 group-hover:opacity-70 transition-opacity duration-500 text-sm">
-                                        {cat.items} items
+                                        {cat.productCount} items
                                     </span>
                                 </p>
 
