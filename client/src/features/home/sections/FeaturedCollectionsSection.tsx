@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
 import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";
+import type { FeaturedCategory } from "../../../types/category";
 
 export function FeaturedCollectionsSection() {
     const { categories, loading, error } = useFeaturedCategories();
@@ -26,7 +27,7 @@ export function FeaturedCollectionsSection() {
         </div>
 
              <div className="grid gap-4 w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] lg:auto-rows-[300px]">
-                {sorted.map((cat: any) => {
+                {sorted.map((cat: FeaturedCategory) => {
                     const layoutClasses = CATEGORY_LAYOUTS[cat.name] ?? "col-span-1";
                     return(
                         
