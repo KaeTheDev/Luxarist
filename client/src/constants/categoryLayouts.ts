@@ -11,5 +11,5 @@ export const CATEGORY_LAYOUTS: Record<string, string> = {
     Earrings: 1,
     Ring: 2,
     Necklace: 3,
-    Watche: 4,
+    Watch: 4,
   };

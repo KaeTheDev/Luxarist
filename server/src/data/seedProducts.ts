@@ -12,7 +12,7 @@ const products = [
     name: "Diamond Stud Gold Earrings",
     category: "earrings",
     price: 40,
-    isNew: true,
+    isNewArrival: true,
     status: "active",
     image: "earring-001-main.jpg",
     slug: "diamond-stud-gold-earrings",
