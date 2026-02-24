@@ -14,6 +14,7 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import { Product } from "../models/Product";
+import { Category } from "../models/Category";
 
 // GET /products
 export const getActiveProducts = async (req: Request, res: Response) => {
@@ -22,38 +23,46 @@ export const getActiveProducts = async (req: Request, res: Response) => {
     const { category, limit, skip, new: isNewArrival } = req.query;
 
     // Step 2: Validate Inputs (optional)
-    const allowedCategories = [
-      "ring",
-      "bracelet",
-      "watch",
-      "necklace",
-      "earrings",
-    ];
-    if (category && !allowedCategories.includes(category as string)) {
-      return res.status(400).json({ message: "Invalid category filter" });
+    if(category && typeof category !== "string") {
+      return res.status(400).json({ message: "Invalid category parameter" });
     }
 
-    // Step 3: Fetch Primary Resource / Build Query
+    // Step 3: Build Base Query
     const query: any = { status: "active" };
-    if (category) query.category = category;
-    if(isNewArrival === "true") query.isNewArrival = true; // New Arrivals filter
 
-    // Fetch Products
+    // Step 4: If Category Provided -> Findd Category by Slug
+    if(category){
+      const foundCategory = await Category.findOne({ slug: category });
+
+      if(!foundCategory) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      query.category = foundCategory._id;
+    }
+
+    // Step 5: New Arrivals Filter
+    if(isNewArrival === "true") {
+      query.isNewArrival = true;
+    }
+
+    // Step 6: Fetch Products
     const products = await Product.find(query)
-      .limit(limit ? Number(limit) : 0)
-      .skip(skip ? Number(skip) : 0)
-      .sort({ createdAt: -1 }); // newest first
+    .populate("category", "name slug")
+    .limit(limit ? Number(limit) : 0)
+    .skip(skip ? Number(skip) : 0)
+    .sort({ createdAt: -1});
 
-    // Step 4: Authorize
+    // Step 7: Authorize
     // Not required for public products
 
-    // Step 5: Perform Action
-    // Already done: fetching products and applying optional filters
+    // Step 8: Perform Action
+    // Already done: fetching and filtering products
 
-    // Step 6: Respond
+    // Step 9: Respond
     res.status(200).json(products);
   } catch (error: any) {
-    // Step 7: Catch & Fail Safely
+    // Step 10: Catch & Fail Safely
     console.error(error);
     res.status(500).json({ message: "Server error fetching products" });
   }
@@ -102,38 +111,43 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
     // Step 1: Extract Inputs
     const { category } = req.params;
     const { limit, skip } = req.query;
-    
-    // Step 2: Validate Inputs (optionals)
-    const allowedCategories = [
-      "ring",
-      "bracelet",
-      "watch",
-      "necklace",
-      "earrings"
-    ];
-    if(category && !allowedCategories.includes(category as string)) {
-      return res.status(400).json({ message: "Invalid category filter" });
+
+    // Step 2: Validate Inputs
+    if (typeof category !== "string") {
+      return res.status(400).json({ message: "Invalid category parameter" });
     }
 
-    // Step 3: Fetch Primary Resource
-    const query: any = { status: "active", category };
+    // Step 3: Fetch Primary Resource (Find Category by slug)
+    const foundCategory = await Category.findOne({ slug: category });
+
+    if (!foundCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    // Step 4: Build Product Query
+    const query: any = {
+      status: "active",
+      category: foundCategory._id,
+    };
 
     const products = await Product.find(query)
-    .limit(limit ? Number(limit) : 0)
-    .skip(skip ? Number(skip) : 0)
-    .sort({ createdAt: -1 }); // newest first
+      .populate("category", "name slug")
+      .limit(limit ? Number(limit) : 0)
+      .skip(skip ? Number(skip) : 0)
+      .sort({ createdAt: -1 }); // newest first
 
-    // Step 4: Authorize
+    // Step 5: Authorize
     // Not required for public products
 
-    // Step 5: Perform Action
-    // Already done: fetching products and applying optional filters
-        
-    // Step 6: Respond
+    // Step 6: Perform Action
+    // Already done: fetching and populating products
+
+    // Step 7: Respond
     res.status(200).json(products);
-  } catch(error: any) {
-    // Step 7: Catch & Fail Safely
+
+  } catch (error: any) {
+    // Step 8: Catch & Fail Safely
     console.error(error);
     res.status(500).json({ message: "Server error fetching products" });
   }
-}
+};
