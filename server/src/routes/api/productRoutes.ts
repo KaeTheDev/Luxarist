@@ -19,10 +19,10 @@ const router = Router();
 // Public GET all products
 router.get("/", getActiveProducts);
 
-// Public GET one product
-router.get("/:id", getActiveProduct);
-
 // Public GET a specific category
 router.get("/category/:category", getProductsByCategory);
+
+// Public GET one product
+router.get("/:id", getActiveProduct);
 
 export default router;

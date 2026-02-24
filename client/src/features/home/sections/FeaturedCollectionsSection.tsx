@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
 import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";
-import type { FeaturedCategory } from "../../../types/category";
+import type { FeaturedCategory } from "../../../types/FeaturedCategory";
 
 export function FeaturedCollectionsSection() {
     const { categories, loading, error } = useFeaturedCategories();

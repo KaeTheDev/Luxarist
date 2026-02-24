@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { FeaturedCategory } from "../types/category";
+import type { FeaturedCategory } from "../types/FeaturedCategory";
 
 const API_BASE_URL =
   import.meta.env.MODE === "development"

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { fetchFeaturedCategories } from "../api/categories";
-import type { FeaturedCategory } from "../types/category";
+import { fetchFeaturedCategories } from "../api/featuredCategories";
+import type { FeaturedCategory } from "../types/FeaturedCategory";
 
 export function useFeaturedCategories() {
     const [categories, setCategories] = useState<FeaturedCategory[]>([]);
