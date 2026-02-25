@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useNewArrivals } from "../../../hooks/useNewArrivals";
-import { NewArrivalCard } from "./NewArrivalCard";
+import { NewArrivalCard } from "../components/NewArrivalCard";
 
 export function NewArrivalsSection() {
   const { previewProducts, loading, error } = useNewArrivals();
