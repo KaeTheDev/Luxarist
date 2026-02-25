@@ -1,0 +1,29 @@
+interface PromiseCardProps {
+    iconUrl: string;
+    title: string;
+    text: string;
+}
+
+export function PromiseCard({ iconUrl, title, text}: PromiseCardProps) {
+    return(
+        <div className="group relative flex flex-col items-center text-center p-8
+        bg-white/5 backdrop-blur-sm 
+        border border-white/10
+        rounded-2xl
+        transition-all duration-500
+        hover:border-white/20 hover:-translate-y-2 hover:shadow-lg">
+
+        {/* Subtle Top Accent Line */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        {/* Icon */}
+        <div className="w-20 h-20 mb-6 flex items-center justify-center">
+        <img src={iconUrl} alt={title} className="w-full h-full object-contain filter invert" />
+        </div>
+
+        {/* Content */}
+        <h3 className="text-lg font-medium tracking-wide mb-2">{title}</h3>
+        <p className="text-sm text-gray-400 leading-relaxed">{text}</p>
+        </div>
+    );
+};
