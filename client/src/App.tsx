@@ -5,6 +5,7 @@ import { SignatureHighlightSection } from "./features/home/sections/SignatureHig
 import { NewArrivalsSection } from "./features/home/sections/NewArrivalsSection";
 import { BrandPromiseSection } from "./features/home/sections/BrandPromiseSection";
 import { NewsletterSection } from "./features/home/sections/NewsletterSection";
+import { Footer } from "./common/layout/Footer";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
     <NewArrivalsSection />
     <BrandPromiseSection />
     <NewsletterSection />
+    <Footer />
     </>
   );
 };
