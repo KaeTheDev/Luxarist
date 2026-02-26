@@ -8,7 +8,7 @@ export function useProducts(options: { isNewArrival?: boolean; limit?: number; c
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Stringify options so useEffect knows when to refeth if filters change
+        // Stringify options so useEffect knows when to refetch if filters change
         fetchProducts(options)
         .then(setProducts)
         .catch((err) => {
