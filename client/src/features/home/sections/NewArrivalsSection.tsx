@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useNewArrivals } from "../../../hooks/useNewArrivals";
-import { NewArrivalCard } from "../components/NewArrivalCard";
+import { ProductCard } from "../../../common/ui/ProductCard";
 
 export function NewArrivalsSection() {
   const { previewProducts, loading, error } = useNewArrivals();
@@ -54,11 +54,13 @@ export function NewArrivalsSection() {
 
           {previewProducts.map((product) => (
             <div key={product._id} className="min-w-70 sm:min-w-[320px] snap-start">
-              <NewArrivalCard
+              <ProductCard
+                id={product._id}
                 imageUrl={product.primaryImageUrl}
                 title={product.name}
                 category={product.category.name}
                 price={product.price}
+                className="w-full"
               />
             </div>
           ))}

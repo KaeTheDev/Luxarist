@@ -1,7 +1,6 @@
 import { ProductCard } from "./ProductCard";
 import type { ProductPreview } from "../../types/ProductPreview";
 
-
 interface ProductListProps {
     products: ProductPreview[];
     emptyMessage?: string;
@@ -23,7 +22,7 @@ export function ProductList({ products, emptyMessage, className }: ProductListPr
 
     // Render Grid
     return (
-        <div className={`grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${className}}`}>
+        <div className={`grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${className}`}>
             {products.map((product) => (
                 <ProductCard 
                 key={product._id}

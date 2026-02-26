@@ -30,9 +30,9 @@ export function ProductCard({ id, imageUrl, title, category, price, className }:
                 </svg>
             </button>
 
+               
             {/* Link wrapper: Makes the image and text clickable */}
-            <Link to={`/products/${id}`} className="flex flex-col h-full">
-                
+            <Link to={`/products/${id}`} className="flex flex-col h-full"> 
                 {/* Image Container */}
                 <div className="aspect-4/5 overflow-hidden bg-[#f9f9f9]">
                     <img 
