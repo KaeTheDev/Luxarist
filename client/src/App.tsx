@@ -18,8 +18,8 @@ export default function App() {
       <Route index element={<Homepage />} />
 
       {/* Collections Routes */}
-      <Route path="collections" element={<ProductList products={MOCK_PRODUCTS} />} />
-      <Route path="collections/:category" element={<CollectionsPage />} />
+      <Route path="collections" element={<ProductList products={MOCK_PRODUCTS} />} /> {/* Swap out with Shop All */}
+      <Route path="collections/:category" element={<CollectionsPage />} /> {/* Swap out with Category Page */}
 
       {/* Product Routes */}
       <Route path="products/:id" element={<ProductDetailPage />} />
