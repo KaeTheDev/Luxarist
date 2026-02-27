@@ -12,9 +12,9 @@ export function MainLayout() {
 
       {/* Dynamic Page Content */}
       <main className="grow">
-        <div className="mx-auto w-full max-w-350px px-6 lg:px-12">
+
           <Outlet />
-        </div>
+    
       </main>
 
       <Footer />
