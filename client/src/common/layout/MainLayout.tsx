@@ -12,9 +12,7 @@ export function MainLayout() {
 
       {/* Dynamic Page Content */}
       <main className="grow">
-
-          <Outlet />
-    
+          <Outlet />   
       </main>
 
       <Footer />
