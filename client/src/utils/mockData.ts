@@ -28,5 +28,5 @@ export const MOCK_PRODUCTS: ProductPreview[] = [
     primaryImageUrl: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
     category: { name: "Bracelets" },
     price: 4800
-  }
+  },
 ];

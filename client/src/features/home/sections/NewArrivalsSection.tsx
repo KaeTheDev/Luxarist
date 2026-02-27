@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { useNewArrivals } from "../../../hooks/useNewArrivals";
-import { ProductCard } from "../../../common/ui/ProductCard";
+import { useProducts } from "../../../hooks/useProducts";
+import { ProductCard } from "../components/ProductCard";
 
 export function NewArrivalsSection() {
-  const { previewProducts, loading, error } = useNewArrivals();
+  const { products, loading, error } = useProducts({ isNewArrival: true, limit: 8 });
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -52,7 +52,7 @@ export function NewArrivalsSection() {
             div::-webkit-scrollbar { display: none; }
           `}} />
 
-          {previewProducts.map((product) => (
+          {products.map((product) => (
             <div key={product._id} className="min-w-70 sm:min-w-[320px] snap-start">
               <ProductCard
                 id={product._id}

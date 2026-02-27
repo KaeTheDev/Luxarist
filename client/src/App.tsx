@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "./common/layout/MainLayout";
 import { Homepage } from "./features/home/Homepage";
+import { ProductList } from "./common/ui/ProductList";
+import { MOCK_PRODUCTS } from "./utils/mockData";
 
 // Placeholder for future pages
 const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;
@@ -16,7 +18,7 @@ export default function App() {
       <Route index element={<Homepage />} />
 
       {/* Collections Routes */}
-      <Route path="collections" element={<CollectionsPage />} />
+      <Route path="collections" element={<ProductList products={MOCK_PRODUCTS} />} />
       <Route path="collections/:category" element={<CollectionsPage />} />
 
       {/* Product Routes */}
