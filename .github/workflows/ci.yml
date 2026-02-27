@@ -1,56 +1,50 @@
-name: CI - Luxarist Build
+name: CI/CD - Luxarist Build & Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   frontend:
     name: Frontend Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        working-directory: ./client
-        run: npm install
-
-      - name: Build frontend
-        working-directory: ./client
-        run: npm run build
+          node-version: 20
+      - name: Install & Build
+        run: |
+          cd client
+          npm install
+          npm run build
 
   backend:
     name: Backend Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
+      - name: Install & Build
+        run: |
+          cd server
+          npm install
+          npm run build
 
-      - name: Install dependencies
-        working-directory: ./server
-        run: npm install
-
-      - name: Compile TypeScript
-        working-directory: ./server
-        run: npm run build
+  deploy:
+    name: Deploy to Render
+    needs: [frontend, backend] # Only runs if build jobs pass
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Frontend
+        run: curl -X POST ${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}
+        
+      - name: Deploy Backend
+        run: curl -X POST ${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}
