@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../../../hooks/useProducts";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "../../../common/ui/ProductCard";
 
 export function NewArrivalsSection() {
   const { products, loading, error } = useProducts({ isNewArrival: true, limit: 8 });
@@ -60,6 +60,7 @@ export function NewArrivalsSection() {
                 title={product.name}
                 category={product.category.name}
                 price={product.price}
+                className="w-full"
               />
             </div>
           ))}

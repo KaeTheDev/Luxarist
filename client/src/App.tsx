@@ -1,25 +1,29 @@
-import { Navbar } from "./common/layout/navigation/Navbar";
-import { FeaturedCollectionsSection } from "./features/home/sections/FeaturedCollectionsSection";
-import { HeroSection } from "./features/home/sections/HeroSection";
-import { SignatureHighlightSection } from "./features/home/sections/SignatureHighlightSection";
-import { NewArrivalsSection } from "./features/home/sections/NewArrivalsSection";
-import { BrandPromiseSection } from "./features/home/sections/BrandPromiseSection";
-import { NewsletterSection } from "./features/home/sections/NewsletterSection";
-import { Footer } from "./common/layout/Footer";
+import { Routes, Route } from "react-router-dom";
+import { MainLayout } from "./common/layout/MainLayout";
+import { Homepage } from "./features/home/Homepage";
+import { ProductList } from "./common/ui/ProductList";
+import { MOCK_PRODUCTS } from "./utils/mockData";
 
-function App() {
-  return (
-    <>
-    <Navbar />
-    <HeroSection />
-    <FeaturedCollectionsSection />
-    <SignatureHighlightSection />
-    <NewArrivalsSection />
-    <BrandPromiseSection />
-    <NewsletterSection />
-    <Footer />
-    </>
+// Placeholder for future pages
+const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;
+const CollectionsPage = () => <div className="py-20 text-center">Collections Page coming soon...</div>
+
+export default function App() {
+  return(
+    <Routes>
+      {/* MainLayout wraps all pages to provide Navbar and Footer */}
+      <Route element={<MainLayout />}>
+      
+      {/* Index route is the Homepage */}
+      <Route index element={<Homepage />} />
+
+      {/* Collections Routes */}
+      <Route path="collections" element={<ProductList products={MOCK_PRODUCTS} />} /> {/* Swap out with Shop All */}
+      <Route path="collections/:category" element={<CollectionsPage />} /> {/* Swap out with Category Page */}
+
+      {/* Product Routes */}
+      <Route path="products/:id" element={<ProductDetailPage />} />
+      </Route>
+    </Routes>
   );
 };
-
-export default App
