@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ProductPreview } from "../types/ProductPreview";
+import type { ProductPreview } from "../types/Product";
 
 const API_BASE_URL =
 import.meta.env.MODE === "development"

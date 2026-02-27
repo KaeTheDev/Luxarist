@@ -3,19 +3,21 @@ import { Footer } from "./Footer";
 import { Navbar } from "./navigation/Navbar";
 
 export function MainLayout() {
-    return(
-        <div className="flex min-h-screen flex-col bg-white">
-            {/* Navbar will stay fixed to the top */}
-            <div className="sticky top-0 z-50">
-                <Navbar />
-            </div>
+  return (
+    <div className="flex min-h-screen flex-col bg-white">
+      {/* Navbar will stay fixed to the top */}
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
 
-            {/* Dynamic Page Content */}
-            <main className="grow">
-                <Outlet />
-            </main>
-
-            <Footer />
+      {/* Dynamic Page Content */}
+      <main className="grow">
+        <div className="mx-auto w-full max-w-350px px-6 lg:px-12">
+          <Outlet />
         </div>
-    );
-};
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

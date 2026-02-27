@@ -1,8 +1,8 @@
+import type { Product } from "../../types/Product";
 import { ProductCard } from "./ProductCard";
-import type { ProductPreview } from "../../types/ProductPreview";
 
 interface ProductListProps {
-    products: ProductPreview[];
+    products: Product[];
     emptyMessage?: string;
     className?: string;
 }
@@ -22,7 +22,7 @@ export function ProductList({ products, emptyMessage, className }: ProductListPr
 
     // Render Grid
     return (
-        <div className={`grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${className}`}>
+<div className={`grid grid-cols-2 gap-y-16 gap-x-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 ${className}`}>
             {products.map((product) => (
                 <ProductCard 
                 key={product._id}

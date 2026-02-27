@@ -1,6 +1,6 @@
-import type { ProductPreview } from "../types/ProductPreview";
+import type { Product } from "../types/Product";
 
-export const MOCK_PRODUCTS: ProductPreview[] = [
+export const MOCK_PRODUCTS: Product[] = [
   {
     _id: "1",
     name: "Solitaire Diamond Ring",
@@ -16,11 +16,11 @@ export const MOCK_PRODUCTS: ProductPreview[] = [
     price: 850
   },
   {
-    _id: "3",
-    name: "Pearl Drop Earrings",
-    primaryImageUrl: "https://images.unsplash.com/photo-1535633302704-b02f4f14187e?w=800&q=80",
-    category: { name: "Earrings" },
-    price: 1200
+    _id: "4",
+    name: "Diamond Tennis Bracelet",
+    primaryImageUrl: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+    category: { name: "Bracelets" },
+    price: 4800
   },
   {
     _id: "4",

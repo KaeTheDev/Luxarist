@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { fetchProducts } from "../api/fetchProducts";
-import type { ProductPreview } from "../types/ProductPreview";
+import type { Product } from "../types/Product";
 
 export function useProducts(options: { isNewArrival?: boolean; limit?: number; category?: string; }) {
-    const [products, setProducts] = useState<ProductPreview[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
