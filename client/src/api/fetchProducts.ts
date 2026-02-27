@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ProductPreview } from "../types/Product";
+import type { Product } from "../types/Product";
 
 const API_BASE_URL =
 import.meta.env.MODE === "development"
@@ -12,7 +12,7 @@ interface FetchProductsParams {
     category?: string;
 }
 
-export async function fetchProducts(params?: FetchProductsParams): Promise<ProductPreview[]> {
+export async function fetchProducts(params?: FetchProductsParams): Promise<Product[]> {
     // Axios 'params' will turn { isNewArrival: true, limit: 8 } 
     // into: /api/products?isNewArrival=true&limit=8
     const response = await axios.get(`${API_BASE_URL}/api/products`, { params });
