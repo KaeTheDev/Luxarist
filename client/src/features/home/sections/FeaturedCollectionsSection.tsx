@@ -1,3 +1,33 @@
+/**
+ * @name FeaturedCollectionsSection
+ * @description Displays handpicked featured product categories in a responsive, visually engaging grid.
+ *  Fetches featured categories using `useFeaturedCategories` and sorts them based on predefined order and layouts.
+ * 
+ * @composition
+ * - Uses `useFeaturedCategories` to fetch featured category data.
+ * - Sorts categories using `CATEGORY_ORDER` to maintain a consistent display order.
+ * - Applies layout classes from `CATEGORY_LAYOUTS` to create a dynamic, visually balanced grid.
+ * - Renders each category as a clickable `Link` with an image, overlay, and text content.
+ * 
+ * @styling
+ * - **Layout**: Responsive CSS grid with auto-rows and span adjustments for desktop and mobile.
+ * - **Typography**: Uppercase headings, tracking-wide fonts, and subtle hover underlines.
+ * - **Interaction**: Hover effects reveal overlays, item counts, and "SHOP NOW" CTA with smooth transitions.
+ * - **Colors**: Light backgrounds with dark overlays for contrast and visual hierarchy.
+ * 
+ * @responsibilities
+ * - Showcase featured product categories prominently on landing or collection pages.
+ * - Provide smooth visual transitions and interactive hover effects.
+ * - Ensure responsive design across all devices.
+ * - Maintain clean, reusable structure for future category additions.
+ * 
+ * @usage
+ * - Import and render as part of a homepage or collections overview section.
+ * - Example:
+ *      <FeaturedCollectionsSection />
+ * - Requires routing context (`BrowserRouter`) for `Link` components to function correctly.
+ */
+
 import { Link } from "react-router-dom";
 import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
 import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";

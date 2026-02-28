@@ -1,3 +1,33 @@
+/**
+ * @name ProductCard
+ * @description A reusable card component that displays individual product information 
+ *  including image, title, category, price, and a favorite (wishlist) toggle. 
+ *  The entire card is clickable and navigates to the product detail page.
+ * 
+ * @composition
+ * - Wraps content in a `Link` from `react-router-dom` to enable client-side navigation.
+ * - Displays a product image with smooth hover scale effects.
+ * - Renders product category, title, and formatted price in a styled content area.
+ * - Includes a favorite button overlay that toggles local favorite state without navigating.
+ * 
+ * @styling
+ * - **Layout**: Flex column with `rounded-2xl` and overflow-hidden, supporting responsive sizing.
+ * - **Colors**: White background with subtle gray borders; hover shadow for elevation.
+ * - **Interaction**: Hover effects for shadow and image scale; favorite button has backdrop blur and hover scale animation.
+ * - **Typography**: Uppercase, tracking-wide for category; light font for title; medium font for price.
+ * 
+ * @responsibilities
+ * - Provide a consistent, visually appealing product preview.
+ * - Enable users to navigate to the product detail page easily.
+ * - Allow users to mark a product as favorite with local state management.
+ * - Support flexible layout via the optional `className` prop.
+ * 
+ * @usage
+ * - Import and render inside product listing grids, carousels, or featured sections.
+ * - Pass required props: `id`, `imageUrl`, `title`, `category`, `price`.
+ * - Optional: use `className` to adjust spacing or sizing within parent layouts.
+ */
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 

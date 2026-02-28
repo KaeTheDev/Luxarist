@@ -1,3 +1,32 @@
+/**
+ * @name SignatureHighlightSection
+ * @description A visually striking section highlighting a signature product from the collection.
+ *  Combines an image, headline, descriptive text, and a call-to-action button to drive navigation.
+ * 
+ * @composition
+ * - Uses `useNavigate` from `react-router-dom` for programmatic navigation.
+ * - Displays a featured image with smooth hover scale effects.
+ * - Includes headline, subheading, descriptive paragraph, and a CTA button.
+ * - Button navigates users to a specific product detail page (`/product/necklace`).
+ * 
+ * @styling
+ * - **Layout**: Responsive grid layout (1–2 columns) with gap and padding adjustments.
+ * - **Typography**: Clear hierarchy with tracking and font weight for luxury branding.
+ * - **Interaction**: Hover effects on image and button for subtle, elegant feedback.
+ * - **Colors**: Light gray background with black accents for text and buttons.
+ * 
+ * @responsibilities
+ * - Highlight a key product from the collection in a visually appealing way.
+ * - Encourage users to click through to the product detail page.
+ * - Ensure responsive display across mobile, tablet, and desktop.
+ * 
+ * @usage
+ * - Import and render as part of a landing page or product showcase page.
+ * - Ensure routing context is available (wrapped in `BrowserRouter`) for `useNavigate`.
+ * - Example:
+ *      <SignatureHighlightSection />
+ */
+
 import { useNavigate } from "react-router-dom";
 
 export function SignatureHighlightSection() {
