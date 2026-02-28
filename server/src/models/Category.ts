@@ -28,6 +28,8 @@ export interface ICategory {
     name: string;
     slug: string;
     featuredImage: string;
+    heroImage: string;
+    description: string;
     isFeatured: boolean;
     productCount: number;
 }
@@ -37,6 +39,8 @@ const categorySchema = new Schema<ICategory> (
         name: { type: String, required: true },
         slug: { type: String, required: true, unique: true },
         featuredImage: { type: String, required: true },
+        heroImage: { type: String, required: true },
+        description: { type: String, required: true },
         isFeatured: { type: Boolean, default: false },
         productCount: { type: Number, default: 0 }
     },
