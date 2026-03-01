@@ -4,66 +4,55 @@ export interface FiltersState {
   minPrice?: number;
   maxPrice?: number;
   sort?: "newest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
+  page?: number;
+  limit?: number;
 }
 
 interface CategoryFiltersProps {
-  onFilterChange: (filters: FiltersState) => void;
+  filters: FiltersState;
+  setFilters: (filters: FiltersState) => void;
   totalProducts?: number;
 }
 
 export function CategoryFilters({
-  onFilterChange,
-  totalProducts,
+  filters,
+  setFilters,
 }: CategoryFiltersProps) {
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [sort, setSort] = useState<FiltersState["sort"]>("newest");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Call onFilterChange whenever filters change
+  // Prevent negative numbers
+  const handlePriceChange = (value: string, setter: (v: number | "") => void) => {
+    if (value === "") return setter("");
+    const num = Number(value);
+    if (num >= 0) setter(num);
+  };
+
   useEffect(() => {
-    const parsedMin = minPrice === "" ? undefined : Number(minPrice);
-    const parsedMax = maxPrice === "" ? undefined : Number(maxPrice);
-
-    onFilterChange({
-      minPrice: parsedMin,
-      maxPrice: parsedMax,
+    setFilters({
+      ...filters,
+      minPrice: minPrice === "" ? undefined : minPrice,
+      maxPrice: maxPrice === "" ? undefined : maxPrice,
       sort,
+      page: 1,
     });
   }, [minPrice, maxPrice, sort]);
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 px-4 md:px-0">
-      {/* Left: Price Filter */}
-      <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-gray-600">Price:</label>
-        <input
-          type="number"
-          placeholder="Min"
-          value={minPrice}
-          onChange={(e) =>
-            setMinPrice(e.target.value === "" ? "" : Number(e.target.value))
-          }
-          className="w-20 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
-        />
-        <span className="text-gray-400">-</span>
-        <input
-          type="number"
-          placeholder="Max"
-          value={maxPrice}
-          onChange={(e) =>
-            setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
-          }
-          className="w-20 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
-        />
-      </div>
-
-      {/* Right: Sort */}
-      <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-gray-600">Sort by:</label>
+    <div className="flex w-full items-center justify-between relative">
+      
+      {/* Left: Sort By*/}
+      <div className="relative group">
+        <div className="flex items-center gap-8 bg-[#D9D9D9] px-10 py-5 cursor-pointer hover:bg-gray-300 transition-colors min-w-50">
+          <span className="uppercase tracking-[0.25em] text-[12px] font-bold">Sort By</span>
+          <span className="text-[10px]">▼</span>
+        </div>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as FiltersState["sort"])}
-          className="px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
+          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
         >
           <option value="newest">Newest</option>
           <option value="price_asc">Price: Low → High</option>
@@ -72,12 +61,51 @@ export function CategoryFilters({
           <option value="name_desc">Name: Z → A</option>
         </select>
       </div>
-      {/* Optional: Product Count */}
-      {totalProducts !== undefined && (
-        <div className="mt-2 md:mt-0 text-sm text-gray-500">
-          {totalProducts} item{totalProducts !== 1 ? "s" : ""}
+
+      {/* Right: Filters With Dropdown */}
+      <div className="relative">
+        <div 
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="flex items-center gap-8 bg-[#D9D9D9] px-10 py-5 cursor-pointer hover:bg-gray-300 transition-colors min-w-50 justify-between"
+        >
+          <span className="uppercase tracking-[0.25em] text-[12px] font-bold">Filters</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+            <path d="M4 6H20M7 12H17M10 18H14" />
+          </svg>
         </div>
-      )}
+
+        {/* Price Filter Dropdown Panel */}
+        {isFilterOpen && (
+          <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 shadow-xl z-50 p-6">
+            <h4 className="text-[10px] uppercase tracking-widest font-bold mb-4">Price Range</h4>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min"
+                min="0"
+                value={minPrice}
+                onChange={(e) => handlePriceChange(e.target.value, setMinPrice)}
+                className="w-full px-3 py-2 border border-gray-200 text-sm focus:outline-none focus:border-black"
+              />
+              <span className="text-gray-400">-</span>
+              <input
+                type="number"
+                placeholder="Max"
+                min="0"
+                value={maxPrice}
+                onChange={(e) => handlePriceChange(e.target.value, setMaxPrice)}
+                className="w-full px-3 py-2 border border-gray-200 text-sm focus:outline-none focus:border-black"
+              />
+            </div>
+            <button 
+              onClick={() => setIsFilterOpen(false)}
+              className="w-full mt-4 bg-black text-white text-[10px] uppercase tracking-widest py-3 hover:bg-gray-800 transition-colors"
+            >
+              Apply
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

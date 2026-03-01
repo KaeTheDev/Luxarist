@@ -11,6 +11,6 @@ interface FetchCategoryParams {
 }
 
 export async function fetchCategoryBySlug({ slug }: FetchCategoryParams): Promise<Category> {
-  const response = await axios.get(`${API_BASE_URL}/api/collections/${slug}`);
+  const response = await axios.get(`${API_BASE_URL}/api/categories/${slug}`);
   return response.data;
 }
