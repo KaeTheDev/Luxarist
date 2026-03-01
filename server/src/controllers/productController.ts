@@ -110,43 +110,76 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
   try {
     // Step 1: Extract Inputs
     const { category } = req.params;
-    const { limit, skip } = req.query;
+    const { minPrice, maxPrice, sort = "newest", page="1", limit = "12" } = req.query;
 
-    // Step 2: Validate Inputs
-    if (typeof category !== "string") {
+    // Step 2: Validate category param
+    if(typeof category !== "string") {
       return res.status(400).json({ message: "Invalid category parameter" });
     }
 
-    // Step 3: Fetch Primary Resource (Find Category by slug)
+    // Step 3: Fetch Primary Resource (Finda Category by slug)
     const foundCategory = await Category.findOne({ slug: category });
 
-    if (!foundCategory) {
-      return res.status(404).json({ message: "Category not found" });
+    if(!foundCategory) {
+      return res.status(404).json({ message: "Category not found"});
     }
 
-    // Step 4: Build Product Query
+    // Step 4: Build base product query
     const query: any = {
       status: "active",
       category: foundCategory._id,
     };
 
-    const products = await Product.find(query)
-      .populate("category", "name slug")
-      .limit(limit ? Number(limit) : 0)
-      .skip(skip ? Number(skip) : 0)
-      .sort({ createdAt: -1 }); // newest first
+    // Step 5: Price Filtering
+    const parsedMin = minPrice ? Number(minPrice) : undefined;
+    const parsedMax = maxPrice ? Number(maxPrice) : undefined;
 
-    // Step 5: Authorize
-    // Not required for public products
+    // Validate parsed price values
+    if((parsedMin !== undefined && isNaN(parsedMin)) || (parsedMax !== undefined && isNaN(parsedMax))) {
+      return res.status(400).json({ message: "Invalid price filter values" });
+    }
 
-    // Step 6: Perform Action
-    // Already done: fetching and populating products
+    // Apply price filter to query if valid
+    if(parsedMin !== undefined || parsedMax !== undefined) {
+      query.price = {};
+      if(parsedMin !== undefined) query.price.$gte = parsedMin;
+      if(parsedMax !== undefined) query.price.$lte = parsedMax;
+    }
 
-    // Step 7: Respond
-    res.status(200).json(products);
+    // Step 6: Sorting Logic
+    let sortOption: any = { createdAt: -1 }; // default: newest first
+    if(sort === "price_asc") sortOption = { price: 1 };
+    if (sort === "price_desc") sortOption = { price: -1 };
+    if (sort === "name_asc") sortOption = { name: 1 };
+    if (sort === "name_desc") sortOption = { name: -1 };
 
+    // Step 7: Safe Pagination
+    const pageNumber = Math.max(1, Number(page) || 1); // default to 1 if invalid
+    const limitNumber = Math.min(50, Math.max(1, Number(limit) || 12)); // max 50 per page
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Step 8: Execute queries in parallel (fetch products and count)
+    const [products, total] = await Promise.all([
+      Product.find(query)
+        .populate("category", "name slug")
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNumber),
+      Product.countDocuments(query),
+    ]);
+
+    // Step 9: Respond with structured data
+    res.status(200).json({
+      products,
+      pagination: {
+        total,
+        page: pageNumber,
+        limit: limitNumber,
+        pages: Math.ceil(total / limitNumber),
+      },
+    });
   } catch (error: any) {
-    // Step 8: Catch & Fail Safely
+    // Step 10: Catch & Fail Safely
     console.error(error);
     res.status(500).json({ message: "Server error fetching products" });
   }
