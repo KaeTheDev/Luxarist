@@ -1,3 +1,17 @@
+/**
+ * @name PromiseCard
+ * @description A high-end value proposition card used to communicate brand "promises" (e.g., Sustainability, Craftsmanship).
+ * Designed with a glassmorphism aesthetic to overlay elegantly on dark or image-heavy sections.
+ * * @features
+ * - **Visual Rebranding**: Uses `brightness-0 invert` filters to dynamically transform standard color icons into minimalist white silhouettes.
+ * - **Glassmorphism**: Combines `bg-white/5` with `backdrop-blur-sm` to create a translucent, high-end material effect.
+ * - **Hover Feedback**: Triggers a multi-property transition including a vertical lift (`-translate-y-2`) and an accent line reveal.
+ * * @styling
+ * - **Composition**: Centralizes all elements within a `flex-col items-center` stack to maintain symmetry.
+ * - **Accent Detailing**: Features an absolute-positioned top border that fades in via the `group-hover` state for subtle sophistication.
+ * - **Typography**: Pairs a medium-weight title with `leading-relaxed` gray body text to ensure readability within a compact container.
+ */
+
 interface PromiseCardProps {
   iconUrl: string;
   title: string;

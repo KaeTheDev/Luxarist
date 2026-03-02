@@ -1,3 +1,19 @@
+/**
+ * @name CategoryHero
+ * @description A high-impact, full-width header component designed to establish visual context for specific 
+ * collections or the global "Shop All" view. It utilizes a dynamic overlay system to ensure text 
+ * readability against diverse background imagery.
+ * * @features
+ * - **Dynamic Layout Switching**: Uses the `variant` prop to toggle between a left-aligned editorial layout (Category) and a centered, immersive hero (Shop All).
+ * - **Adaptive Overlays**: Combines base opacity layers with responsive linear gradients (`bg-linear-to-r`) to protect text legibility on both mobile and desktop viewports.
+ * - **Breadcrumb Navigation**: Provides a functional pathing trail (`HOME / CATEGORY`) to reinforce site hierarchy and improve user flow.
+ * - **Smart Pluralization**: Dynamically adjusts metadata labels (e.g., "1 Piece" vs "12 Pieces") based on the `count` prop.
+ * * @styling
+ * - **Cinematic Sizing**: Locked to `70vh` to provide a grand "above-the-fold" experience while maintaining a `min-h-125px` safety floor for smaller screens.
+ * - **Typography Scale**: Features ultra-large `md:text-8xl` headings with `tracking-tight` to evoke a premium, high-fashion editorial feel.
+ * - **Depth Effects**: Implements `drop-shadow-lg` on text and a `md:hover:scale-105` transition on the background container to create a layered, parallax-lite sensation.
+ */
+
 import { Link } from "react-router-dom";
 
 interface CategoryHeroProps {

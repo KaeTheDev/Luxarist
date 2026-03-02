@@ -1,3 +1,20 @@
+/**
+ * @name FeaturedCollectionsSection
+ * @description A dynamic bento-style grid that showcases high-priority jewelry collections.
+ * Leverages custom layout constants to create a visually diverse, masonry-inspired gallery.
+ * * @state
+ * - `categories`: Async data fetched via {@link useFeaturedCategories}.
+ * - `loading/error`: Handles conditional rendering for API lifecycle states to prevent layout shifts.
+ * * @features
+ * - **Custom Sequencing**: Implements a sort algorithm using {@link CATEGORY_ORDER} to ensure specific collections (e.g., "New Arrivals") always hold prime real estate.
+ * - **Bento Layout**: Dynamically injects Tailwind span classes (via {@link CATEGORY_LAYOUTS}) to allow certain categories to occupy multiple rows or columns.
+ * - **Contextual Metadata**: Displays real-time `productCount` and slug-based routing for direct collection discovery.
+ * * @styling
+ * - **Micro-Interactions**: Features a multi-stage hover effect: darkens the image overlay, reveals a "Shop Now" call-to-action, and slides an animated underline beneath the title.
+ * - **Adaptive Row Heights**: Utilizes `auto-rows` with breakpoints to scale the grid density from mobile (`180px`) to desktop (`300px`).
+ * - **Depth & Focus**: Employs `group-hover:scale-105` (implied by design pattern) and opacity transitions to guide the user's eye toward the active selection.
+ */
+
 import { Link } from "react-router-dom";
 import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
 import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";

@@ -1,3 +1,17 @@
+/**
+ * @name ProductList
+ * @description A high-performance responsive grid container for rendering collections of {@link ProductCard} components.
+ * Automatically adapts its column count based on viewport width to maintain an optimal jewelry-browsing experience.
+ * * @features
+ * - **Graceful Degradation**: Implements a dedicated "Empty State" with a dashed-border UI if the products array is empty.
+ * - **Data Mapping**: Transforms raw product data into the specific props required by the child cards (mapping `_id` to `id`, `name` to `title`, etc.).
+ * - **Dynamic Column Scaling**: Transitions from 2 columns on mobile to a wide 6-column layout on Ultra-HD screens (`2xl`).
+ * * @styling
+ * - **Spacing Logic**: Uses `gap-y-16` to provide significant vertical breathing room between product rows, maintaining a luxury feel.
+ * - **Grid Layout**: Relies on CSS Grid's `grid-cols` utility to dictate child widths rather than hardcoding pixel values.
+ * - **Fallback Interaction**: Includes a minimalist "Refresh Gallery" trigger for manual state recovery during zero-result filter queries.
+ */
+
 import type { Product } from "../../types/Product";
 import { ProductCard } from "./ProductCard";
 

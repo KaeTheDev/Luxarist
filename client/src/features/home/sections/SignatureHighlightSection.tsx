@@ -1,3 +1,17 @@
+/**
+ * @name SignatureHighlightSection
+ * @description A high-impact "Spotlight" section designed to showcase a single flagship product. 
+ * Combines editorial-style typography with large-scale imagery to drive deep-funnel conversion.
+ * * @features
+ * - **Strategic Navigation**: Utilizes `useNavigate` to provide a high-performance programmatic transition to a specific product detail page.
+ * - **Two-Column Asymmetry**: Pairs a high-resolution visual anchor with a concentrated content block to create a balanced, professional "Lookbook" feel.
+ * - **Interactive Visuals**: Features a subtle image scale transition (`hover:scale-105`) to create a sense of tactile depth on user interaction.
+ * * @styling
+ * - **Typography Layering**: Employs an 11px uppercase "eyebrow" label with heavy tracking (`0.35em`) to establish a luxury brand hierarchy.
+ * - **Neutral Palette**: Uses a `bg-gray-50` backdrop to provide a soft, sophisticated contrast against the white components of the main site body.
+ * - **Minimalist CTA**: Implements a "Ghost-to-Solid" button transition, shifting from a thin black border to a full black fill on hover for a clean, modern aesthetic.
+ */
+
 import { useNavigate } from "react-router-dom";
 
 export function SignatureHighlightSection() {

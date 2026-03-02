@@ -1,3 +1,20 @@
+/**
+ * @name NewArrivalsSection
+ * @description A horizontal carousel component showcasing the latest product additions. 
+ * Combines smooth programmatic scrolling with native touch-swipe capabilities for a premium browsing experience.
+ * * @state
+ * - `products`: Async data subset filtered by `isNewArrival: true` via {@link useProducts}.
+ * - `scrollRef`: A {@link useRef} hook targeting the scrollable container to calculate and trigger lateral movement.
+ * * @features
+ * - **Hybrid Navigation**: Supports standard touch gestures through `snap-x` and `snap-mandatory` while providing explicit button controls for desktop users.
+ * - **Programmatic Scrolling**: Logic-driven `scroll` function that calculates `clientWidth` to ensure the carousel advances exactly one "viewport" per click.
+ * - **Clean UI**: Implements a custom CSS injection to hide scrollbars across all major browsers (Webkit, Firefox, IE) to maintain a minimalist aesthetic.
+ * * @styling
+ * - **Responsive Geometry**: Utilizes `min-w-[320px]` on card wrappers to ensure consistent card sizing within the flex-overflow container.
+ * - **Interaction Design**: Desktop navigation arrows feature a "Dark Mode" inversion on hover and a tactile `active:scale-95` feedback loop.
+ * - **Layout Composition**: Uses absolute positioning for the "VIEW ALL" link on larger screens to keep the header centered while maximizing utility.
+ */
+
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../../../hooks/useProducts";

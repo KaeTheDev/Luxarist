@@ -1,3 +1,20 @@
+/**
+ * @name ShopAllFilters
+ * @description A high-level navigation and sorting bar specifically for the global "Shop All" view. 
+ * Facilitates rapid switching between product categories through a "Pill-based" filter system.
+ * * @state
+ * - `isMenuOpen`: Manages the responsive visibility of the category selection drawer on mobile devices.
+ * * @features
+ * - **Category Switching**: Implements a horizontal list of buttons that toggle the `activeCategory` state, instantly updating the parent's data query.
+ * - **Conditional Rendering**: Dynamically applies high-contrast styling (`bg-black text-white`) to the currently selected filter for immediate visual feedback.
+ * - **Overlay Select Pattern**: Uses a hidden native `<select>` element over a custom-styled div to ensure mobile-friendly sorting while maintaining a minimalist aesthetic.
+ * - **Mobile Optimization**: Collapses the category list into a single "Browse Categories" toggle on small viewports to save vertical screen real estate.
+ * * @styling
+ * - **Brutalist Palette**: Pairs soft neutrals (`#F5F5F5`) with industrial grays (`#D9D9D9`) to create a structural, luxury workspace feel.
+ * - **Typography**: Leverages 10px font sizes with significant letter-spacing (`tracking-[0.2em]`) to maintain a clean, high-fashion editorial look.
+ * - **Responsive Flex**: Shifts from a centered vertical stack on mobile to a spaced-between horizontal row on desktop (`md:flex-row`).
+ */
+
 import { useState } from "react";
 
 interface ShopAllFiltersProps {
