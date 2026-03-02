@@ -9,7 +9,7 @@ const categories = [
         name: "Earrings",
         slug: "earrings",
         featuredImage: "https://ik.imagekit.io/gwbd4eva2026/collections/earrings.png",
-        heroImage: "https://ik.imagekit.io/gwbd4eva2026/earrings-hero.png",
+        heroImage: "https://ik.imagekit.io/gwbd4eva2026/earrings-hero.png?updatedAt=1772311275096",
         description: "Designed to frame the face and command attention. From delicate studs to statement drops, each pair is crafted to elevate every look.",
         isFeatured: true
     },
@@ -18,7 +18,7 @@ const categories = [
         name: "Necklace",
         slug: "necklace",
         featuredImage: "https://ik.imagekit.io/gwbd4eva2026/collections/necklaces.png",
-        heroImage: "https://ik.imagekit.io/gwbd4eva2026/necklaces-hero.png",
+        heroImage: "https://ik.imagekit.io/gwbd4eva2026/necklaces-hero.png?updatedAt=1772311274933",
         description: "Layered or worn alone, our necklaces are made to define the neckline with effortless sophistication and timeless shine.",
         isFeatured: true
     },
@@ -26,7 +26,7 @@ const categories = [
         name: "Bracelet",
         slug: "bracelet",
         featuredImage: "https://ik.imagekit.io/gwbd4eva2026/collections/bracelets.png",
-        heroImage: "https://ik.imagekit.io/gwbd4eva2026/bracelets-hero.png",
+        heroImage: "https://ik.imagekit.io/gwbd4eva2026/bracelets-hero.png?updatedAt=1772446151858",
         description: "Refined accents that move with you. Subtle, bold, and endlessly stackable.",
         isFeatured: true
     },
@@ -34,7 +34,7 @@ const categories = [
         name: "Watch",
         slug: "watch",
         featuredImage: "https://ik.imagekit.io/gwbd4eva2026/collections/watches.png",
-        heroImage: "https://ik.imagekit.io/gwbd4eva2026/watches-hero.png",
+        heroImage: "https://ik.imagekit.io/gwbd4eva2026/watches-hero.png?updatedAt=1772311274512",
         description: "Precision meets presence. Timepieces crafted for those who move with purpose and style.",
         isFeatured: true
     },
@@ -42,7 +42,7 @@ const categories = [
         name: "Ring",
         slug: "ring",
         featuredImage: "https://ik.imagekit.io/gwbd4eva2026/collections/rings.png",
-        heroImage: "https://ik.imagekit.io/gwbd4eva2026/rings-hero.png",
+        heroImage: "https://ik.imagekit.io/gwbd4eva2026/rings-hero.png?updatedAt=1772311274856",
         description: "From minimal bands to bold statements, each ring is designed to leave a lasting impression.",
         isFeatured: true
     },
