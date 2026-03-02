@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "./common/layout/MainLayout";
 import { Homepage } from "./features/home/Homepage";
-import { ProductList } from "./common/ui/ProductList";
-import { MOCK_PRODUCTS } from "./utils/mockData";
+import { ShopAllPage } from "./pages/ShopAllPage/ShopAllPage";
 import { CategoryPage } from "./pages/CategoryPage/CategoryPage";
 
 // Placeholder for future pages
@@ -19,8 +18,8 @@ export default function App() {
       <Route index element={<Homepage />} />
 
       {/* Collections Routes */}
-      <Route path="collections" element={<ProductList products={MOCK_PRODUCTS} />} /> {/* Swap out with Shop All */}
-      <Route path="collections/:slug" element={<CategoryPage />} /> {/* Swap out with Category Page */}
+      <Route path="collections" element={<ShopAllPage />} />
+      <Route path="collections/:slug" element={<CategoryPage />} /> 
 
       {/* Product Routes */}
       <Route path="products/:id" element={<ProductDetailPage />} />
