@@ -1,5 +1,21 @@
 /**
  * @name ProductCard
+ * @description A high-fidelity preview component for individual jewelry pieces. 
+ * Designed for use within product grids, featuring a vertical "portrait" aspect ratio and interactive states.
+ * * @state
+ * - `isFavorite`: A boolean toggle for the "star" icon. Prevents event bubbling to the parent navigation link via `e.stopPropagation()`.
+ * * @features
+ * - **Deep Linking**: Wraps core visuals in a {@link Link} to provide instantaneous routing to the Product Detail page.
+ * - **Dynamic Formatting**: Utilizes `toLocaleString()` for price rendering to ensure professional currency presentation.
+ * - **Visual Hierarchy**: Features a structured metadata stack (Category > Title > Price) using varied typography scales.
+ * * @styling
+ * - **Hover Orchestration**: Implements a dual-layer transition: scales the internal `img` while lifting the card with a `hover:shadow-2xl` effect.
+ * - **Conditional Visibility**: The favorite button uses `lg:opacity-0` to remain hidden on desktop until hovered, maintaining a clean aesthetic.
+ * - **Aspect Ratio**: Locked to `aspect-4/5` to ensure consistent grid alignment regardless of the source image's original dimensions.
+ */
+
+/**
+ * @name ProductCard
  * @description A reusable card component that displays individual product information 
  *  including image, title, category, price, and a favorite (wishlist) toggle. 
  *  The entire card is clickable and navigates to the product detail page.

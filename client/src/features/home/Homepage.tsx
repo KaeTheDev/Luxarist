@@ -1,28 +1,21 @@
 /**
  * @name Homepage
- * @description The main landing page of the website, assembling all primary sections in order.
- *  Provides a curated, scrollable experience that introduces the brand, featured collections, new arrivals, and core brand promises.
- * 
- * @composition
- * - Combines multiple section components: 
- *      `HeroSection`, `FeaturedCollectionsSection`, `SignatureHighlightSection`, 
- *      `NewArrivalsSection`, `BrandPromiseSection`, and `NewsletterSection`.
- * - Sections are rendered in a sequential layout for a cohesive homepage experience.
- * 
- * @styling
- * - **Layout**: Vertical stacking of full-width sections with responsive spacing and padding.
- * - **Typography & Visuals**: Inherited from individual sections to maintain a luxury brand aesthetic.
- * - **Interaction**: Each section manages its own interactivity, including carousels, buttons, and hover effects.
- * 
- * @responsibilities
- * - Serve as the central landing experience for visitors.
- * - Coordinate all major homepage sections into a single, scrollable view.
- * - Ensure consistent styling and responsive design across sections.
- * 
- * @usage
- * - Import and render at the root route (`/`) of the application.
- * - Example:
- *      <Homepage />
+ * @description The primary landing destination for the Luxarist brand. 
+ * Orchestrates a series of high-impact sections into a cohesive storytelling 
+ * experience, moving the user from broad brand awareness to specific product discovery.
+ * * @features
+ * - **Modular Composition**: Serves as a clean entry point that delegates all UI 
+ * complexity to specialized sub-components (Hero, Collections, etc.).
+ * - **Conversion Funnel**: Strategically ordered to build trust (Hero/Collections), 
+ * showcase craftsmanship (Signature), drive urgency (New Arrivals), and 
+ * establish long-term retention (Brand Promise/Newsletter).
+ * - **Fragment Wrapper**: Uses React Fragments (`<>`) to return a clean vertical 
+ * stack without adding unnecessary DOM nodes to the document tree.
+ * * @styling
+ * - **Visual Rhythm**: Alternates between "Pure White" and "Luxury Black/Gray" 
+ * section backgrounds to create a rhythmic, high-end editorial scrolling experience.
+ * - **SEO Optimization**: Acts as the semantic core of the site, ensuring critical 
+ * keywords and collection links are indexed immediately upon page load.
  */
 
 import { HeroSection } from "./sections/HeroSection";

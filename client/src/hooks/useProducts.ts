@@ -1,24 +1,25 @@
 /**
  * File: useProducts.ts
- * Purpose:
- *  Provides a custom React hook to fetch and manage product data with optional filters.
- *  Handles loading, error, and data states, returning a type-safe array of `Product` objects.
+ * Purpose: 
+ * A versatile data-fetching hook designed to retrieve filtered subsets of 
+ * the product catalog, specifically tailored for the "New Arrivals" and 
+ * high-priority gallery sections.
  *
  * Responsibilities:
- *  - Fetch products from the backend API using the `fetchProducts` service.
- *  - Accept optional filter parameters: `isNewArrival`, `limit`, and `category`.
- *  - Maintain reactive `loading` and `error` states for frontend components.
- *  - Normalize and provide fetched data as a reusable, type-safe array of `Product`.
+ * - Manage the asynchronous state (products, loading, error) for diverse 
+ * product queries based on dynamic filter options.
+ * - Implement a specialized dependency check using JSON serialization to 
+ * safely detect changes in deep-nested "options" objects.
+ * - Centralize error tracking and console logging for failed product 
+ * catalog requests.
+ * - Facilitate on-demand filtering for specific flags like `isNewArrival` 
+ * or collection-based constraints directly from the API layer.
  *
  * Usage:
- *  - Call this hook inside components that display product lists, category pages, or featured sections.
- *  - Destructure the returned object: `{ products, loading, error }`.
- *  - Use `loading` and `error` to render spinners, fallback UI, or error messages.
- *  - Example:
- *      const { products, loading, error } = useProducts({ category: "bracelets", limit: 8 });
- *      if (loading) return <Spinner />;
- *      if (error) return <p>{error}</p>;
- *      return <ProductGrid products={products} />;
+ * - Powers the NewArrivalsSection by passing a `{ isNewArrival: true, limit: 8 }` 
+ * configuration.
+ * - Can be utilized in "Related Products" widgets by passing a specific 
+ * category ID to the options object.
  */
 
 import { useState, useEffect } from "react";

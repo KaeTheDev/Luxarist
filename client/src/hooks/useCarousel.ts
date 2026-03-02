@@ -1,24 +1,19 @@
 /**
  * File: useCarousel.ts
- * Purpose:
- *  Provides a reusable custom hook to enable horizontal carousel functionality
- *  for any scrollable container. Abstracts the logic for smooth left/right
- *  scrolling in a clean, reusable interface.
+ * Purpose: 
+ * A reusable logic hook that provides programmatic scroll control for 
+ * horizontal content containers, such as product carousels and image galleries.
  *
  * Responsibilities:
- *  - Expose a `ref` (`containerRef`) to attach to the scrollable container element.
- *  - Provide `next` and `prev` functions to scroll the container by its visible width.
- *  - Handle smooth scrolling behavior without requiring additional boilerplate in components.
+ * - Manage a persistent reference (useRef) to a scrollable HTML div element.
+ * - Calculate precise horizontal displacement based on the container's current visible width (offsetWidth).
+ * - Execute smooth, native browser-based scrolling transitions for "Next" and "Previous" actions.
+ * - Provide a clean, abstracted interface for UI components to trigger movement without manual DOM calculations.
  *
  * Usage:
- *  - Attach `containerRef` to a scrollable container (e.g., a div containing cards or images).
- *  - Call `next()` to scroll forward and `prev()` to scroll backward.
- *  - Can be used in product carousels, testimonial sliders, or any horizontally scrollable list.
- *  - Example:
- *      const { containerRef, next, prev } = useCarousel();
- *      <div ref={containerRef}>...</div>
- *      <button onClick={prev}>Prev</button>
- *      <button onClick={next}>Next</button>
+ * - Employed within the NewArrivalsSection to power the desktop navigation arrows.
+ * - Can be attached to any flex-overflow container to enable "slide" functionality.
+ * - Works in tandem with CSS snap-points to ensure cards align perfectly after the scroll animation.
  */
 
 import { useRef } from "react";

@@ -39,6 +39,7 @@ export function NewsletterSection() {
     const handleSubmit = () => {
         if(!email.includes("a")) {
             setError("Please enter a valid email address.");
+            
             return;
         }
 
