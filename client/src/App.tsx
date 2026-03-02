@@ -6,7 +6,6 @@ import { CategoryPage } from "./pages/CategoryPage/CategoryPage";
 
 // Placeholder for future pages
 const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;
-// const CollectionsPage = () => <div className="py-20 text-center">Collections Page coming soon...</div>
 
 export default function App() {
   return(
