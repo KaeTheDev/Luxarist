@@ -1,3 +1,34 @@
+/**
+ * @name NewArrivalsSection
+ * @description Displays the latest products added to the collection in a horizontally scrollable carousel.
+ *  Fetches new arrival products using the `useProducts` hook and allows both swipe and button navigation.
+ * 
+ * @composition
+ * - Uses `useProducts` to fetch the 8 most recent products.
+ * - Uses `useRef` to create a scrollable container for the carousel.
+ * - Renders `ProductCard` components inside a horizontally scrollable area.
+ * - Provides desktop navigation buttons for scrolling left and right.
+ * - Includes a "View All" link to navigate to the full new arrivals page.
+ * 
+ * @styling
+ * - **Layout**: Responsive flexbox with gap, overflow-x scrolling, and snap alignment for smooth carousel behavior.
+ * - **Typography**: Clean hierarchy with bold headlines and muted descriptive text.
+ * - **Interaction**: Scrollable carousel with smooth scroll behavior; hover effects for navigation buttons.
+ * - **Accessibility**: Buttons include `aria-label` for screen readers.
+ * 
+ * @responsibilities
+ * - Showcase new arrivals prominently on the page.
+ * - Enable smooth horizontal scrolling with both mouse and touch input.
+ * - Handle loading and error states from the `useProducts` hook.
+ * - Maintain responsive design across all viewport sizes.
+ * 
+ * @usage
+ * - Import and render within a landing page or homepage component.
+ * - Example:
+ *      <NewArrivalsSection />
+ * - Ensure routing context (`BrowserRouter`) is available for the "View All" link.
+ */
+
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../../../hooks/useProducts";

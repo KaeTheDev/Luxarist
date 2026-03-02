@@ -1,3 +1,30 @@
+/**
+ * @name BrandPromiseSection
+ * @description Highlights the brand’s key promises and values in a visually structured section.
+ *  Uses the `luxaristPromises` data array to dynamically render promise cards emphasizing craftsmanship, guarantee, and service.
+ * 
+ * @composition
+ * - Imports `luxaristPromises` for content and `PromiseCard` for individual promise display.
+ * - Maps over the promises array to render each `PromiseCard` in a responsive grid.
+ * - Includes a section header with a small descriptor and main heading.
+ * 
+ * @styling
+ * - **Layout**: Responsive grid layout with 1–4 columns depending on viewport size and gap spacing.
+ * - **Typography**: Light-weight headings with tracked uppercase subtext for a premium look.
+ * - **Colors**: Dark background with white text to emphasize brand luxury and contrast.
+ * - **Interaction**: Cards can include hover or visual effects (delegated to `PromiseCard`).
+ * 
+ * @responsibilities
+ * - Showcase the brand’s core promises in a concise and visually appealing way.
+ * - Maintain a consistent premium style across the section.
+ * - Provide reusable structure for any updates to the brand promises.
+ * 
+ * @usage
+ * - Import and render as part of a homepage or brand overview section.
+ * - Example:
+ *      <BrandPromiseSection />
+ */
+
 import { luxaristPromises } from "../data/LuxaristPromises";
 import { PromiseCard } from "../components/PromiseCard";
 

@@ -1,3 +1,24 @@
+/**
+ * @name CategoryPage
+ * @description The primary dynamic route component for viewing specific jewelry collections. 
+ * Orchestrates a multi-step data fetching strategy to synchronize hero content, product listings, 
+ * and advanced filtering states.
+ * * @state
+ * - `category`: Stores the specific metadata (Hero image, description) for the current collection.
+ * - `products`: The array of product data returned from the API, filtered by current user selection.
+ * - `filters`: A centralized {@link FiltersState} object that dictates the query parameters for API calls.
+ * - `pagination`: Tracks server-side paging data to render current position within the collection.
+ * * @features
+ * - **Dual-Layer Fetching**: Implements independent {@link useEffect} hooks to separate static category data from volatile product list data for performance.
+ * - **Dynamic Parameterization**: Extracts the `slug` from the URL via `useParams`, allowing the same component to render 'rings', 'necklaces', etc.
+ * - **State Rejection**: Includes immediate error boundaries if a `slug` is missing to prevent malformed API requests.
+ * - **Loading UX**: Provides a minimalist, centered "Pulse" animation to maintain brand continuity during initial data resolution.
+ * * @styling
+ * - **Information Architecture**: Separates the high-impact {@link CategoryHero} from the utility-driven {@link CategoryFilters} and {@link ProductList}.
+ * - **Consistent Spacing**: Uses a `container` wrapper with standard jewelry-site padding (`px-6` to `lg:px-20`) to ensure content alignment across the entire collection.
+ * - **Subtle Borders**: Employs `border-gray-100` for horizontal rules to create structure without distracting from the product imagery.
+ */
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

@@ -1,3 +1,23 @@
+/**
+ * @name ShopAllPage
+ * @description The comprehensive global storefront controller. Manages the orchestration 
+ * of the entire product catalog, featuring dynamic category derivation and multi-layered sorting.
+ * * @state
+ * - `products`: The master list of displayed jewelry pieces, updated via category filters or local sort logic.
+ * - `categories`: A unique list of strings derived from the initial product fetch to populate the filter UI dynamically.
+ * - `activeCategory`: Tracks the current "Pill" selection; defaults to "all" for a global view.
+ * - `sort`: Controls the ordering logic, triggering either a re-fetch or a local array re-order.
+ * * @features
+ * - **Dynamic Category Discovery**: Automatically builds the filter menu by extracting unique category names from the product dataset using `Set`.
+ * - **Hybrid Sorting**: Implements `applyLocalSort` to provide immediate UI responsiveness for price changes while supporting server-side sorting for deep-filtered sets.
+ * - **Safe Data Normalization**: Features defensive checks (e.g., `Array.isArray`) to handle varying backend response shapes between global and category-specific endpoints.
+ * - **Reactive Lifecycle**: Utilizes targeted `useEffect` blocks to ensure the UI stays synchronized with filter state without redundant global re-fetches.
+ * * @styling
+ * - **Hero Integration**: Employs the `shop-all` variant of the {@link CategoryHero} to provide a centered, high-impact brand introduction.
+ * - **Visual Feedback**: Uses a `tracking-widest` uppercase loading state with an `animate-pulse` effect to maintain luxury aesthetics during async transitions.
+ * - **Typography**: Reinforces brand identity with high-tracking metadata text (e.g., "ITEMS FOUND") to guide the user's eye through the grid.
+ */
+
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../../api/fetchProducts";
 import { fetchProductsByCategory } from "../../api/fetchProductsByCategory";

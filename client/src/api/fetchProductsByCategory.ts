@@ -1,3 +1,23 @@
+/**
+ * File: fetchProductsByCategory.ts
+ * Purpose:
+ * Provides a granular data fetching utility to retrieve products belonging 
+ * to a specific category with support for advanced filtering and sorting.
+ *
+ * Responsibilities:
+ * - Dynamically switch between Development and Production API base URLs
+ * - Construct an asynchronous GET request to the category-specific products endpoint
+ * - Handle complex query parameters including price ranges, sorting methods, 
+ * and pagination (page/limit)
+ * - Set default values for pagination (page 1, limit 12) to ensure consistent data loading
+ *
+ * Usage:
+ * - Employed within CategoryPage.tsx to populate the product grid based 
+ * on the current URL slug (e.g., 'bracelets', 'rings')
+ * - Triggered by UI changes in the "Sort By" dropdown or Price Filter 
+ * to refresh the product list with new parameters
+ */
+
 import axios from "axios";
 
 const API_BASE_URL = 

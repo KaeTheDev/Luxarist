@@ -1,3 +1,23 @@
+/**
+ * @name CategoryFilters
+ * @description A high-utility control bar for product discovery. Provides a 
+ * "blocky" industrial aesthetic that allows users to sort and filter collections 
+ * via a centralized state management pattern.
+ * * @state
+ * - `minPrice` / `maxPrice`: Local numeric states that mirror the filter inputs before syncing to the parent.
+ * - `sort`: Tracks the active ordering preference (e.g., "Newest", "Price: Low to High").
+ * - `isFilterOpen`: A boolean toggle controlling the visibility of the absolute-positioned price range panel.
+ * * @features
+ * - **State Synchronization**: Uses a {@link useEffect} hook to automatically bubble local filter changes up to the parent component, triggering a new API fetch.
+ * - **Native Select Overlay**: Implements an "Invisible Select" pattern where a hidden native `<select>` overlays a custom-styled div for a consistent look with native accessibility.
+ * - **Input Validation**: Features `handlePriceChange` logic to strip negative values and handle empty string transitions gracefully.
+ * - **Pagination Reset**: Automatically resets the page counter to 1 whenever a filter is modified to ensure users don't get stuck on empty pages.
+ * * @styling
+ * - **Brutalism-Lite Aesthetic**: Utilizes a specific `#D9D9D9` background with heavy tracking (`0.25em`) to create a bold, structural luxury feel.
+ * - **Z-Index Layering**: Employs `z-50` on the filter dropdown to ensure the price panel floats above product images and cards.
+ * - **Layout Composition**: Uses a `justify-between` flex container to anchor the Sort and Filter actions to the opposite edges of the content grid.
+ */
+
 import { useState, useEffect } from "react";
 
 export interface FiltersState {
