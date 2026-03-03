@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { fetchProducts } from "../api/fetchProducts";
 import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
 
-import { CategoryHero } from "../features/category/CategoryHero";
+import { PageHero } from "../common/ui/PageHero";
 import { ShopAllFilters } from "../features/shop-all/ShopAllFilters";
 import { ProductList } from "../common/ui/ProductList";
 import type { Product } from "../types/Product";
@@ -108,7 +108,7 @@ export function ShopAllPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <CategoryHero
+      <PageHero
         variant="shop-all"
         title="Exquisite Jewelry Collection"
         description="Discover timeless elegance with our curated selection of fine jewelry, crafted with precision and designed to captivate."

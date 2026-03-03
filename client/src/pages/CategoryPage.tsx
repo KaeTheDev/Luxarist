@@ -28,9 +28,8 @@ import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
 import type { Category } from "../types/Category";
 import type { Product } from "../types/Product";
 
-
 import { CategoryFilters, type FiltersState } from "../features/category/CategoryFilters";
-import { CategoryHero } from "../features/category/CategoryHero";
+import { PageHero} from "../common/ui/PageHero";
 import { ProductList } from "../common/ui/ProductList";
 
 export function CategoryPage() {
@@ -81,7 +80,7 @@ export function CategoryPage() {
         console.error("Failed to load products:", error);
       }
     }
-    
+
     loadProducts();
   }, [slug, filters]);
 
@@ -96,16 +95,16 @@ export function CategoryPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <CategoryHero
+      <PageHero
         title={category.name}
         description={category.description}
         imageUrl={category.heroImage}
         count={products.length}
       />
       {/* Main Content Area */}
-      <main className="container mx-auto px-6 nd:px-12 lg:px-20 py-12">
+      <main className="container mx-auto px-6 md:px-12 lg:px-20 py-12">
       <div className="flex flex-row justify-between items-center mb-12 border-b border-gray-100 pb-6">
-          {/* FILTERS */}
+          {/* Filters */}
           <CategoryFilters filters={filters} setFilters={setFilters} />
         </div>
         {/* Product Grid */}

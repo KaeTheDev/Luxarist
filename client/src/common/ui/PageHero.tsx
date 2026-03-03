@@ -1,7 +1,7 @@
 /**
  * @name CategoryHero
- * @description A high-impact, full-width header component designed to establish visual context for specific 
- * collections or the global "Shop All" view. It utilizes a dynamic overlay system to ensure text 
+ * @description A high-impact, full-width header component designed to establish visual context for specific
+ * collections or the global "Shop All" view. It utilizes a dynamic overlay system to ensure text
  * readability against diverse background imagery.
  * * @features
  * - **Dynamic Layout Switching**: Uses the `variant` prop to toggle between a left-aligned editorial layout (Category) and a centered, immersive hero (Shop All).
@@ -16,94 +16,94 @@
 
 import { Link } from "react-router-dom";
 
-interface CategoryHeroProps {
+interface PageHeroProps {
   title: string;
   description: string;
   imageUrl: string;
-  count: number;
-  variant?: "category" | "shop-all";
+  count?: number;
+  variant?: "category" | "shop-all" | "new-arrivals";
+  eyebrow?: string; // Customizable eyebrow text
 }
 
-export function CategoryHero({
+export function PageHero({
   title,
   description,
   imageUrl,
   count,
   variant = "category",
-}: CategoryHeroProps) {
-  const itemLabel = count === 1 ? "Piece" : "Pieces";
+  eyebrow = "Luxarist Collection",
+}: PageHeroProps) {
   const isShopAll = variant === "shop-all";
+  const isNewArrivals = variant === "new-arrivals";
+  const showMeta = typeof count === "number";
+
+  // Logic for layout classes
+  const containerClasses = isShopAll
+    ? "max-w-4xl text-center mx-auto"
+    : "max-w-xl text-center md:text-left md:mx-0";
 
   return (
     <section className="relative w-full h-[70vh] min-h-125px flex items-center overflow-hidden bg-black">
-      {/* Background Image Container */}
+      {/* Background & Overlays remain the same */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 md:hover:scale-105"
         style={{ backgroundImage: `url(${imageUrl})` }}
       >
-        {/* Uniform dark overlay for the centered "Shop All" look */}
         <div
           className={`absolute inset-0 ${
             isShopAll ? "bg-black/50" : "bg-black/40 md:bg-black/20"
           }`}
         />
-
         {!isShopAll && (
-          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/60 md:bg-linear-to-r md:from-black/60 md:via-transparent md:to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/60 md:bg-linear-to-r md:from-black/70 md:via-transparent md:to-transparent" />
         )}
       </div>
 
       <div className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20">
-        <div
-          className={`mx-auto ${
-            isShopAll
-              ? "max-w-4xl text-center"
-              : "max-w-xl md:mx-0 text-center md:text-left"
-          }`}
-        >
-          {/* Breadcrumbs Layer */}
-          <nav className="hidden md:flex items-center text-[9px] uppercase tracking-[0.3em] text-white/40 mb-8 font-medium">
-            <Link to="/" className="hover:text-white transition-colors">
-              HOME
-            </Link>
+        <div className={containerClasses}>
+          {/* Only show Breadcrumbs if it's a category or shop-all */}
+          {!isNewArrivals && (
+            <nav className="hidden md:flex items-center text-[9px] uppercase tracking-[0.3em] text-white/40 mb-8 font-medium">
+              <Link to="/" className="hover:text-white transition-colors">
+                HOME
+              </Link>
+              <span className="mx-3 opacity-30">/</span>
+              <span className="text-white/80 uppercase">
+                {isShopAll ? "Shop All" : title}
+              </span>
+            </nav>
+          )}
 
-            <span className="mx-3 opacity-30">/</span>
-
-            {/* Displays "Shop All" if it's the main page, otherwise displays the category title (e.g., "Bracelets") */}
-            <span className="text-white/80 cursor-default uppercase">
-              {isShopAll ? "Shop All" : title}
-            </span>
-          </nav>
-          {/* Eyebrow */}
           <p className="text-white/60 uppercase tracking-[0.4em] text-[10px] md:text-[12px] mb-4 font-medium">
-            Luxarist Collection
+            {eyebrow}
           </p>
 
-          {/* Title */}
           <h1 className="text-white text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tight leading-[1.1] mb-6 drop-shadow-lg">
             {title}
           </h1>
 
-          {/* Description */}
           <p
-            className={`text-white/80 text-sm md:text-lg leading-relaxed mb-10 font-light mx-auto ${
-              isShopAll ? "max-w-xl" : "max-w-sm md:mx-0"
+            className={`text-white/80 text-sm md:text-lg leading-relaxed mb-10 font-light ${
+              isShopAll ? "max-w-xl mx-auto" : "max-w-sm mx-auto md:mx-0" // Centered on mobile, left-aligned on desktop
             }`}
           >
             {description}
           </p>
 
-          {/* Meta Info */}
-          <div
-            className={`flex flex-col items-center ${
-              isShopAll ? "" : "md:items-start"
-            }`}
-          >
-            <div className="h-px w-16 bg-white/30 mb-6" />
-            <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-semibold">
-              {count} {itemLabel} &bull; New Arrivals Weekly
-            </p>
-          </div>
+          {/* Conditional Meta Info */}
+          {showMeta && (
+            <div
+              className={`flex flex-col items-center ${
+                isShopAll ? "" : "md:items-start"
+              }`}
+            >
+              <div className="h-px w-16 bg-white/30 mb-6" />
+              <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] font-semibold">
+                {count} {count === 1 ? "Piece" : "Pieces"} &bull; New Arrivals
+                Weekly
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
