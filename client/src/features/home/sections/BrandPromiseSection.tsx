@@ -42,8 +42,8 @@ export function BrandPromiseSection() {
 
                 {/* Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {luxaristPromises.map((promise, i) => (
-                        <PromiseCard key={i} {...promise} />
+                    {luxaristPromises.map((promise) => (
+                        <PromiseCard key={promise.id} {...promise} />
                     ))}
                 </div>
             </div>
