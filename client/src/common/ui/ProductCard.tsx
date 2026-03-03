@@ -54,7 +54,7 @@ export function ProductCard({
         className={`absolute right-4 top-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all duration-300 hover:scale-110
           ${isFavorite 
             ? "opacity-100" 
-            : "opacity-0 lg:group-hover/card:opacity-100"
+            : "opacity-100 lg:opacity-0 lg:group-hover/card:opacity-100"
           }`}
       >
         <svg
