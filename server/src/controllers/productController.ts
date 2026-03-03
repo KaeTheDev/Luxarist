@@ -20,7 +20,7 @@ import { Category } from "../models/Category";
 export const getActiveProducts = async (req: Request, res: Response) => {
   try {
     // Step 1: Extract Inputs
-    const { category, limit, skip, new: isNewArrival } = req.query;
+    const { category, limit, skip, isNewArrival } = req.query;
 
     // Step 2: Validate Inputs (optional)
     if(category && typeof category !== "string") {

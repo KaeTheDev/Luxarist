@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "./common/layout/MainLayout";
-import { Homepage } from "./features/home/Homepage";
-import { ShopAllPage } from "./pages/ShopAllPage/ShopAllPage";
-import { CategoryPage } from "./pages/CategoryPage/CategoryPage";
+import { Homepage } from "./pages/Homepage";
+import { ShopAllPage } from "./pages/ShopAllPage";
+import { CategoryPage } from "./pages/CategoryPage";
+import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 
 // Placeholder for future pages
 const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;
@@ -19,6 +20,9 @@ export default function App() {
       {/* Collections Routes */}
       <Route path="collections" element={<ShopAllPage />} />
       <Route path="collections/:slug" element={<CategoryPage />} /> 
+
+      {/* New Arrivals Route */}
+      <Route path="collections/new-arrivals" element={<NewArrivalsPage />} />
 
       {/* Product Routes */}
       <Route path="products/:id" element={<ProductDetailPage />} />

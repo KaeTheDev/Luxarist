@@ -26,6 +26,7 @@
  */
 
 interface PromiseCardProps {
+  id: string | number;
   iconUrl: string;
   title: string;
   text: string;
@@ -35,7 +36,7 @@ export function PromiseCard({ iconUrl, title, text }: PromiseCardProps) {
   return (
     <div
       className="group relative flex flex-col items-center text-center p-8
-        bg-white/5 backdrop-blur-sm 
+        bg-[#1a1a1a]
         border border-white/10
         rounded-2xl
         transition-transform transition-border duration-500

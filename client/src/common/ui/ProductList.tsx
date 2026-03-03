@@ -60,6 +60,7 @@ export function ProductList({ products, emptyMessage, className }: ProductListPr
                 title={product.name}
                 category={product.category.name}
                 price={product.price}
+                isNewArrival={product.isNewArrival}
                 // Note: We don't pass a width like 'w-72' here. 
                 // The grid-cols will dictate the width automatically.
                 className="w-full"
