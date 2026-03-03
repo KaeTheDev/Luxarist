@@ -52,7 +52,7 @@ export function NewArrivalsSection() {
             <p className="text-gray-500 mt-1">Discover the latest additions to our collection.</p>
           </div>
           <Link
-            to="/new-arrivals"
+            to="collections/new-arrivals"
             className="mt-4 sm:mt-0 sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2 text-sm font-medium text-gray-400 hover:text-black transition-colors"
           >
             VIEW ALL →
@@ -70,7 +70,8 @@ export function NewArrivalsSection() {
           `}} />
 
           {products.map((product) => (
-            <div key={product._id} className="min-w-70 sm:min-w-[320px] snap-start">
+            // <div key={product._id} className="min-w-70 sm:min-w-[320px] snap-start">
+            <div key={product._id} className="w-70 sm:w-[320px] shrink-0 snap-start">
               <ProductCard
                 id={product._id}
                 imageUrl={product.primaryImageUrl}
