@@ -81,6 +81,7 @@ export function CategoryPage() {
         console.error("Failed to load products:", error);
       }
     }
+    
     loadProducts();
   }, [slug, filters]);
 
