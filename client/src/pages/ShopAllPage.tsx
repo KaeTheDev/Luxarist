@@ -19,13 +19,13 @@
  */
 
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../api/fetchProducts";
-import { fetchProductsByCategory } from "../../api/fetchProductsByCategory";
+import { fetchProducts } from "../api/fetchProducts";
+import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
 
-import { CategoryHero } from "../CategoryPage/CategoryHero";
-import { ShopAllFilters } from "./ShopAllFilters";
-import { ProductList } from "../../common/ui/ProductList";
-import type { Product } from "../../types/Product";
+import { CategoryHero } from "../features/category/CategoryHero";
+import { ShopAllFilters } from "../features/shop-all/ShopAllFilters";
+import { ProductList } from "../common/ui/ProductList";
+import type { Product } from "../types/Product";
 
 export function ShopAllPage() {
   const [products, setProducts] = useState<Product[]>([]);

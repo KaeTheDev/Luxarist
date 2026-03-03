@@ -3,6 +3,7 @@ export interface Product {
     primaryImageUrl: string;
     name: string;
     price: number;
+    isNewArrival: boolean;
     category: {
         name: string;
     };

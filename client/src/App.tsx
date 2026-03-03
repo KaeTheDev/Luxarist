@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "./common/layout/MainLayout";
-import { Homepage } from "./features/home/Homepage";
-import { ShopAllPage } from "./pages/ShopAllPage/ShopAllPage";
-import { CategoryPage } from "./pages/CategoryPage/CategoryPage";
-import { NewArrivalsPage } from "./pages/NewArrivalsPage/NewArrivalsPage";
+import { Homepage } from "./pages/Homepage";
+import { ShopAllPage } from "./pages/ShopAllPage";
+import { CategoryPage } from "./pages/CategoryPage";
+import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 
 // Placeholder for future pages
 const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;

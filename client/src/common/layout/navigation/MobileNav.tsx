@@ -15,7 +15,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { categories } from "../../../features/categories/data";
+import { categories } from "../../constants/data";
 
 export function MobileNav() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);

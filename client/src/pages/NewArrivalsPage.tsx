@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../api/fetchProducts";
-import type { Product } from "../../types/Product";
-import { ProductList } from "../../common/ui/ProductList";
+import { fetchProducts } from "../api/fetchProducts";
+import type { Product } from "../types/Product";
+import { ProductList } from "../common/ui/ProductList";
 
 export function NewArrivalsPage() {
   const [products, setProducts] = useState<Product[]>([]);

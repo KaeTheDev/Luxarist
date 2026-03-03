@@ -22,15 +22,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchCategoryBySlug } from "../../api/fetchCategoryBySlug";
-import { fetchProductsByCategory } from "../../api/fetchProductsByCategory";
+import { fetchCategoryBySlug } from "../api/fetchCategoryBySlug";
+import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
 
-import type { Category } from "../../types/Category";
-import type { Product } from "../../types/Product";
+import type { Category } from "../types/Category";
+import type { Product } from "../types/Product";
 
-import { CategoryFilters, type FiltersState } from "./CategoryFilters";
-import { CategoryHero } from "./CategoryHero";
-import { ProductList } from "../../common/ui/ProductList";
+
+import { CategoryFilters, type FiltersState } from "../features/category/CategoryFilters";
+import { CategoryHero } from "../features/category/CategoryHero";
+import { ProductList } from "../common/ui/ProductList";
 
 export function CategoryPage() {
   const { slug: slugParam } = useParams<{ slug: string }>();
