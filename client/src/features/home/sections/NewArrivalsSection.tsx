@@ -1,18 +1,32 @@
 /**
  * @name NewArrivalsSection
- * @description A horizontal carousel component showcasing the latest product additions. 
- * Combines smooth programmatic scrolling with native touch-swipe capabilities for a premium browsing experience.
- * * @state
- * - `products`: Async data subset filtered by `isNewArrival: true` via {@link useProducts}.
- * - `scrollRef`: A {@link useRef} hook targeting the scrollable container to calculate and trigger lateral movement.
- * * @features
- * - **Hybrid Navigation**: Supports standard touch gestures through `snap-x` and `snap-mandatory` while providing explicit button controls for desktop users.
- * - **Programmatic Scrolling**: Logic-driven `scroll` function that calculates `clientWidth` to ensure the carousel advances exactly one "viewport" per click.
- * - **Clean UI**: Implements a custom CSS injection to hide scrollbars across all major browsers (Webkit, Firefox, IE) to maintain a minimalist aesthetic.
- * * @styling
- * - **Responsive Geometry**: Utilizes `min-w-[320px]` on card wrappers to ensure consistent card sizing within the flex-overflow container.
- * - **Interaction Design**: Desktop navigation arrows feature a "Dark Mode" inversion on hover and a tactile `active:scale-95` feedback loop.
- * - **Layout Composition**: Uses absolute positioning for the "VIEW ALL" link on larger screens to keep the header centered while maximizing utility.
+ * @description Displays the latest products added to the collection in a horizontally scrollable carousel.
+ *  Fetches new arrival products using the `useProducts` hook and allows both swipe and button navigation.
+ * 
+ * @composition
+ * - Uses `useProducts` to fetch the 8 most recent products.
+ * - Uses `useRef` to create a scrollable container for the carousel.
+ * - Renders `ProductCard` components inside a horizontally scrollable area.
+ * - Provides desktop navigation buttons for scrolling left and right.
+ * - Includes a "View All" link to navigate to the full new arrivals page.
+ * 
+ * @styling
+ * - **Layout**: Responsive flexbox with gap, overflow-x scrolling, and snap alignment for smooth carousel behavior.
+ * - **Typography**: Clean hierarchy with bold headlines and muted descriptive text.
+ * - **Interaction**: Scrollable carousel with smooth scroll behavior; hover effects for navigation buttons.
+ * - **Accessibility**: Buttons include `aria-label` for screen readers.
+ * 
+ * @responsibilities
+ * - Showcase new arrivals prominently on the page.
+ * - Enable smooth horizontal scrolling with both mouse and touch input.
+ * - Handle loading and error states from the `useProducts` hook.
+ * - Maintain responsive design across all viewport sizes.
+ * 
+ * @usage
+ * - Import and render within a landing page or homepage component.
+ * - Example:
+ *      <NewArrivalsSection />
+ * - Ensure routing context (`BrowserRouter`) is available for the "View All" link.
  */
 
 import { useRef } from "react";

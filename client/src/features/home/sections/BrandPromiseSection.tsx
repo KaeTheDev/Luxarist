@@ -1,15 +1,28 @@
 /**
  * @name BrandPromiseSection
- * @description A high-level organizational component that presents the brand's core values and service guarantees.
- * Serves as a trust-building section typically placed on the Homepage or "About" pages.
- * * @features
- * - **Data Integration**: Injects {@link luxaristPromises} into a standardized grid, ensuring the brand's messaging remains centralized and easy to update.
- * - **Section Header**: Utilizes a tiered typography approach with a wide-tracked eyebrow and a light-weight H2 for an editorial, upscale feel.
- * - **Responsive Orchestration**: Dynamically adjusts the layout from a single-column mobile view to a four-column desktop spread.
- * * @styling
- * - **Atmospheric Design**: Employs a "Near-Black" background (`#0f0f0f`) to create a moody, luxury environment that makes the glassmorphism of the child {@link PromiseCard} components pop.
- * - **Max-Width Constraint**: Wraps the grid in a `max-w-7xl` container to maintain readability and alignment on ultra-wide monitors.
- * - **Vertical Breathing Room**: Applies generous `py-24` padding to allow the brand pillars enough space to feel distinct and significant.
+ * @description Highlights the brand’s key promises and values in a visually structured section.
+ *  Uses the `luxaristPromises` data array to dynamically render promise cards emphasizing craftsmanship, guarantee, and service.
+ * 
+ * @composition
+ * - Imports `luxaristPromises` for content and `PromiseCard` for individual promise display.
+ * - Maps over the promises array to render each `PromiseCard` in a responsive grid.
+ * - Includes a section header with a small descriptor and main heading.
+ * 
+ * @styling
+ * - **Layout**: Responsive grid layout with 1–4 columns depending on viewport size and gap spacing.
+ * - **Typography**: Light-weight headings with tracked uppercase subtext for a premium look.
+ * - **Colors**: Dark background with white text to emphasize brand luxury and contrast.
+ * - **Interaction**: Cards can include hover or visual effects (delegated to `PromiseCard`).
+ * 
+ * @responsibilities
+ * - Showcase the brand’s core promises in a concise and visually appealing way.
+ * - Maintain a consistent premium style across the section.
+ * - Provide reusable structure for any updates to the brand promises.
+ * 
+ * @usage
+ * - Import and render as part of a homepage or brand overview section.
+ * - Example:
+ *      <BrandPromiseSection />
  */
 
 import { luxaristPromises } from "../data/LuxaristPromises";

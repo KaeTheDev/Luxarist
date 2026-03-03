@@ -1,15 +1,28 @@
 /**
  * @name PromiseCard
- * @description A high-end value proposition card used to communicate brand "promises" (e.g., Sustainability, Craftsmanship).
- * Designed with a glassmorphism aesthetic to overlay elegantly on dark or image-heavy sections.
- * * @features
- * - **Visual Rebranding**: Uses `brightness-0 invert` filters to dynamically transform standard color icons into minimalist white silhouettes.
- * - **Glassmorphism**: Combines `bg-white/5` with `backdrop-blur-sm` to create a translucent, high-end material effect.
- * - **Hover Feedback**: Triggers a multi-property transition including a vertical lift (`-translate-y-2`) and an accent line reveal.
- * * @styling
- * - **Composition**: Centralizes all elements within a `flex-col items-center` stack to maintain symmetry.
- * - **Accent Detailing**: Features an absolute-positioned top border that fades in via the `group-hover` state for subtle sophistication.
- * - **Typography**: Pairs a medium-weight title with `leading-relaxed` gray body text to ensure readability within a compact container.
+ * @description A reusable card component that displays a single brand promise or value.
+ *  Includes an icon, a title, and descriptive text with subtle hover effects to enhance interactivity.
+ * 
+ * @composition
+ * - Accepts props `iconUrl`, `title`, and `text` to render dynamic content.
+ * - Uses flexbox and centered text to maintain visual alignment.
+ * - Includes a top accent line and hover transformations for interactive feedback.
+ * 
+ * @styling
+ * - **Layout**: Vertical stacking with padding, rounded corners, and backdrop blur.
+ * - **Typography**: Medium-weight titles with tracking and smaller descriptive text.
+ * - **Interaction**: Hover effects include border highlight, slight upward movement, shadow, and accent line reveal.
+ * - **Colors**: Light-on-dark contrast with semi-transparent backgrounds for a premium aesthetic.
+ * 
+ * @responsibilities
+ * - Visually communicate a single brand promise or key value.
+ * - Maintain consistency with other cards in a grid or section.
+ * - Respond to user interaction with subtle animations.
+ * 
+ * @usage
+ * - Used within sections like `BrandPromiseSection` to render multiple promise cards.
+ * - Example:
+ *      <PromiseCard iconUrl="/path/to/icon.svg" title="Lifetime Guarantee" text="We stand behind our craftsmanship..." />
  */
 
 interface PromiseCardProps {

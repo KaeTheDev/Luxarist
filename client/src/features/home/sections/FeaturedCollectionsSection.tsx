@@ -1,18 +1,31 @@
 /**
  * @name FeaturedCollectionsSection
- * @description A dynamic bento-style grid that showcases high-priority jewelry collections.
- * Leverages custom layout constants to create a visually diverse, masonry-inspired gallery.
- * * @state
- * - `categories`: Async data fetched via {@link useFeaturedCategories}.
- * - `loading/error`: Handles conditional rendering for API lifecycle states to prevent layout shifts.
- * * @features
- * - **Custom Sequencing**: Implements a sort algorithm using {@link CATEGORY_ORDER} to ensure specific collections (e.g., "New Arrivals") always hold prime real estate.
- * - **Bento Layout**: Dynamically injects Tailwind span classes (via {@link CATEGORY_LAYOUTS}) to allow certain categories to occupy multiple rows or columns.
- * - **Contextual Metadata**: Displays real-time `productCount` and slug-based routing for direct collection discovery.
- * * @styling
- * - **Micro-Interactions**: Features a multi-stage hover effect: darkens the image overlay, reveals a "Shop Now" call-to-action, and slides an animated underline beneath the title.
- * - **Adaptive Row Heights**: Utilizes `auto-rows` with breakpoints to scale the grid density from mobile (`180px`) to desktop (`300px`).
- * - **Depth & Focus**: Employs `group-hover:scale-105` (implied by design pattern) and opacity transitions to guide the user's eye toward the active selection.
+ * @description Displays handpicked featured product categories in a responsive, visually engaging grid.
+ *  Fetches featured categories using `useFeaturedCategories` and sorts them based on predefined order and layouts.
+ * 
+ * @composition
+ * - Uses `useFeaturedCategories` to fetch featured category data.
+ * - Sorts categories using `CATEGORY_ORDER` to maintain a consistent display order.
+ * - Applies layout classes from `CATEGORY_LAYOUTS` to create a dynamic, visually balanced grid.
+ * - Renders each category as a clickable `Link` with an image, overlay, and text content.
+ * 
+ * @styling
+ * - **Layout**: Responsive CSS grid with auto-rows and span adjustments for desktop and mobile.
+ * - **Typography**: Uppercase headings, tracking-wide fonts, and subtle hover underlines.
+ * - **Interaction**: Hover effects reveal overlays, item counts, and "SHOP NOW" CTA with smooth transitions.
+ * - **Colors**: Light backgrounds with dark overlays for contrast and visual hierarchy.
+ * 
+ * @responsibilities
+ * - Showcase featured product categories prominently on landing or collection pages.
+ * - Provide smooth visual transitions and interactive hover effects.
+ * - Ensure responsive design across all devices.
+ * - Maintain clean, reusable structure for future category additions.
+ * 
+ * @usage
+ * - Import and render as part of a homepage or collections overview section.
+ * - Example:
+ *      <FeaturedCollectionsSection />
+ * - Requires routing context (`BrowserRouter`) for `Link` components to function correctly.
  */
 
 import { Link } from "react-router-dom";

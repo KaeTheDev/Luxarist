@@ -1,19 +1,25 @@
 /**
- * File: fetchProducts.ts
+ * File: productService.ts
  * Purpose:
- * Provides a flexible, centralized utility for fetching jewelry products 
- * from the backend with support for filtering, sorting, and pagination.
+ *  Provides a centralized function to fetch products from the backend API,
+ *  optionally filtering by new arrivals, category, or limiting the number of results.
+ *  Abstracts Axios request logic and API endpoint handling for frontend usage.
  *
  * Responsibilities:
- * - Dynamically select the API base URL based on the environment (Development vs. Production)
- * - Execute asynchronous GET requests to the main products endpoint
- * - Map optional frontend filter parameters (category, new arrivals, limits) into URL query strings
- * - Ensure the returned data conforms to the Product TypeScript interface for safe rendering
+ *  - Determine the correct API base URL depending on the environment (development or production)
+ *  - Make an HTTP GET request to the `/api/products` endpoint
+ *  - Accept optional query parameters for filtering or limiting products:
+ *      - `isNewArrival`: fetch only new arrival products
+ *      - `limit`: restrict the number of products returned
+ *      - `category`: filter products by category slug
+ *  - Return the data in a type-safe manner as an array of `Product`
+ *  - Keep frontend components clean by encapsulating API logic in one place
  *
  * Usage:
- * - Used in the Home page to fetch "New Arrivals" (isNewArrival: true, limit: 8)
- * - Used in the Shop All and Category pages to filter by specific collections (category: 'rings')
- * - Integrated with the product grid to dynamically update content based on user selection
+ *  - Import and call `fetchProducts` in components, hooks, or service files
+ *  - Pass optional `params` to filter, limit, or categorize product results
+ *  - Automatically handles query parameter serialization for Axios requests
+ *  - Returns typed product data ready for display or further manipulation
  */
 
 import axios from "axios";

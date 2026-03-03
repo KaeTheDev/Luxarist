@@ -1,16 +1,30 @@
 /**
  * @name Footer
- * @description The primary site-wide footer component, providing brand identity, navigation clusters, and social connectivity.
- * Designed with a high-contrast, "pure black" luxury aesthetic to anchor the page's visual weight.
- * * @features
- * - **Information Architecture**: Organizes links into Shop, Company, and Support clusters for intuitive site-wide discovery.
- * - **Social Integration**: Maps simple-icon components into thin-bordered circular buttons for a minimalist aesthetic.
- * - **Responsive Grid**: Fluidly transitions from a centered single-column stack on mobile to a sophisticated four-column layout on desktop.
- * - **Semantic Structure**: Utilizes a standard `<footer>` wrapper with ARIA labels on social links for accessibility.
- * * @styling
- * - **Typography**: Employs wide letter-spacing (`tracking-[0.4em]`) on the logo and headers to evoke an "Expensive" editorial feel.
- * - **Borders**: Uses low-opacity whites (`border-white/10` and `border-white/5`) to create subtle section separation without visual clutter.
- * - **Interactions**: Features delicate text-color shifts and background-pulse effects on social icons for "soft" user feedback.
+ * @description The global site footer providing brand identity, social media links, 
+ *  and navigational links across Shop, Company, and Support sections. Designed for
+ *  large screens and responsive down to mobile viewports.
+ * 
+ * @composition
+ * - Displays the brand logo/name prominently with a short brand description.
+ * - Renders social media links with icons imported from `@icons-pack/react-simple-icons`.
+ * - Organizes navigational links into Shop, Company, and Support columns.
+ * - Includes a bottom bar with copyright and legal links.
+ * 
+ * @styling
+ * - **Layout**: Grid for main content with 1–4 column adaptation; flex for social links and bottom bar.
+ * - **Colors**: Pure black background with white text, muted gray for secondary links, hover transitions for interactions.
+ * - **Typography**: Uppercase tracking for brand and section headings, light font weights for a luxury feel.
+ * - **Interaction**: Hover effects for social icons and links with smooth transitions.
+ * 
+ * @responsibilities
+ * - Serve as a consistent footer across all pages.
+ * - Highlight brand identity and ethos.
+ * - Provide quick access to key site navigation and social channels.
+ * - Maintain accessibility via aria-labels and semantic HTML elements.
+ * 
+ * @usage
+ * - Import and place at the bottom of page layouts.
+ * - Can be extended or modified with additional links or social channels as needed.
  */
 
 import { SiInstagram, SiPinterest, SiTiktok, SiX } from "@icons-pack/react-simple-icons";

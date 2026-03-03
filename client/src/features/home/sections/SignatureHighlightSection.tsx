@@ -1,15 +1,30 @@
 /**
  * @name SignatureHighlightSection
- * @description A high-impact "Spotlight" section designed to showcase a single flagship product. 
- * Combines editorial-style typography with large-scale imagery to drive deep-funnel conversion.
- * * @features
- * - **Strategic Navigation**: Utilizes `useNavigate` to provide a high-performance programmatic transition to a specific product detail page.
- * - **Two-Column Asymmetry**: Pairs a high-resolution visual anchor with a concentrated content block to create a balanced, professional "Lookbook" feel.
- * - **Interactive Visuals**: Features a subtle image scale transition (`hover:scale-105`) to create a sense of tactile depth on user interaction.
- * * @styling
- * - **Typography Layering**: Employs an 11px uppercase "eyebrow" label with heavy tracking (`0.35em`) to establish a luxury brand hierarchy.
- * - **Neutral Palette**: Uses a `bg-gray-50` backdrop to provide a soft, sophisticated contrast against the white components of the main site body.
- * - **Minimalist CTA**: Implements a "Ghost-to-Solid" button transition, shifting from a thin black border to a full black fill on hover for a clean, modern aesthetic.
+ * @description A visually striking section highlighting a signature product from the collection.
+ *  Combines an image, headline, descriptive text, and a call-to-action button to drive navigation.
+ * 
+ * @composition
+ * - Uses `useNavigate` from `react-router-dom` for programmatic navigation.
+ * - Displays a featured image with smooth hover scale effects.
+ * - Includes headline, subheading, descriptive paragraph, and a CTA button.
+ * - Button navigates users to a specific product detail page (`/product/necklace`).
+ * 
+ * @styling
+ * - **Layout**: Responsive grid layout (1–2 columns) with gap and padding adjustments.
+ * - **Typography**: Clear hierarchy with tracking and font weight for luxury branding.
+ * - **Interaction**: Hover effects on image and button for subtle, elegant feedback.
+ * - **Colors**: Light gray background with black accents for text and buttons.
+ * 
+ * @responsibilities
+ * - Highlight a key product from the collection in a visually appealing way.
+ * - Encourage users to click through to the product detail page.
+ * - Ensure responsive display across mobile, tablet, and desktop.
+ * 
+ * @usage
+ * - Import and render as part of a landing page or product showcase page.
+ * - Ensure routing context is available (wrapped in `BrowserRouter`) for `useNavigate`.
+ * - Example:
+ *      <SignatureHighlightSection />
  */
 
 import { useNavigate } from "react-router-dom";

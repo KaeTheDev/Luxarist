@@ -1,15 +1,30 @@
 /**
  * @name ProductList
- * @description A high-performance responsive grid container for rendering collections of {@link ProductCard} components.
- * Automatically adapts its column count based on viewport width to maintain an optimal jewelry-browsing experience.
- * * @features
- * - **Graceful Degradation**: Implements a dedicated "Empty State" with a dashed-border UI if the products array is empty.
- * - **Data Mapping**: Transforms raw product data into the specific props required by the child cards (mapping `_id` to `id`, `name` to `title`, etc.).
- * - **Dynamic Column Scaling**: Transitions from 2 columns on mobile to a wide 6-column layout on Ultra-HD screens (`2xl`).
- * * @styling
- * - **Spacing Logic**: Uses `gap-y-16` to provide significant vertical breathing room between product rows, maintaining a luxury feel.
- * - **Grid Layout**: Relies on CSS Grid's `grid-cols` utility to dictate child widths rather than hardcoding pixel values.
- * - **Fallback Interaction**: Includes a minimalist "Refresh Gallery" trigger for manual state recovery during zero-result filter queries.
+ * @description A reusable grid component that renders a list of products using {@link ProductCard}.
+ *  Handles empty states gracefully and provides a responsive, multi-column layout for product galleries.
+ * 
+ * @composition
+ * - Iterates over a `products` array and renders each item with {@link ProductCard}.
+ * - Displays a customizable empty state message with a "Refresh Gallery" button when no products are available.
+ * - Grid layout adapts across screen sizes using responsive Tailwind classes.
+ * 
+ * @styling
+ * - **Layout**: Responsive grid with 2–6 columns depending on viewport; consistent gaps between items.
+ * - **Empty State**: Centered dashed border container with italic, muted text.
+ * - **Typography**: Light and italic for empty state messages; uppercase, tracked button text for refresh action.
+ * - **Interaction**: Refresh button triggers `window.location.reload()`; hover effects on empty state button for subtle feedback.
+ * 
+ * @responsibilities
+ * - Render a collection of products in a visually appealing, consistent grid.
+ * - Gracefully handle empty data by showing a message and refresh option.
+ * - Delegate individual product rendering to {@link ProductCard}.
+ * - Allow layout customization via optional `className` prop.
+ * 
+ * @usage
+ * - Pass a `products` array as a required prop.
+ * - Optionally pass `emptyMessage` to customize the empty state text.
+ * - Optionally pass `className` to adjust grid container styling.
+ * - Ideal for product listing pages, category pages, or featured product sections.
  */
 
 import type { Product } from "../../types/Product";

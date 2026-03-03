@@ -1,3 +1,20 @@
+/**
+ * File: luxaristPromises.ts
+ * Purpose:
+ *  Provides a centralized list of brand promises for Luxarist to be displayed
+ *  across the frontend, highlighting craftsmanship, guarantees, shipping, and authenticity.
+ *
+ * Responsibilities:
+ *  - Maintain a structured array of brand promises with `title`, `text`, and `iconUrl`.
+ *  - Ensure consistency in messaging and visual representation across pages or components.
+ *  - Serve as a single source of truth for all UI elements that showcase brand commitments.
+ *
+ * Usage:
+ *  - Import `luxaristPromises` into components such as homepage sections, landing pages, or feature highlights.
+ *  - Map over the array to dynamically render each promise with its associated icon and description.
+ *  - Easily extend, update, or reorder promises by editing this array in one place.
+ */
+
 export const luxaristPromises = [
     {
         title: "Handcrafted Excellence",

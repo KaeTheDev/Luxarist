@@ -1,19 +1,32 @@
 /**
  * @name NewsletterSection
- * @description A high-conversion "Private Access" lead generation section. 
- * Utilizes a "Dark Mode" luxury aesthetic to create an air of exclusivity and brand prestige.
- * * @state
- * - `email`: Captures user input; synchronized with the controlled input field.
- * - `submitted`: A boolean flag that swaps the form UI for a minimalist "Welcome" message upon success.
- * - `error`: Stores validation strings to provide immediate feedback on malformed inputs.
- * * @features
- * - **UX Micro-interactions**: Features a "Fake delay" simulation and a `hover:-translate-y-0.5` lift on the primary CTA for a tactile feel.
- * - **Basic Validation**: Implements a lightweight check (presence of "@") before transitioning to the success state.
- * - **Success Transition**: Smoothly clears the input and removes the form to reduce UI clutter post-conversion.
- * * @styling
- * - **Atmospheric Layering**: Combines a `radial-gradient` background with a "razor-edge" top border to create depth on a near-black canvas.
- * - **Glassmorphism Input**: Uses `bg-white/4` and `backdrop-blur` (implied by design) for a modern, transparent form field that blends with the section.
- * - **High-Contrast CTA**: Employs a pure white button with a subtle `shadow-white/5` glow to serve as the primary focal point of the section.
+ * @description A visually engaging newsletter signup section that encourages users 
+ *  to join the brand’s private mailing list. Handles input validation, submission state, 
+ *  and feedback messages for a polished user experience.
+ * 
+ * @composition
+ * - Uses `useState` to manage email input, submission status, and error messages.
+ * - Renders an input field and call-to-action button for email collection.
+ * - Displays success or error messages based on user interaction.
+ * - Includes decorative gradient overlays and separation lines for visual depth.
+ * 
+ * @styling
+ * - **Layout**: Centered, responsive design with flexible stacking for mobile and desktop.
+ * - **Typography**: Luxury-focused, light font weights with tight tracking and italic accent.
+ * - **Interaction**: Smooth hover, focus, and click animations on input and button elements.
+ * - **Colors**: Dark background with white and semi-transparent overlays for high-contrast elegance.
+ * 
+ * @responsibilities
+ * - Collect user email addresses for newsletter or private access signups.
+ * - Validate input and provide immediate feedback to the user.
+ * - Show confirmation message upon successful submission.
+ * - Maintain visually premium styling consistent with brand identity.
+ * 
+ * @usage
+ * - Import and render as part of a landing page or marketing section.
+ * - Example:
+ *      <NewsletterSection />
+ * - Can be extended to integrate with real backend email collection services.
  */
 
 import { useState } from "react";
