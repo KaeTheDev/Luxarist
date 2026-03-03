@@ -78,6 +78,7 @@ export function NewArrivalsSection() {
                 title={product.name}
                 category={product.category.name}
                 price={product.price}
+                isNewArrival={product.isNewArrival}
                 className="w-full"
               />
             </div>
