@@ -4,29 +4,41 @@ import { Homepage } from "./pages/Homepage";
 import { ShopAllPage } from "./pages/ShopAllPage";
 import { CategoryPage } from "./pages/CategoryPage";
 import { NewArrivalsPage } from "./pages/NewArrivalsPage";
+import { FavoritesPage } from "./pages/FavoritesPage";
+import { ScrollToTop } from "./common/utils/ScrollToTop";
 
 // Placeholder for future pages
-const ProductDetailPage = () => <div className="py-20 text-center">Product Detail Page coming soon...</div>;
+const ProductDetailPage = () => (
+  <div className="py-20 text-center">Product Detail Page coming soon...</div>
+);
 
 export default function App() {
-  return(
-    <Routes>
-      {/* MainLayout wraps all pages to provide Navbar and Footer */}
-      <Route element={<MainLayout />}>
-      
-      {/* Index route is the Homepage */}
-      <Route index element={<Homepage />} />
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* MainLayout wraps all pages to provide Navbar and Footer */}
+        <Route element={<MainLayout />}>
+          {/* Index route is the Homepage */}
+          <Route index element={<Homepage />} />
 
-      {/* Collections Routes */}
-      <Route path="collections" element={<ShopAllPage />} />
-      <Route path="collections/:slug" element={<CategoryPage />} /> 
+          {/* Collections Routes */}
+          <Route path="collections" element={<ShopAllPage />} />
+          <Route path="collections/:slug" element={<CategoryPage />} />
 
-      {/* New Arrivals Route */}
-      <Route path="collections/new-arrivals" element={<NewArrivalsPage />} />
+          {/* New Arrivals Route */}
+          <Route
+            path="collections/new-arrivals"
+            element={<NewArrivalsPage />}
+          />
 
-      {/* Product Routes */}
-      <Route path="products/:id" element={<ProductDetailPage />} />
-      </Route>
-    </Routes>
+          {/* Favorites Page Route */}
+          <Route path="/favorites" element={<FavoritesPage />} />
+
+          {/* Product Routes */}
+          <Route path="products/:id" element={<ProductDetailPage />} />
+        </Route>
+      </Routes>
+    </>
   );
-};
+}

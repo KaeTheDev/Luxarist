@@ -34,6 +34,7 @@ interface FetchProductsParams {
     isNewArrival?: boolean;
     limit?: number;
     category?: string;
+    ids?: string[];
 }
 
 export async function fetchProducts(params?: FetchProductsParams): Promise<Product[]> {
