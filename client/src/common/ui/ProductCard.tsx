@@ -14,8 +14,8 @@
  * - **Aspect Ratio**: Locked to `aspect-4/5` to ensure consistent grid alignment regardless of the source image's original dimensions.
  */
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFavorites } from "../../hooks/useFavorites";
 
 interface ProductCardProps {
   id: string; 
@@ -36,7 +36,8 @@ export function ProductCard({
   isNewArrival,
   className,
 }: ProductCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.includes(id);
 
   return (
     <div
@@ -48,7 +49,7 @@ export function ProductCard({
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setIsFavorite(!isFavorite);
+          toggleFavorite(id); // Saves to localStorage
         }}
       
         className={`absolute right-4 top-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all duration-300 hover:scale-110
