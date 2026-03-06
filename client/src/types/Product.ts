@@ -25,4 +25,12 @@ export interface Product {
     category: {
         name: string;
     };
+    description?: string;
+    sku?: string;
+    material?: string;
+    gemstoneType?: string;
+    subtitle?: string;
+    slug?: string;
+    style?: string;
+    weightPreset?: string;
 }
