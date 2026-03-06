@@ -12,7 +12,7 @@
  */
 
 import { Router } from "express";
-import { getActiveProduct, getActiveProducts, getProductsByCategory } from "../../controllers/productController";
+import { getActiveProduct, getActiveProducts, getProductBySlug, getProductsByCategory } from "../../controllers/productController";
 
 const router = Router();
 
@@ -21,6 +21,9 @@ router.get("/", getActiveProducts);
 
 // Public GET a specific category
 router.get("/category/:category", getProductsByCategory);
+
+// Public GET one product by slug
+router.get("/slug/:slug", getProductBySlug);
 
 // Public GET one product
 router.get("/:id", getActiveProduct);
