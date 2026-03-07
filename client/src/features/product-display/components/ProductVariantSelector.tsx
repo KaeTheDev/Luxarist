@@ -44,12 +44,6 @@ export function ProductVariantSelector({
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-center">
         <span className="text-sm font-medium">{currentLabel}</span>
-        {/* Logic for showing Size Guide on relevant categories */}
-        {(category === "ring" || category === "bracelet") && (
-          <button className="text-xs text-gray-500 underline hover:text-black">
-            Size Guide
-          </button>
-        )}
       </div>
       <div className="flex flex-wrap gap-2">
         {sizes.map((option) => (
