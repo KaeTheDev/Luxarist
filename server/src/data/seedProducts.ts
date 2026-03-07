@@ -23,6 +23,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "diamond",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-001-main.png?updatedAt=1770533119723",
     subtitle: "Elegant gold diamond studs"
   },
@@ -40,6 +41,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "diamond",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-002-main.png?updatedAt=1770533119662",
     subtitle: "Classic diamond studs"
   },
@@ -58,6 +60,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "diamond,ruby",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-003-main.png?updatedAt=1770533119689",
     subtitle: "Sparkling diamond and ruby drops"
   },
@@ -75,6 +78,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "diamond,ruby",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-004-main.png?updatedAt=1770533119721",
     subtitle: "Gold diamond ruby drops"
   },
@@ -93,6 +97,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "diamond",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-005-main.png?updatedAt=1770533119690",
     subtitle: "Modern diamond bars"
   },
@@ -110,6 +115,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: [],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-006-main.jpeg?updatedAt=1770533119660",
     subtitle: "Daily wear studs"
   },
@@ -131,6 +137,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-001-main.png?updatedAt=1770533143748",
     subtitle: "Timeless chain necklace"
   },
@@ -148,6 +155,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-002-main.png?updatedAt=1770533144005",
     subtitle: "Minimal pendant necklace"
   },
@@ -165,6 +173,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-003-main.png?updatedAt=1770533143999",
     subtitle: "Trendy layered necklace"
   },
@@ -183,6 +192,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-004-main.png?updatedAt=1770533143399",
     subtitle: "Slim gold necklace"
   },
@@ -201,6 +211,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-005-main.png?updatedAt=1770533143947",
     subtitle: "Delicate charm necklace"
   },
@@ -219,9 +230,34 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
-    primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-006-main.png?updatedAt=1770533142737",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
+    primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-007-main.png",
+    galleryImageUrls: [
+      "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-007-side.png",
+      "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-007-macro.png",
+      "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-007-lifestyle.png"
+  ],
     subtitle: "Everyday chain necklace"
   },
+  {
+    name: "Triangular Bezel Diamond Necklace",
+    category: "necklace",
+    price: 1250,
+    isNewArrival: true,
+    status: "active",
+    image: "necklace-007-main.jpg",
+    slug: "triangular-bezel-diamond-necklace",
+    sku: "NEC007",
+    careTemplateKey: "fine-jewelry-care",
+    description: "A sophisticated 18k yellow gold minimalist cable chain featuring a stunning single triangular-cut diamond, securely held in a modern bezel setting for cinematic elegance.",
+    style: "luxury",
+    weightPreset: "light",
+    gemstoneType: "diamond",
+    material: "18k yellow gold",
+    sizes: ["16\"", "18\"", "20\"", "24\""],
+    primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-007-main.png?updatedAt=1770533142737",
+    subtitle: "18k gold with triangular-cut diamond"
+},
 
   // =====================
   // Bracelets (7)
@@ -241,6 +277,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-001-main.png?updatedAt=1770533198344",
     subtitle: "Classic chain bracelet"
   },
@@ -259,6 +296,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-002-main.png?updatedAt=1770533199018",
     subtitle: "Minimal cuff bracelet"
   },
@@ -276,6 +314,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-003-main.png?updatedAt=1770533199096",
     subtitle: "Slim gold bracelet"
   },
@@ -293,6 +332,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-004-main.png?updatedAt=1770533198801",
     subtitle: "Textured bangle bracelet"
   },
@@ -311,6 +351,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-005-main.png?updatedAt=1770533198983",
     subtitle: "Everyday chain bracelet"
   },
@@ -328,6 +369,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-006-main.png?updatedAt=1770533198873",
     subtitle: "Open cuff bracelet"
   },
@@ -345,6 +387,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-007-main.png?updatedAt=1770533198915",
     subtitle: "Modern link bracelet"
   },
@@ -367,6 +410,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["38mm", "40mm", "42mm"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/watches/watch-001-main.png?updatedAt=1770533267493",
     subtitle: "Timeless gold watch"
   },
@@ -385,6 +429,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["38mm", "40mm", "42mm"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/watches/watch-002-main.png?updatedAt=1770533267092",
     subtitle: "Minimal face watch"
   },
@@ -402,6 +447,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["38mm", "40mm", "42mm"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/watches/watch-003-main.png?updatedAt=1770533267390",
     subtitle: "Slim band watch"
   },
@@ -419,6 +465,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["38mm", "40mm", "42mm"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/watches/watch-004-main.png?updatedAt=1770533266982",
     subtitle: "Modern dial watch"
   },
@@ -437,6 +484,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["38mm", "40mm", "42mm"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/watches/watch-005-main.png?updatedAt=1770533268075",
     subtitle: "Everyday classic watch"
   },
@@ -458,6 +506,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-001-main.png?updatedAt=1770533319348",
     subtitle: "Classic band ring"
   },
@@ -475,6 +524,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-002-main.png?updatedAt=1770533319125",
     subtitle: "Slim gold ring"
   },
@@ -493,6 +543,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-003-main.png?updatedAt=1770533319279",
     subtitle: "Stackable ring set"
   },
@@ -510,6 +561,7 @@ const products = [
     weightPreset: "medium",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-004-main.png?updatedAt=1770533319134",
     subtitle: "Textured gold band"
   },
@@ -528,6 +580,7 @@ const products = [
     weightPreset: "light",
     gemstoneType: "none",
     material: "gold",
+    sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-005-main.png?updatedAt=1770533319151",
     subtitle: "Everyday gold ring"
   }

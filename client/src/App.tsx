@@ -32,7 +32,7 @@ export default function App() {
           <Route path="/favorites" element={<FavoritesPage />} />
 
           {/* Product Routes */}
-          <Route path="products/:id" element={<ProductDetailPage />} />
+          <Route path="/product/:slug" element={<ProductDetailPage />} />
         </Route>
       </Routes>
     </>

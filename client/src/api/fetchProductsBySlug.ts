@@ -7,6 +7,6 @@ import.meta.env.MODE === "development"
 : import.meta.env.VITE_API_URL;
 
 export async function fetchProductsBySlug(slug: string): Promise<Product> {
-    const response = await axios.get(`${API_BASE_URL}/api/products/${slug}`);
+    const response = await axios.get(`${API_BASE_URL}/api/products/slug/${slug}`);
     return response.data;
 }

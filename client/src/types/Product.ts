@@ -19,11 +19,14 @@
 export interface Product {
     _id: string;
     primaryImageUrl: string;
+    galleryImageUrls: string[];
     name: string;
     price: number;
+    sizes: string[];
     isNewArrival: boolean;
     category: {
         name: string;
+        slug: string;
     };
     description?: string;
     sku?: string;
