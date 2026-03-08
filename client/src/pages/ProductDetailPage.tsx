@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Product } from "../types/Product";
-import { ProductInformation } from "../features/product-display/components/ProductInformation";
-import { ProductImageGallery } from "../features/product-display/components/ProductImageGallery";
+import { ProductInformation } from "../features/product-details/components/ProductInformation";
+import { ProductImageGallery } from "../features/product-details/components/ProductImageGallery";
 import { fetchProductsBySlug } from "../api/fetchProductsBySlug";
 
 export function ProductDetailPage () {
