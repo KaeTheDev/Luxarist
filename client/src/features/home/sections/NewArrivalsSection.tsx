@@ -3,7 +3,6 @@
  * @description Displays the latest products in a high-fidelity, horizontally scrollable carousel.
  * Features an intelligent navigation system that monitors scroll position to manage UI states.
  * * @composition
- * - Uses `useProducts` hook to fetch a limited set of recent items.
  * - Employs `useRef` and `useEffect` to implement a Scroll Observer that tracks container position.
  * - Renders `ProductCard` components with snap-alignment.
  * - Provides intelligent desktop navigation and a "View All" deep link.
@@ -23,11 +22,16 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useProducts } from "../../../hooks/useProducts";
+import type { Product } from "../../../types/Product";
 import { ProductCard } from "../../../common/ui/ProductCard";
 
-export function NewArrivalsSection() {
-  const { products, loading, error } = useProducts({ isNewArrival: true, limit: 8 });
+interface NewArrivalsSectionProps {
+  products: Product[];
+  loading?: boolean;
+}
+
+export function NewArrivalsSection({ products, loading }: NewArrivalsSectionProps) {
+
   const scrollRef = useRef<HTMLDivElement>(null);
   
   // Logic for tracking scroll position
@@ -71,8 +75,12 @@ export function NewArrivalsSection() {
     }
   };
 
-  if (loading) return <p className="text-center py-20 font-light">Loading New Arrivals...</p>;
-  if (error) return <p className="text-center py-20 text-red-500">{error}</p>;
+// Luxury Skeleton Placeholder or Loading State
+if(loading) return (
+  <div className="w-full bg-white py-16 text-center">
+    <p className="animate-pulse text-xs tracking-[0.3em] text-gray-400 uppercase">Curating Latest Arrivals...</p>
+  </div>
+);
 
   return (
     <section className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8">
@@ -112,6 +120,7 @@ export function NewArrivalsSection() {
               <div key={product._id} className="w-70 sm:w-[320px] shrink-0 snap-start">
                 <ProductCard
                   id={product._id}
+                  slug={product.slug ?? product._id}
                   imageUrl={product.primaryImageUrl}
                   title={product.name}
                   category={product.category.name}
