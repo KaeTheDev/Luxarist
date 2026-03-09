@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import type { Product } from "../types/Product";
 import { ProductInformation } from "../features/product-details/components/ProductInformation";
 import { ProductImageGallery } from "../features/product-details/components/ProductImageGallery";
+import { ProductDetailsTab } from "../features/product-details/components/ProductDetailsTab";
 import { fetchProductsBySlug } from "../api/fetchProductsBySlug";
 
 export function ProductDetailPage () {
@@ -27,13 +28,21 @@ export function ProductDetailPage () {
         getProduct();
     }, [slug]);
 
-    if(loading) return <div className="p-20 text-center">Loading Luxury piece...</div>;
-    if(!product) return <div className="p-20 text-center">Product not found.</div>
+    if (loading) return <div className="p-20 text-center font-medium tracking-widest uppercase text-xs text-gray-400">Loading Luxury piece...</div>;
+    if (!product) return <div className="p-20 text-center text-gray-500">Product not found.</div>;
 
     return(
-        <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-16">
+       <main className="container mx-auto px-4 py-12">
+        {/* Upper Section: Gallery and Primary Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             <ProductImageGallery product={product} />
             <ProductInformation product={product} />
         </div>
+
+        {/* Lower Section: Centered Tab Section */}
+        <div className="mt-12 max-w-4xl mx-auto border-t border-gray-100 pt-12 w-full">
+            <ProductDetailsTab product={product} />
+        </div>
+       </main>
     )
 }
