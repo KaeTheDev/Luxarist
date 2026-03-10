@@ -63,7 +63,7 @@ Promise<Product[]> {
  */
 
 export async function fetchCategoryDetail(slug: string): Promise<Category>{
-    const response = await axios.get(`${API_BASE_URL}/api/categories/slug/${slug}`);
+    const response = await axios.get(`${API_BASE_URL}/api/categories/${slug}`);
     return response.data;
 }
 

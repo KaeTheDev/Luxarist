@@ -55,7 +55,7 @@ export function CategoryPage() {
   useEffect(() => {
     async function loadCategory() {
       try {
-        const data = await fetchCategoryDetail( slug );
+        const data = await fetchCategoryDetail(slug);
         setCategory(data);
       } catch (error) {
         console.error("Failed to load category:", error);
