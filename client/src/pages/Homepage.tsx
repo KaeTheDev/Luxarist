@@ -25,7 +25,7 @@ import { NewArrivalsSection } from "../features/home/sections/NewArrivalsSection
 import { BrandPromiseSection } from "../features/home/sections/BrandPromiseSection";
 import { NewsletterSection } from "../features/home/sections/NewsletterSection";
 
-import { fetchProducts } from "../api/fetchProducts";
+import { fetchProducts } from "../api/productServices";
 import type { Product } from "../types/Product";
 import { useEffect, useState } from "react";
 

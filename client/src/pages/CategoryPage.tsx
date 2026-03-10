@@ -22,8 +22,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchCategoryBySlug } from "../api/fetchCategoryBySlug";
-import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
+import { fetchCategoryDetail } from "../api/productServices";
+import { fetchCategoryProducts } from "../api/productServices";
 
 import type { Category } from "../types/Category";
 import type { Product } from "../types/Product";
@@ -55,7 +55,7 @@ export function CategoryPage() {
   useEffect(() => {
     async function loadCategory() {
       try {
-        const data = await fetchCategoryBySlug({ slug });
+        const data = await fetchCategoryDetail( slug );
         setCategory(data);
       } catch (error) {
         console.error("Failed to load category:", error);
@@ -70,10 +70,7 @@ export function CategoryPage() {
     if (!slug) return;
     async function loadProducts() {
       try {
-        const data = await fetchProductsByCategory({
-          slug,
-          ...filters,
-        });
+        const data = await fetchCategoryProducts(slug, filters);
         setProducts(data.products);
         setPagination(data.pagination);
       } catch (error) {

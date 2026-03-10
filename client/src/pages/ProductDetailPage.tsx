@@ -4,7 +4,7 @@ import type { Product } from "../types/Product";
 import { ProductInformation } from "../features/product-details/components/ProductInformation";
 import { ProductImageGallery } from "../features/product-details/components/ProductImageGallery";
 import { ProductDetailsTab } from "../features/product-details/components/ProductDetailsTab";
-import { fetchProductsBySlug } from "../api/fetchProductsBySlug";
+import { fetchOneProduct } from "../api/productServices";
 
 export function ProductDetailPage () {
     const { slug } = useParams<{ slug: string }>();
@@ -17,7 +17,7 @@ export function ProductDetailPage () {
             try {
                 setLoading(true);
                 // Call the service: fetchProductBySlug
-                const data = await fetchProductsBySlug(slug);
+                const data = await fetchOneProduct(slug);
                 setProduct(data);
             } catch(err) {
                 console.error("Error loading product:", err);

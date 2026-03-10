@@ -87,7 +87,6 @@ export async function fetchCategoryProducts(slug: string, params?: FetchParams) 
   }
 
   /** * 5. FEATURED CATEGORIES
- * Replaces: fetchFeaturedCategories.ts
  * Used by: FeaturedCollectionsSection (on the Homepage)
  */
 export async function fetchFeaturedCategories(): Promise<FeaturedCategory[]> {
