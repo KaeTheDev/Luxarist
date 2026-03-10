@@ -22,7 +22,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { fetchFeaturedCategories } from "../api/fetchFeaturedCategories";
+import { fetchFeaturedCategories } from "../api/productServices";
 import type { FeaturedCategory } from "../types/FeaturedCategory";
 
 export function useFeaturedCategories() {
