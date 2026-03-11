@@ -17,7 +17,8 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
   const [activeTab, setActiveTab] = useState("description");
 
   // If product is missing or still loading, show a placeholder
-  if (!product) return <div className="p-10 text-center">Loading specifications...</div>;
+  if (!product)
+    return <div className="p-10 text-center">Loading specifications...</div>;
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -48,54 +49,91 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
 
       {/* Tab Content Area */}
       <div className="mt-8 md:mt-12 w-full max-w-5xl px-4 min-h-75">
-        
         {/* DESCRIPTION TAB */}
         {activeTab === "description" && (
           <div className="space-y-6 text-gray-700 leading-relaxed max-w-4xl animate-in fade-in duration-500 text-sm md:text-base">
-            <p>{product.description || "A masterpiece of modern craftsmanship..."}</p>
-            <p>Each piece is crafted by master artisans with over 30 years of experience in fine jewelry making, ensuring every detail meets the Luxarist standard of excellence.</p>
+            <p>
+              {product.description ||
+                "A masterpiece of modern craftsmanship..."}
+            </p>
+            <p>
+              Each piece is crafted by master artisans with over 30 years of
+              experience in fine jewelry making, ensuring every detail meets the
+              Luxarist standard of excellence.
+            </p>
           </div>
         )}
 
         {/* SPECIFICATIONS TAB - Updated for new Data Structure */}
         {activeTab === "specs" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 animate-in fade-in duration-500">
-            
             {/* Gemstone/Diamond Column - Only shows if diamondSpecs exists */}
-            {product.diamondSpecs && Object.keys(product.diamondSpecs).length > 0 ? (
-  <div className="space-y-4">
-    <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Gemstone Details</h3>
-    <div className="space-y-3 text-sm">
-      <SpecRow label="Carat Weight" value={product.diamondSpecs.carat} />
-      <SpecRow label="Cut" value={product.diamondSpecs.cut} /> 
-      <SpecRow label="Color" value={product.diamondSpecs.color} />
-      <SpecRow label="Clarity" value={product.diamondSpecs.clarity} />
-    </div>
-  </div>
+            {product.diamondSpecs &&
+            Object.keys(product.diamondSpecs).length > 0 ? (
+              <div className="space-y-4">
+                <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">
+                  Gemstone Details
+                </h3>
+                <div className="space-y-3 text-sm">
+                  <SpecRow
+                    label="Carat Weight"
+                    value={product.diamondSpecs.carat}
+                  />
+                  <SpecRow label="Cut" value={product.diamondSpecs.cut} />
+                  <SpecRow label="Color" value={product.diamondSpecs.color} />
+                  <SpecRow
+                    label="Clarity"
+                    value={product.diamondSpecs.clarity}
+                  />
+                </div>
+              </div>
             ) : (
               <div className="hidden md:block">
-                <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Information</h3>
-                <p className="text-sm text-gray-400 italic">No gemstone specifications for this item.</p>
+                <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">
+                  Information
+                </h3>
+                <p className="text-sm text-gray-400 italic">
+                  No gemstone specifications for this item.
+                </p>
               </div>
             )}
 
             {/* Metal/Product Column - Dynamic based on category */}
             <div className="space-y-4">
               <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">
-                {product.category.name === "watch" ? "Movement & Build" : "Material Details"}
+                {product.category.name === "watch"
+                  ? "Movement & Build"
+                  : "Material Details"}
               </h3>
               <div className="space-y-3 text-sm">
                 {product.metalSpecs ? (
                   <>
                     <SpecRow label="Material" value={product.metalSpecs.type} />
                     <SpecRow label="Weight" value={product.metalSpecs.weight} />
-                    {product.metalSpecs.movement && <SpecRow label="Movement" value={product.metalSpecs.movement} />}
-                    {product.metalSpecs.width && <SpecRow label="Width" value={product.metalSpecs.width} />}
-                    {product.metalSpecs.finish && <SpecRow label="Finish" value={product.metalSpecs.finish} />}
-                    {product.metalSpecs.waterResistance && <SpecRow label="Water Resistance" value={product.metalSpecs.waterResistance} />}
+                    {product.metalSpecs.movement && (
+                      <SpecRow
+                        label="Movement"
+                        value={product.metalSpecs.movement}
+                      />
+                    )}
+                    {product.metalSpecs.width && (
+                      <SpecRow label="Width" value={product.metalSpecs.width} />
+                    )}
+                    {product.metalSpecs.finish && (
+                      <SpecRow
+                        label="Finish"
+                        value={product.metalSpecs.finish}
+                      />
+                    )}
+                    {product.metalSpecs.waterResistance && (
+                      <SpecRow
+                        label="Water Resistance"
+                        value={product.metalSpecs.waterResistance}
+                      />
+                    )}
                   </>
                 ) : (
-                   <SpecRow label="Material" value={product.material} />
+                  <SpecRow label="Material" value={product.material} />
                 )}
                 <SpecRow label="SKU" value={product.sku || "N/A"} />
               </div>
@@ -107,17 +145,25 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
         {activeTab === "care" && (
           <div className="space-y-8 animate-in fade-in duration-500 max-w-3xl">
             <div className="space-y-3">
-              <h3 className="font-bold text-xs uppercase tracking-widest">Material Care: {product.material}</h3>
+              <h3 className="font-bold text-xs uppercase tracking-widest">
+                Material Care: {product.material}
+              </h3>
               <p className="text-gray-600 italic text-sm leading-relaxed">
-                {CARE_GUIDE[product.material.toLowerCase() as keyof typeof CARE_GUIDE] || 
-                 "To maintain brilliance, clean with a soft, lint-free cloth and store in a cool, dry place."}
+                {CARE_GUIDE[
+                  product.material.toLowerCase() as keyof typeof CARE_GUIDE
+                ] ||
+                  "To maintain brilliance, clean with a soft, lint-free cloth and store in a cool, dry place."}
               </p>
             </div>
             {product.gemstoneType && product.gemstoneType !== "none" && (
               <div className="space-y-3">
-                <h3 className="font-bold text-xs uppercase tracking-widest">Gemstone Care: {product.gemstoneType}</h3>
+                <h3 className="font-bold text-xs uppercase tracking-widest">
+                  Gemstone Care: {product.gemstoneType}
+                </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                   {CARE_GUIDE[product.gemstoneType.toLowerCase() as keyof typeof CARE_GUIDE] || 
+                  {CARE_GUIDE[
+                    product.gemstoneType.toLowerCase() as keyof typeof CARE_GUIDE
+                  ] ||
                     "Avoid harsh chemicals and ultrasonic cleaners for delicate gemstones."}
                 </p>
               </div>
@@ -131,7 +177,9 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
             <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center md:items-start border-b pb-10">
               <div className="text-center">
                 <h2 className="text-6xl font-medium">5.0</h2>
-                <div className="flex text-black text-lg my-2 justify-center">★★★★★</div>
+                <div className="flex text-black text-lg my-2 justify-center">
+                  ★★★★★
+                </div>
                 <p className="text-gray-500 text-xs">Based on 3 reviews</p>
               </div>
               <div className="flex-1 w-full max-w-md space-y-2">
@@ -139,20 +187,24 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
                   <div key={star} className="flex items-center gap-4 text-xs">
                     <span className="w-4">{star}★</span>
                     <div className="flex-1 h-px bg-gray-200 relative">
-                      {star === 5 && <div className="absolute inset-0 bg-black w-full" />}
+                      {star === 5 && (
+                        <div className="absolute inset-0 bg-black w-full" />
+                      )}
                     </div>
-                    <span className="text-gray-400 w-8 text-right">{star === 5 ? "(3)" : "(0)"}</span>
+                    <span className="text-gray-400 w-8 text-right">
+                      {star === 5 ? "(3)" : "(0)"}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
             <div className="space-y-8 divide-y divide-gray-100">
-               <ReviewItem 
-                name="Sarah M." 
-                date="December 10, 2025" 
-                title="Absolutely Stunning" 
-                body="This piece exceeded all my expectations. The craftsmanship is impeccable and the light hits it perfectly." 
-               />
+              <ReviewItem
+                name="Sarah M."
+                date="December 10, 2025"
+                title="Absolutely Stunning"
+                body="This piece exceeded all my expectations. The craftsmanship is impeccable and the light hits it perfectly."
+              />
             </div>
           </div>
         )}
@@ -171,14 +223,30 @@ function SpecRow({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-function ReviewItem({ name, date, title, body }: { name: string, date: string, title: string, body: string }) {
+function ReviewItem({
+  name,
+  date,
+  title,
+  body,
+}: {
+  name: string;
+  date: string;
+  title: string;
+  body: string;
+}) {
   return (
     <div className="pt-8 first:pt-0">
       <div className="flex justify-between items-center mb-1">
         <div className="flex text-black text-[10px] space-x-0.5">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
         </div>
-        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{date}</span>
+        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+          {date}
+        </span>
       </div>
       <p className="font-bold text-sm text-black">{name}</p>
       <p className="font-semibold text-xs text-gray-800 mt-1">{title}</p>
