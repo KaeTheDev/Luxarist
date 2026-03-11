@@ -115,8 +115,8 @@ export const getProductBySlug = async(req: Request, res: Response) => {
     }
 
     // Fetch the product by slug and populate category details
-    const product = await Product.findOne({ slug: slug, status: "active" as const })
-    .populate("category", "name slug");
+   const product = await Product.findOne({ slug: slug, status: "active" })
+  .populate("category", "name slug");
 
     if(!product) {
       return res.status(404).json({ message: "Product not found" });

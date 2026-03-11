@@ -128,6 +128,7 @@ const products = [
     sizes: ["One Size"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-006-main.jpeg?updatedAt=1770533119660",
     subtitle: "14K White Gold Daily Studs",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K White Gold", weight: "0.8 grams", finish: "High Polish", setting: "Push-Back" }
   },
 
@@ -151,6 +152,7 @@ const products = [
     sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-001-main.png?updatedAt=1770533143748",
     subtitle: "14K White Gold Filled Cable Chain",
+    diamondSpecs: { carat: "0.05 ct total", cut: "Round", color: "H", clarity: "SI2" },
     metalSpecs: { type: "14K White Gold Filled", weight: "5.5 grams", width: "1.5 mm", clasp: "Lobster Claw" }
   },
   {
@@ -170,6 +172,7 @@ const products = [
     sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-002-main.png?updatedAt=1770533144005",
     subtitle: "14K White Gold Minimal Pendant",
+    diamondSpecs: { carat: "0.05 ct total", cut: "Round", color: "H", clarity: "SI2", stones: "1 Ruby (0.40 ct)" },
     metalSpecs: { type: "14K Yellow Gold", weight: "3.2 grams", width: "1.0 mm", clasp: "Spring Ring" }
   },
   {
@@ -189,6 +192,7 @@ const products = [
     sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-003-main.png?updatedAt=1770533143999",
     subtitle: "Gold Filled Layered Chain",
+    diamondSpecs: { carat: "0.05 ct total", cut: "Round", color: "H", clarity: "SI2", stones: "Ruby Pendant" },
     metalSpecs: { type: "14K Yellow Gold Filled", weight: "7.8 grams", width: "Multiple", clasp: "Lobster Claw" }
   },
   {
@@ -209,6 +213,7 @@ const products = [
     sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-004-main.png?updatedAt=1770533143399",
     subtitle: "14K White Gold Slim Link",
+    diamondSpecs: { carat: "0.08 ct total", cut: "Round Brilliant", color: "G-H", clarity: "VS2" },
     metalSpecs: { type: "14K White Gold", weight: "2.1 grams", width: "0.8 mm", clasp: "Spring Ring" }
   },
   {
@@ -229,6 +234,7 @@ const products = [
     sizes: ["16\"", "18\"", "20\"", "24\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-005-main.png?updatedAt=1770533143947",
     subtitle: "14K Gold Charm Necklace",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Yellow Gold", weight: "2.8 grams", width: "1.0 mm", clasp: "Lobster Claw" }
   },
   {
@@ -279,6 +285,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-001-main.png?updatedAt=1770533198344",
     subtitle: "14K White Gold Filled Bracelet",
+    diamondSpecs: { carat: "0.08 ct total", cut: "Round", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K White Gold Filled", weight: "3.2 grams", width: "2.5 mm", clasp: "Lobster Claw" }
   },
   {
@@ -299,6 +306,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-002-main.png?updatedAt=1770533199018",
     subtitle: "14K White Gold Minimal Cuff",
+    diamondSpecs: { carat: "0.12 ct total", cut: "Round Brilliant", color: "F-G", clarity: "VS2" },
     metalSpecs: { type: "14K White Gold", weight: "4.5 grams", width: "3.0 mm", finish: "Polished" }
   },
   {
@@ -318,6 +326,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-003-main.png?updatedAt=1770533199096",
     subtitle: "14K White Gold Slim Link",
+    diamondSpecs: { carat: "0.08 ct total", cut: "Round", color: "H", clarity: "SI2", stones: "Ruby Accents" },
     metalSpecs: { type: "14K White Gold", weight: "1.8 grams", width: "1.0 mm", clasp: "Spring Ring" }
   },
   {
@@ -337,6 +346,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-004-main.png?updatedAt=1770533198801",
     subtitle: "14K Brushed Gold Bangle",
+    diamondSpecs: { carat: "0.15 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Yellow Gold", weight: "6.2 grams", width: "4.0 mm", finish: "Brushed" }
   },
   {
@@ -357,6 +367,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-005-main.png?updatedAt=1770533198983",
     subtitle: "Everyday Gold Filled Chain",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Gold Filled", weight: "2.9 grams", width: "2.0 mm", clasp: "Lobster Claw" }
   },
   {
@@ -376,6 +387,7 @@ const products = [
     sizes: ["6.5\"", "7.0\"", "7.5\"", "8.0\""],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/bracelets/bracelet-006-main.png?updatedAt=1770533198873",
     subtitle: "14K Hammered Gold Cuff",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Yellow Gold", weight: "4.1 grams", width: "2.5 mm", finish: "Hammered" }
   },
   {
@@ -520,6 +532,7 @@ const products = [
     sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-001-main.png?updatedAt=1770533319348",
     subtitle: "14K White Gold Classic Band",
+    diamondSpecs: { carat: "0.15 ct total", cut: "Round Brilliant", color: "G-H", clarity: "VS2" },
     metalSpecs: { type: "14K White Gold", weight: "3.5 grams", width: "4.0 mm", finish: "High Polish" }
   },
   {
@@ -539,6 +552,7 @@ const products = [
     sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-002-main.png?updatedAt=1770533319125",
     subtitle: "14K White Gold Slim Stackable",
+    diamondSpecs: { carat: "0.08 ct total", cut: "Round Brilliant", color: "F-G", clarity: "VS2" },
     metalSpecs: { type: "14K White Gold", weight: "1.2 grams", width: "1.0 mm", finish: "Polished" }
   },
   {
@@ -559,6 +573,7 @@ const products = [
     sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-003-main.png?updatedAt=1770533319279",
     subtitle: "14K White Gold Layering Ring",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K White Gold", weight: "1.5 grams", width: "1.5 mm", finish: "Polished" }
   },
   {
@@ -578,6 +593,7 @@ const products = [
     sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-004-main.png?updatedAt=1770533319134",
     subtitle: "14K Hammered Gold Band",
+    diamondSpecs: { carat: "0.12 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Yellow Gold", weight: "3.8 grams", width: "3.0 mm", finish: "Hammered" }
   },
   {
@@ -598,6 +614,7 @@ const products = [
     sizes: ["5", "6", "7", "8", "9"],
     primaryImageUrl: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-005-main.png?updatedAt=1770533319151",
     subtitle: "14K Gold Everyday Ring",
+    diamondSpecs: { carat: "0.10 ct total", cut: "Round Brilliant", color: "G-H", clarity: "SI1" },
     metalSpecs: { type: "14K Yellow Gold", weight: "2.1 grams", width: "2.0 mm", finish: "High Polish" }
   }
 ];

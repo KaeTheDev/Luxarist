@@ -16,80 +16,115 @@
  *   - Used in product-related API routes (catalog, product detail pages, admin tools)
  *   - Supports population and relationships with other models (e.g., Orders, Reviews)
  */
-
 import { Schema, model, Types } from "mongoose";
 
-export interface IProduct {
-    name: string;
-    subtitle: string;
-    category: Types.ObjectId;
-    price: number; // store as a number for calculations
-    isNewArrival: boolean; // Used for filtering
-    status: 'active' | 'inactive';
-
-    primaryImageUrl: string;
-    galleryImageUrls: string[];
-
-    sizes: string[];
-    material: string;
-    gemstoneType: string;
-    weightPreset: string;
-    style: string;
-
-    description: string;
-    careTemplateKey: string;
-    specsFromAttributes: boolean;
-
-    sku: string;
-    slug: string;
-
-    createdAt: Date;
-    updatedAt: Date;
+interface IMetalSpecs {
+  type?: string;
+  weight?: string;
+  finish?: string;
+  setting?: string;
+  width?: string;
+  length?: string;
+  clasp?: string;
+  movement?: string;
+  waterResistance?: string;
+  glass?: string;
+  strap?: string;
+  battery?: string;
 }
 
-const productSchema = new Schema<IProduct> (
-    {
-        name: { type: String, required: true },
-        subtitle: { type: String, required: true },
-        category: {
-            type: Schema.Types.ObjectId,
-            ref: "Category",
-            required: true,
-        },
-        price: { type: Number, required: true },
-        isNewArrival: { type: Boolean, default: false },
-        status: { type: String, required: true, enum: ['active', 'inactive'], default: 'active' },
+interface IDiamondSpecs {
+  carat?: string;
+  cut?: string;
+  color?: string;
+  clarity?: string;
+  halo?: string;
+  stones?: string;
+}
 
-        primaryImageUrl: { type: String, required: true },
-        galleryImageUrls: { type: [String], default: [] },
+export interface IProduct {
+  name: string;
+  subtitle: string;
+  category: Types.ObjectId;
+  price: number;
+  isNewArrival: boolean;
+  status: 'active' | 'inactive';
+  diamondSpecs?: IDiamondSpecs;
+  metalSpecs?: IMetalSpecs;
+  primaryImageUrl: string;
+  galleryImageUrls: string[];
+  sizes: string[];
+  material: string;
+  gemstoneType: string;
+  weightPreset: string;
+  style: string;
+  description: string;
+  careTemplateKey: string;
+  specsFromAttributes: boolean;
+  sku: string;
+  slug: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-        sizes: { type: [String], default: [] },
-        material: { type: String, required: true },
-        gemstoneType: { type: String, required: true },
-        weightPreset: { type: String, required: true },
-        style: { type: String, required: true },
-
-        description: { type: String, required: true },
-        careTemplateKey: { type: String, required: true },
-        specsFromAttributes: { type: Boolean, default: true },
-
-        sku: { type: String, required: true, unique: true },
-        slug: { type: String, required: true, unique: true },
+const productSchema = new Schema<IProduct>(
+  {
+    name: { type: String, required: true },
+    subtitle: { type: String, required: true },
+    category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+    price: { type: Number, required: true },
+    isNewArrival: { type: Boolean, default: false },
+    status: { type: String, required: true, enum: ['active', 'inactive'], default: 'active' },
+    diamondSpecs: {
+      type: new Schema<IDiamondSpecs>({
+        carat:   { type: String },
+        cut:     { type: String },
+        color:   { type: String },
+        clarity: { type: String },
+        halo:    { type: String },
+        stones:  { type: String },
+      }, { _id: false }),
+      required: false,
     },
-    {
-        timestamps: true, // automatically adds createdAt & updatedAt
-    }
+    metalSpecs: {
+      type: new Schema<IMetalSpecs>({
+        type:             { type: String },
+        weight:           { type: String },
+        finish:           { type: String },
+        setting:          { type: String },
+        width:            { type: String },
+        length:           { type: String },
+        clasp:            { type: String },
+        movement:         { type: String },
+        waterResistance:  { type: String },
+        glass:            { type: String },
+        strap:            { type: String },
+        battery:          { type: String },
+      }, { _id: false }),
+      required: false,
+    },
+    primaryImageUrl:    { type: String, required: true },
+    galleryImageUrls:   { type: [String], default: [] },
+    sizes:              { type: [String], default: [] },
+    material:           { type: String, required: true },
+    gemstoneType:       { type: String, required: true },
+    weightPreset:       { type: String, required: true },
+    style:              { type: String, required: true },
+    description:        { type: String, required: true },
+    careTemplateKey:    { type: String, required: true },
+    specsFromAttributes:{ type: Boolean, default: true },
+    sku:                { type: String, required: true, unique: true },
+    slug:               { type: String, required: true, unique: true },
+  },
+  { timestamps: true }
 );
 
-// Pre-Save hook to auto-generate slug from name if not provided
 productSchema.pre('save', function () {
-    if (!this.slug) {
-        this.slug = this.name.toLowerCase().replace(/\s+/g, '-');
-    }
+  if (!this.slug) {
+    this.slug = this.name.toLowerCase().replace(/\s+/g, '-');
+  }
 });
 
-// Optional index for faster category queries
 productSchema.index({ category: 1 });
 
-// Mongoose Model - typed constructor that gets imported elsewhere
 export const Product = model<IProduct>('Product', productSchema);

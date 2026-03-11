@@ -16,6 +16,9 @@ const TABS = [
 export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
   const [activeTab, setActiveTab] = useState("description");
 
+  // If product is missing or still loading, show a placeholder
+  if (!product) return <div className="p-10 text-center">Loading specifications...</div>;
+
   return (
     <div className="w-full flex flex-col items-center">
       {/* Tabs Header */}
@@ -59,17 +62,16 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 animate-in fade-in duration-500">
             
             {/* Gemstone/Diamond Column - Only shows if diamondSpecs exists */}
-            {product.diamondSpecs ? (
-              <div className="space-y-4">
-                <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Gemstone Details</h3>
-                <div className="space-y-3 text-sm">
-                  <SpecRow label="Carat Weight" value={product.diamondSpecs.carat} />
-                  <SpecRow label="Cut Grade" value={product.diamondSpecs.cut} />
-                  <SpecRow label="Color" value={product.diamondSpecs.color} />
-                  <SpecRow label="Clarity" value={product.diamondSpecs.clarity} />
-                  {product.diamondSpecs.stones && <SpecRow label="Additional Stones" value={product.diamondSpecs.stones} />}
-                </div>
-              </div>
+            {product.diamondSpecs && Object.keys(product.diamondSpecs).length > 0 ? (
+  <div className="space-y-4">
+    <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Gemstone Details</h3>
+    <div className="space-y-3 text-sm">
+      <SpecRow label="Carat Weight" value={product.diamondSpecs.carat} />
+      <SpecRow label="Cut" value={product.diamondSpecs.cut} /> 
+      <SpecRow label="Color" value={product.diamondSpecs.color} />
+      <SpecRow label="Clarity" value={product.diamondSpecs.clarity} />
+    </div>
+  </div>
             ) : (
               <div className="hidden md:block">
                 <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Information</h3>
@@ -159,12 +161,12 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
   );
 }
 
-function SpecRow({ label, value }: { label: string; value: string }) {
-  if (!value) return null;
+function SpecRow({ label, value }: { label: string; value: string | number }) {
+  if (value === undefined || value === null || value === "") return null;
   return (
     <div className="flex justify-between border-b border-gray-50 pb-2">
       <span className="text-gray-500">{label}:</span>
-      <span className="font-medium text-black text-right">{value}</span>
+      <span className="font-medium text-black text-right">{String(value)}</span>
     </div>
   );
 }
