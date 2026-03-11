@@ -75,6 +75,7 @@ export function ProductList({
           >
             <ProductCard
               key={product._id}
+              slug={product.slug ?? product._id}
               id={product._id}
               imageUrl={product.primaryImageUrl}
               title={product.name}

@@ -23,7 +23,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { fetchProducts } from "../api/fetchProducts";
+import { fetchProducts } from "../api/productServices";
 import type { Product } from "../types/Product";
 
 export function useProducts(options: { isNewArrival?: boolean; limit?: number; category?: string; }) {

@@ -19,8 +19,8 @@
  */
 
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../api/fetchProducts";
-import { fetchProductsByCategory } from "../api/fetchProductsByCategory";
+import { fetchProducts } from "../api/productServices";
+import { fetchCategoryProducts } from "../api/productServices";
 
 import { PageHero } from "../common/ui/PageHero";
 import { ShopAllFilters } from "../features/shop-all/ShopAllFilters";
@@ -86,11 +86,8 @@ export function ShopAllPage() {
           const data = await fetchProducts();
           setProducts(applyLocalSort(data, sort));
         } else {
-          // fetchProductsByCategory returns response.data (likely {products: []} or raw [])
-          const response = await fetchProductsByCategory({
-            slug: activeCategory.toLowerCase(),
-            sort: sort,
-          });
+          // fetchCategoryProducts returns response.data (likely {products: []} or raw [])
+          const response = await fetchCategoryProducts(activeCategory.toLowerCase(), { sort });
           // Handle object vs array response safely
           const data = Array.isArray(response)
             ? response

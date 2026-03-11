@@ -17,9 +17,9 @@
  */
 
 export const categories: readonly [string, string][] = [
-    ["Bracelets", "bracelets"],
+    ["Bracelets", "bracelet"],
     ["Earrings", "earrings"],
-    ["Necklaces", "necklaces"],
-    ["Rings", "rings"],
-    ["Watches", "watches"],
+    ["Necklaces", "necklace"],
+    ["Rings", "ring"],
+    ["Watches", "watch"],
   ];

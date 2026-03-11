@@ -28,13 +28,18 @@
  */
 
 import { useNavigate } from "react-router-dom";
+import type { Product } from "../../../types/Product";
 
-export function SignatureHighlightSection() {
+interface SignatureHighlightSectionProps {
+  product: Product;
+}
+
+export function SignatureHighlightSection({ product }: SignatureHighlightSectionProps) {
 
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/product/necklace');
+        navigate(`/product/${product.slug}`);
     }
 
   return (

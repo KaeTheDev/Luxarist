@@ -25,13 +25,50 @@ import { NewArrivalsSection } from "../features/home/sections/NewArrivalsSection
 import { BrandPromiseSection } from "../features/home/sections/BrandPromiseSection";
 import { NewsletterSection } from "../features/home/sections/NewsletterSection";
 
+import { fetchProducts } from "../api/productServices";
+import type { Product } from "../types/Product";
+import { useEffect, useState } from "react";
+
 export function Homepage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getInitialData() {
+      try {
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products for homepage:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getInitialData();
+  },[]);
+
+  // Find the signature product from the fetched list
+  const signatureProduct = products.find(
+    (p) => p.slug === 'triangular-bezel-diamond-necklace'
+  );
+
+  if(loading) {
+    return <div className="h-screen flex items-center justify-center">
+      Loading Luxarist...
+    </div>
+  }
+
   return (
     <>
       <HeroSection />
       <FeaturedCollectionsSection />
-      <SignatureHighlightSection />
-      <NewArrivalsSection />
+
+      {/* Only show if the API actually returned this product */}
+      {signatureProduct && <SignatureHighlightSection product={signatureProduct} />}
+      <NewArrivalsSection 
+      products={products.filter(p => p.isNewArrival)} 
+      loading={loading}
+      />
       <BrandPromiseSection />
       <NewsletterSection />
     </>

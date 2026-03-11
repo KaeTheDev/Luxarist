@@ -6,11 +6,7 @@ import { CategoryPage } from "./pages/CategoryPage";
 import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { ScrollToTop } from "./common/utils/ScrollToTop";
-
-// Placeholder for future pages
-const ProductDetailPage = () => (
-  <div className="py-20 text-center">Product Detail Page coming soon...</div>
-);
+import { ProductDetailPage } from "./pages/ProductDetailPage";
 
 export default function App() {
   return (
@@ -36,7 +32,7 @@ export default function App() {
           <Route path="/favorites" element={<FavoritesPage />} />
 
           {/* Product Routes */}
-          <Route path="products/:id" element={<ProductDetailPage />} />
+          <Route path="/product/:slug" element={<ProductDetailPage />} />
         </Route>
       </Routes>
     </>

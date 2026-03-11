@@ -19,6 +19,7 @@ import { useFavorites } from "../../hooks/useFavorites";
 
 interface ProductCardProps {
   id: string; 
+  slug: string;
   imageUrl: string;
   title: string;
   category: string;
@@ -29,6 +30,7 @@ interface ProductCardProps {
 
 export function ProductCard({
   id,
+  slug,
   imageUrl,
   title,
   category,
@@ -79,7 +81,7 @@ export function ProductCard({
       )}
 
       {/* Link wrapper */}
-      <Link to={`/products/${id}`} className="flex flex-col h-full">
+      <Link to={`/product/${slug}`} className="flex flex-col h-full">
         <div className="aspect-4/5 overflow-hidden bg-[#fafafa]">
           <img
             src={imageUrl}

@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
-import { fetchProducts } from "../api/fetchProducts";
+import { fetchProducts } from "../api/productServices";
 import type { Product } from "../types/Product";
 import { ProductList } from "../common/ui/ProductList";
 
