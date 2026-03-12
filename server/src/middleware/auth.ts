@@ -25,7 +25,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     const authHeader = req.headers.authorization;
 
     if(authHeader && authHeader.startsWith('Bearer ')) {
-        const token = authHeader.split('')[1];
+        const token = authHeader.split(' ')[1];
 
         if(!token) return res.status(401).json({ message: 'Not authorized, no token' });
 
