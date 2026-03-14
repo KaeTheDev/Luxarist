@@ -123,3 +123,29 @@ export const login = async(req: Request, res: Response) => {
         res.status(500).json({ message: "Server error during loging" });
     }
 };
+
+/**
+ * @desc    Get current logged-in user
+ * @route   GET /api/auth/me
+ * @access  Private
+ */
+export const getMe = async (req: any, res: Response) => {
+    try {
+        // req.user.id was attached by your authMiddleware
+        const user = await User.findById(req.user.id);
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role
+        });
+    } catch (error: any) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};

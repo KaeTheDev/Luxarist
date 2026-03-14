@@ -2,6 +2,8 @@ import { Router } from "express";
 import { validateBody } from "../../middleware/validate";
 import { register } from "../../controllers/authController";
 import { login } from "../../controllers/authController";
+import { getMe } from "../../controllers/authController";
+import { authMiddleware } from "../../middleware/auth";
 import { z } from "zod";
 
 const router = Router();
@@ -35,5 +37,12 @@ router.post("/register", validateBody(registerSchema), register);
  */
 
 router.post("/login", validateBody(loginSchema), login);
+
+/**
+ * @route   GET /api/auth/me
+ * @desc    Get current user profile
+ * @access  Private
+ */
+router.get("/me", authMiddleware, getMe);
 
 export default router;
