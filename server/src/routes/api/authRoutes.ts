@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { validateBody } from "../../middleware/validate";
 import { register } from "../../controllers/authController";
+import { login } from "../../controllers/authController";
 import { z } from "zod";
 
 const router = Router();
@@ -13,6 +14,12 @@ const registerSchema = z.object({
     password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+// Define the schema for login
+const loginSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters")
+});
+
 /**
  * @route   POST /api/auth/register
  * @desc    Register a new user
@@ -20,5 +27,13 @@ const registerSchema = z.object({
  */
 
 router.post("/register", validateBody(registerSchema), register);
+
+/**
+ * @route   POST /api/auth/login
+ * @desc    Login user
+ * @access  Public
+ */
+
+router.post("/login", validateBody(loginSchema), login);
 
 export default router;
