@@ -52,7 +52,10 @@ export const register = async(req: Request, res: Response) => {
 
         // 3. Generate JWT token
         // Pass an object with the ID converted to a string
-        const token = signToken({ id: newUser._id.toString() });        
+        const token = signToken({ 
+            id: newUser._id.toString(), 
+            role: newUser.role 
+        });        
 
         // 4. Return user info (excluding password) and token
         res.status(201).json({
@@ -104,7 +107,10 @@ export const login = async(req: Request, res: Response) => {
 
         // 3. Generate JWT
         // Pass an object with the ID converted to a string
-        const token = signToken({ id: user._id.toString() });
+        const token = signToken({ 
+            id: user._id.toString(), 
+            role: user.role 
+        });
 
         // 4. Return response (excluding password)
         res.status(200).json({
