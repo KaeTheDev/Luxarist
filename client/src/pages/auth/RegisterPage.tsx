@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../../features/auth/components/RegisterForm";
-import { registerUser } from "../../features/auth/services/authApi";
-import type { RegisterFormData } from "../../features/auth/types";
+import { LoginForm } from "../../features/auth/components/LoginForm";
+import { loginUser, registerUser } from "../../features/auth/services/authApi";
+import type { LoginFormData, RegisterFormData } from "../../features/auth/types";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function RegisterPage() {
         try {
             const result = await registerUser(data);
             localStorage.setItem("token", result.token);
-            navigate("/shop");
+            navigate("/");
         } catch(err: any) {
             // Axios error messages usually live in err.response.data.message
             setError(err.response?.data?.message || "Registration failed");
@@ -24,6 +25,22 @@ export default function RegisterPage() {
             setIsLoading(false);
         }
     }
+
+    async function handleLogin(data: LoginFormData) {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const result = await loginUser(data);
+            localStorage.setItem("token", result.token);
+            navigate("/")
+        } catch(err: any) {
+             // Axios error messages usually live in err.response.data.message
+            setError(err.response?.data?.message || "Login failed")
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#f9f9f9] py-12 px-6">
             {/* Main Card Container */}
@@ -78,9 +95,10 @@ export default function RegisterPage() {
                 {activeTab === 'register' ? (
                     <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
                 ) : (
-                    <div className="py-20 text-center text-gray-400 text-sm italic">
-                        Login form coming soon...
-                    </div>
+                    // <div className="py-20 text-center text-gray-400 text-sm italic">
+                    //     Login form coming soon...
+                    // </div>
+                    <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
                 )}
             </div>
         </div>

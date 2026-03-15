@@ -37,9 +37,11 @@ export function Homepage() {
     async function getInitialData() {
       try {
         const data = await fetchProducts();
-        setProducts(data);
+         // Defensive check: ensure data is actually an array
+        setProducts(Array.isArray(data) ? data: []);
       } catch (error) {
         console.error("Failed to fetch products for homepage:", error);
+        setProducts([]); // Fallback to empty array on error
       } finally {
         setLoading(false);
       }
@@ -47,16 +49,20 @@ export function Homepage() {
     getInitialData();
   },[]);
 
+  // Loading Guard First
+  if(loading) {
+    return (
+    <div className="h-screen flex items-center justify-center">
+      Loading Luxarist...
+    </div>
+    );
+  }
+
   // Find the signature product from the fetched list
   const signatureProduct = products.find(
     (p) => p.slug === 'triangular-bezel-diamond-necklace'
   );
 
-  if(loading) {
-    return <div className="h-screen flex items-center justify-center">
-      Loading Luxarist...
-    </div>
-  }
 
   return (
     <>
