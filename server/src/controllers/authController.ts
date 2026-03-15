@@ -7,7 +7,6 @@ import { User } from "../models/User";
  * Utility to sign JWT tokens
  * Uses type casting for SignOptions to satisfy strict TS v9 requirements
  */
-
 const signToken = (payload: object): string => {
     const secret = process.env.JWT_SECRET;
 
@@ -27,12 +26,12 @@ const signToken = (payload: object): string => {
  * @route   POST /api/auth/register
  * @access  Public
  */
-
 export const register = async(req: Request, res: Response) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
+        // 1. Destructure adminPasscode from the request body
+        const { firstName, lastName, email, password, adminPasscode } = req.body;
 
-        // 1. Check for existing user
+        // 2. Check for existing user
         const existingUser = await User.findOne({ email });
         if(existingUser) {
             return res.status(400).json({
@@ -40,24 +39,31 @@ export const register = async(req: Request, res: Response) => {
             });
         }
 
-        // 2. Create new user 
-        // Role ('customer') and memberSince are set by Mongoose defaults.
+        /**
+         * 3. Role Logic 
+         * Compares the user-provided passcode to the secret stored in .env
+         */
+        const assignedRole = adminPasscode === process.env.ADMIN_SECRET_PASSCODE ? 'admin' : 'customer';
+
+        // 4. Create new user 
+        // We explicitly pass 'role' here to override the Mongoose default if needed.
         // Password hashing is handled by the pre-save hook in User.ts.
         const newUser = await User.create({
             firstName,
             lastName,
             email,
-            password
+            password,
+            role: assignedRole 
         });
 
-        // 3. Generate JWT token
+        // 5. Generate JWT token
         // Pass an object with the ID converted to a string
         const token = signToken({ 
             id: newUser._id.toString(), 
             role: newUser.role 
         });        
 
-        // 4. Return user info (excluding password) and token
+        // 6. Return user info (excluding password) and token
         res.status(201).json({
             message: "User registered successfully",
             token,
@@ -84,14 +90,11 @@ export const register = async(req: Request, res: Response) => {
  * @route   POST /api/auth/login
  * @access  Public
  */
-
 export const login = async(req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
         // 1. Check if user exists
-        // We use .select('+password') if you set { select: false } in the schema, 
-        // but since we didn't, a normal findOne is fine.
         const user = await User.findOne({ email });
 
         if(!user) {
@@ -106,7 +109,6 @@ export const login = async(req: Request, res: Response) => {
         }
 
         // 3. Generate JWT
-        // Pass an object with the ID converted to a string
         const token = signToken({ 
             id: user._id.toString(), 
             role: user.role 
@@ -121,12 +123,12 @@ export const login = async(req: Request, res: Response) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role // important for role-based access on frontend
+                role: user.role
             }
         });   
     } catch  (error: any) {
         console.error("Login Error:", error);
-        res.status(500).json({ message: "Server error during loging" });
+        res.status(500).json({ message: "Server error during login" });
     }
 };
 
