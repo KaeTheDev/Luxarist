@@ -7,6 +7,7 @@ import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { ScrollToTop } from "./common/utils/ScrollToTop";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import RegisterPage from "./pages/auth/register";
 
 export default function App() {
   return (
@@ -33,6 +34,9 @@ export default function App() {
 
           {/* Product Routes */}
           <Route path="/product/:slug" element={<ProductDetailPage />} />
+
+          {/* Register Route */}
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
       </Routes>
     </>
