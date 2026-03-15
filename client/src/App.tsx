@@ -7,7 +7,7 @@ import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { ScrollToTop } from "./common/utils/ScrollToTop";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
-import RegisterPage from "./pages/auth/register";
+import RegisterPage from "./pages/auth/RegisterPage";
 
 export default function App() {
   return (
