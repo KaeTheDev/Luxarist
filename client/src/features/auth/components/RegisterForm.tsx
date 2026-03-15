@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterFormData } from "../types";
 import { Input } from "../../../common/ui/Input";
@@ -10,6 +11,8 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
+    // State to track whether the admin field is visible
+    const [showAdminField, setShowAdminField] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,7 +27,7 @@ export function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
       <div className="flex gap-4">
         <Input
           label="First Name"
-          placeholder="John"
+          placeholder="Jane"
           {...register("firstName")}
           error={errors.firstName?.message}
         />
@@ -61,13 +64,28 @@ export function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
         error={errors.confirmPassword?.message}
       />
 
-      <Input
-        label="Admin Passcode (Optional)"
-        type="password"
-        placeholder="Leave blank for customer access"
-        {...register("adminPasscode")}
-        error={errors.adminPasscode?.message}
-      />
+         {/* Admin Toggle & Conditional Input */}
+         <div className="pt-2">
+        <button
+          type="button"
+          onClick={() => setShowAdminField(!showAdminField)}
+          className="text-[10px] text-gray-400 uppercase tracking-[0.2em] hover:text-black transition-colors"
+        >
+          {showAdminField ? "- Hide Partner Access" : "+ Have an access code?"}
+        </button>
+
+        {showAdminField && (
+          <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <Input
+              label="Admin Passcode"
+              type="password"
+              placeholder="Enter your invitation code"
+              {...register("adminPasscode")}
+              error={errors.adminPasscode?.message}
+            />
+          </div>
+        )}
+      </div>
 
       <Button
         type="submit"
