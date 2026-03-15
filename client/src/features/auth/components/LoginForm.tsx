@@ -43,7 +43,7 @@ export function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
         className="w-full mt-6"
         isLoading={isLoading}
       >
-        Login
+      Sign In
       </Button>
         </form>
     )
