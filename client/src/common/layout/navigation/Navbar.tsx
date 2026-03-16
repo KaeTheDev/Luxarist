@@ -13,12 +13,15 @@
 import { Link } from "react-router-dom";
 import { DesktopNav } from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
+import { useAuth } from "../../../context/AuthContext";
 
 interface NavbarProps {
   onOpenAuth: () => void;
 }
 
 export function Navbar({ onOpenAuth }: NavbarProps) {
+  const { user, logout } = useAuth(); // Access global auth state
+
   return (
     <header className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 relative">
@@ -57,16 +60,29 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
           </button>
 
           {/* Profile (desktop only) */}
-          <div className="hidden md:block">
-            <button onClick={onOpenAuth} 
+          <div className="hidden md:flex items-center gap-4">
+            <button 
+              onClick={user ? undefined : onOpenAuth} // Only open modal if logged out
               className="flex items-center hover:opacity-60 transition-opacity"
             >
-              <img
-                src="/assets/icons/icon-profile.svg"
-                alt="profile"
-                className="h-5.5 w-5.5"
-              />
+              <Link to={user ? "/dashboard" : "#"}>
+                <img
+                  src="/assets/icons/icon-profile.svg"
+                  alt="profile"
+                  className={`h-5.5 w-5.5 ${user ? 'brightness-50' : ''}`} 
+                />
+              </Link>
             </button>
+
+            {/* If logged in, show a subtle Logout link next to the icon */}
+            {user && (
+              <button 
+                onClick={logout}
+                className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
 
