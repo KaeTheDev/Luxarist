@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser, registerUser } from "../services/authApi";
 import type { LoginFormData, RegisterFormData } from "../types";
+import { useAuth } from "../../../context/AuthContext";
 
 export function useAuthModal(onClose: () => void) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { login } = useAuth();
+
   const shouldRegister = location.state?.openRegister === true;
   const [activeTab, setActiveTab] = useState<"login" | "register">(
     shouldRegister ? "register" : "login"
@@ -27,7 +30,10 @@ export function useAuthModal(onClose: () => void) {
     setError(null);
     try {
       const result = await loginUser(data);
-      localStorage.setItem("token", result.token);
+      
+      // use context login instead of manual localStorage
+      // result should ideally contain { token, user }
+      login(result.token, result.user);
       onClose();
       navigate("/");
     } catch (err: any) {
@@ -42,7 +48,7 @@ export function useAuthModal(onClose: () => void) {
     setError(null);
     try {
       const result = await registerUser(data);
-      localStorage.setItem("token", result.token);
+      login(result.token, result.user);
       onClose();
       navigate("/");
     } catch (err: any) {
