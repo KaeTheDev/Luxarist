@@ -1,0 +1,56 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { loginUser, registerUser } from "../services/authApi";
+import type { LoginFormData, RegisterFormData } from "../types";
+
+export function useAuthModal(onClose: () => void) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const shouldRegister = location.state?.openRegister === true;
+  const [activeTab, setActiveTab] = useState<"login" | "register">(
+    shouldRegister ? "register" : "login"
+  );
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (shouldRegister) {
+      setActiveTab("register");
+    } else {
+      setActiveTab("login");
+    }
+  }, [shouldRegister]);
+  
+
+  const handleLogin = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await loginUser(data);
+      localStorage.setItem("token", result.token);
+      onClose();
+      navigate("/");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Invalid credentials.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async (data: RegisterFormData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await registerUser(data);
+      localStorage.setItem("token", result.token);
+      onClose();
+      navigate("/");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Registration failed.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { activeTab, setActiveTab, error, isLoading, handleLogin, handleRegister };
+}

@@ -14,7 +14,11 @@ import { Link } from "react-router-dom";
 import { DesktopNav } from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 
-export function Navbar() {
+interface NavbarProps {
+  onOpenAuth: () => void;
+}
+
+export function Navbar({ onOpenAuth }: NavbarProps) {
   return (
     <header className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 relative">
@@ -23,7 +27,7 @@ export function Navbar() {
         <div className="flex items-center md:flex-1">
           {/* Hamburger (mobile only) */}
           <div className="md:hidden">
-            <MobileNav />
+            <MobileNav onOpenAuth={onOpenAuth} />
           </div>
 
           {/* Logo */}
@@ -54,7 +58,9 @@ export function Navbar() {
 
           {/* Profile (desktop only) */}
           <div className="hidden md:block">
-            <button className="flex items-center">
+            <button onClick={onOpenAuth} 
+              className="flex items-center hover:opacity-60 transition-opacity"
+            >
               <img
                 src="/assets/icons/icon-profile.svg"
                 alt="profile"

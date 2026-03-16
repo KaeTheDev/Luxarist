@@ -17,13 +17,22 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { categories } from "../../constants/data";
 
-export function MobileNav() {
+interface MobileNavProps {
+  onOpenAuth: () => void;
+}
+
+export function MobileNav({ onOpenAuth }: MobileNavProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const toggleMobile = () => setIsMobileOpen((prev) => !prev);
   const closeMobile = () => setIsMobileOpen(false);
 
-  return (
+  const handleProfileClick = () => {
+    closeMobile();
+    onOpenAuth();
+  };
+
+ return (
     <div className="md:hidden relative">
       {/* Hamburger Button */}
       <button onClick={toggleMobile} aria-label="Toggle Menu">
@@ -84,11 +93,12 @@ export function MobileNav() {
               </li>
             </ul>
 
-            {/* Profile at bottom */}
+            {/* Profile at bottom - NOW WIRED UP */}
             <div className="px-6 py-6 border-t border-gray-200">
               <button
+                onClick={handleProfileClick}
                 aria-label="Open profile"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 hover:text-gray-600 transition-colors"
               >
                 <img
                   src="/assets/icons/icon-profile.svg"
