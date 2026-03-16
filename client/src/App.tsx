@@ -13,7 +13,6 @@ import AuthModal from "./features/auth/components/AuthModal";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
-
 export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
