@@ -1,13 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser, registerUser } from "../services/authApi";
 import type { LoginFormData, RegisterFormData } from "../types";
 
 export function useAuthModal(onClose: () => void) {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"login" | "register">("login");
+  const shouldRegister = location.state?.openRegister === true;
+  const [activeTab, setActiveTab] = useState<"login" | "register">(
+    shouldRegister ? "register" : "login"
+  );
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (shouldRegister) {
+      setActiveTab("register");
+    } else {
+      setActiveTab("login");
+    }
+  }, [shouldRegister]);
+  
 
   const handleLogin = async (data: LoginFormData) => {
     setIsLoading(true);
