@@ -27,6 +27,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-112.5 w-full bg-white rounded-4xl shadow-2xl p-10 relative overflow-hidden"
         >
+          {/* Close Button */}
           <button onClick={onClose} className="absolute right-8 top-8 text-gray-300 hover:text-gray-600 z-20">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
@@ -35,7 +36,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
           <div className="mb-8 text-center uppercase tracking-[0.2em] font-light text-2xl text-gray-900">LUXARIST</div>
 
-          {/* 3. Mapping tabs saves ~10 lines of repetitive button code */}
+          {/* 3. Mapping tabs */}
           <div className="bg-[#f3f3f3] p-1 rounded-full flex mb-10 relative">
             {(["login", "register"] as const).map((tab) => (
               <button
@@ -51,12 +52,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             ))}
           </div>
 
+            {/* Error Display */}
           {error && (
             <div className="mb-6 bg-red-50 text-red-500 p-3 text-[10px] font-bold text-center border border-red-100 rounded-lg uppercase tracking-widest">
               {error}
             </div>
           )}
 
+            {/* Form Content */}
           <div className="relative min-h-80">
             <AnimatePresence mode="wait">
               <motion.div

@@ -35,7 +35,8 @@ export function useAuthModal(onClose: () => void) {
       // result should ideally contain { token, user }
       login(result.token, result.user);
       onClose();
-      navigate("/");
+      const origin = location.state?.from?.pathname || "/dashboard";
+      navigate(origin, { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || "Invalid credentials.");
     } finally {
@@ -50,7 +51,7 @@ export function useAuthModal(onClose: () => void) {
       const result = await registerUser(data);
       login(result.token, result.user);
       onClose();
-      navigate("/");
+      navigate("/dashboard", { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed.");
     } finally {

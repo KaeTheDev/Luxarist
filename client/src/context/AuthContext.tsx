@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 interface User {
     id: string;
     email: string;
-    name?: string;
+    firstName: string;
+    lastName: string;
     role: 'customer' | 'admin';
 }
 
