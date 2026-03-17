@@ -6,6 +6,7 @@ interface User {
     id: string;
     email: string;
     name?: string;
+    role: 'customer' | 'admin';
 }
 
 interface AuthContextType {
@@ -14,6 +15,7 @@ interface AuthContextType {
     isLoading: boolean;
     login: (token: string, userData: User) => void;
     logout: () => void;
+
 }
 
 // Create Context

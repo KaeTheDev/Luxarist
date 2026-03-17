@@ -28,10 +28,30 @@ import { NewsletterSection } from "../features/home/sections/NewsletterSection";
 import { fetchProducts } from "../api/productServices";
 import type { Product } from "../types/Product";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export function Homepage() {
+interface HomepageProps {
+  onOpenAuth: () => void;
+}
+
+export function Homepage({ onOpenAuth }: HomepageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(()=> {
+    if(location.state?.from) {
+      // Small delay for visual polish -- let the homepage mount first
+      const timer = setTimeout(() => {
+        onOpenAuth();
+        // Keeps you on the same page but removes from data
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 600);
+
+      return() => clearTimeout(timer);
+    }
+  }, [location, onOpenAuth]);
 
   useEffect(() => {
     async function getInitialData() {
@@ -52,7 +72,7 @@ export function Homepage() {
   // Loading Guard First
   if(loading) {
     return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center tracking-[0.3em] uppercase text-[10px] text-gray-400">
       Loading Luxarist...
     </div>
     );
