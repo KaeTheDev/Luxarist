@@ -12,6 +12,9 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 import AuthModal from "./features/auth/components/AuthModal";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
+import { CustomerDashboard } from "./features/dashboard/CustomerDashboard";
+import { AdminDashboard } from "./features/dashboard/AdminDashboard";
 
 export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -19,7 +22,7 @@ export default function App() {
 
   useEffect(() => {
     // Check if we arrived here from the Login Page via the "Register Now" button
-    if(location.state?.openRegister) {
+    if (location.state?.openRegister) {
       setIsAuthModalOpen(true);
 
       // Clean Up: Remove the state so the modal doesn't pop up again if they refresh
@@ -39,7 +42,7 @@ export default function App() {
         {/* MainLayout wraps all pages to provide Navbar and Footer */}
         <Route element={<MainLayout onOpenAuth={openAuth} />}>
           {/* Index route is the Homepage */}
-          <Route index element={<Homepage />} />
+          <Route index element={<Homepage onOpenAuth={openAuth} />} />
 
           {/* Collections Routes */}
           <Route path="collections" element={<ShopAllPage />} />
@@ -59,16 +62,31 @@ export default function App() {
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <CustomerDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
       {/* Keep the Modal outside of Routes. 
           This ensures it stays mounted and can animate properly 
           with AnimatePresence during page transitions.
       */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={closeAuth} 
-      />
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuth} />
     </>
   );
 }
