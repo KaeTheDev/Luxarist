@@ -8,6 +8,7 @@ export interface IProductItem {
 // The Shape of a Review Document
 export interface IReview extends Document {
     products: IProductItem[];
+    customerId: string;
     customerFirstName: string;
     customerLastName: string;
     rating: number;
@@ -25,6 +26,7 @@ const productItemSchema = new Schema<IProductItem>({
 
 // Mongoose Schema = enforces this shape at DB level
 const reviewSchema = new Schema<IReview>({
+    customerId: { type: String, required: true, index: true },
     products: {
         type: [productItemSchema],
         required: true,
