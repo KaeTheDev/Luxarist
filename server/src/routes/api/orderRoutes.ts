@@ -10,7 +10,7 @@ const router = Router();
  * @access  Private (Self or Admin only)
  */
 
-// Use 'authMiddleware' specifically as named in your file
+// Use 'authMiddleware' specifically 
 router.get("/:customerId", authMiddleware, getMyOrders);
 
 export default router;
