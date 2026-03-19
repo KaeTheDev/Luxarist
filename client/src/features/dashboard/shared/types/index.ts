@@ -20,3 +20,13 @@ export interface Order {
     zip: string;
   };
 }
+
+export interface Review {
+    id: string;
+    productId: string;
+    productName: string;
+    rating: number; 
+    comment: string;
+    date: string;
+    image?: string;
+  }

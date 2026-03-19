@@ -1,5 +1,5 @@
 import { MapPin, CreditCard, Package } from "lucide-react";
-import type { Order } from "../../shared/types/Order";
+import type { Order } from "../../shared/types";
 import StatusStep from "./StatusStep";
 
 interface OrderDetailsProps {
