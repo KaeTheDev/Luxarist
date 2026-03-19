@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Order } from "../../shared/types/Order";
+import type { Order } from "../../shared/types";
 import OrderCard from "./OrderCard";
 import OrderDetails from "./OrderDetails";
 import { Loader2, ArrowLeft } from "lucide-react";
