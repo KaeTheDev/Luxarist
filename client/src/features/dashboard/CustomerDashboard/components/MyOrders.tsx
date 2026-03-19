@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Order } from "../../shared/types/Order";
 import OrderCard from "./OrderCard";
+import OrderDetails from "./OrderDetails";
 import { Loader2, ArrowLeft } from "lucide-react";
 
 export default function MyOrders() {
@@ -39,7 +40,7 @@ export default function MyOrders() {
                     <ArrowLeft size={16} /> Back to History
                 </button>
                 {/* Pass the actual order object instead of just the ID */}
-                {/* {currentOrder && <OrderDetails order={currentOrder} />} */}
+                {currentOrder && <OrderDetails order={currentOrder} />}
             </div>
         );
     }
