@@ -108,10 +108,10 @@ export function MobileNav({ onOpenAuth }: MobileNavProps) {
 
             {/* Profile at bottom */}
 
-            <div className="px-6 py-6 border-t border-gray-200 flex flex-col gap-4">
+            <div className="px-6 py-6 border-t border-gray-200 flex flex-row items-center justify-between">
               <button
                 onClick={handleProfileClick}
-                className="flex items-center gap-3 hover:text-gray-600 transition-colors text-xs tracking-[0.2em] uppercase"
+                className="flex items-center gap-3 hover:text-gray-600 transition-colors text-[10px] tracking-[0.2em] uppercase"
               >
                 <img
                   src="/assets/icons/icon-profile.svg"
@@ -129,7 +129,7 @@ export function MobileNav({ onOpenAuth }: MobileNavProps) {
                   <img
                     src="/assets/icons/icon-logout.svg"
                     alt="logout"
-                    className="h-4 w-4 opacity-40"
+                    className="h-5 w-5 opacity-40"
                   />
                   <span>Logout</span>
                 </button>
