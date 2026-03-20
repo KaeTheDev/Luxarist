@@ -36,8 +36,7 @@ export interface Review {
     firstName: string;
     lastName: string;
     email: string;
-    role: "Customer" | "Admin";
-    memberSince: string;
+    role: "customer" | "admin"; 
   }
 
   export type DashboardTab = "overview" | "orders" | "reviews" | "settings";

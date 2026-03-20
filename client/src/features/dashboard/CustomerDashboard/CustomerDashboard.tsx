@@ -1,26 +1,18 @@
 import { useState } from "react";
+import { useAuth } from "../../../context/AuthContext"; 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import MyOrders from "./components/MyOrders";
 import MyReviews from "./components/MyReviews";
 import AccountSettings from "./components/AccountSettings";
 import ProfileOverview from "./components/ProfileOverview";
-import type { DashboardTab, User } from "../shared/types";
+import type { DashboardTab } from "../shared/types"; 
 
 export function CustomerDashboard() {
-  // Manage the navigation state
-  const [activeTab, setActiveTab] = useState<DashboardTab>("overview");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Mock User State (This will eventually come from the Auth Context or an API fetch)
-  const [user] = useState<User>({
-    id: "user_01",
-    firstName: "Shakira",
-    lastName: "Reid-Thomas",
-    email: "shakira@example.com",
-    role: "Customer",
-    memberSince: "March 2024"
-  });
+    const [activeTab, setActiveTab] = useState<DashboardTab>("overview");
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    
+    const { user } = useAuth(); 
 
   return (
     <div className="flex min-h-screen bg-stone-50/50">
