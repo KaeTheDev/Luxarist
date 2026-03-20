@@ -17,18 +17,30 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { categories } from "../../constants/data";
 import { useAuth } from "../../../context/AuthContext";
+import { LogOut, UserCircle, LayoutDashboard, ShoppingBag, MessageSquare, Settings } from "lucide-react";
+import type { DashboardTab } from "../../../features/dashboard/shared/types";
 
 interface MobileNavProps {
   onOpenAuth: () => void;
+  activeTab?: DashboardTab;
+  setActiveTab?: (tab: DashboardTab) => void;
 }
 
-export function MobileNav({ onOpenAuth }: MobileNavProps) {
+export function MobileNav({ onOpenAuth, activeTab, setActiveTab }: MobileNavProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const toggleMobile = () => setIsMobileOpen((prev) => !prev);
   const closeMobile = () => setIsMobileOpen(false);
+
+  const handleTabClick = (tab: DashboardTab) => {
+    if (setActiveTab) {
+      setActiveTab(tab);
+    }
+    navigate("/dashboard");
+    closeMobile();
+  };
 
   const handleProfileClick = () => {
     closeMobile();
@@ -43,94 +55,91 @@ export function MobileNav({ onOpenAuth }: MobileNavProps) {
     logout();
     closeMobile();
   };
-
   return (
     <div className="md:hidden relative">
-      {/* Hamburger Button */}
       <button onClick={toggleMobile} aria-label="Toggle Menu">
-        <img
-          src="/assets/icons/icon-hamburger.svg"
-          alt="hamburger"
-          className="h-7 w-7"
-        />
+        <img src="/assets/icons/icon-hamburger.svg" alt="hamburger" className="h-7 w-7" />
       </button>
 
-      {/* Slide-Out Drawer */}
       {isMobileOpen && (
         <>
-          {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black/30 z-40"
-            onClick={closeMobile}
-          />
+          <div className="fixed inset-0 bg-black/30 z-40 backdrop-blur-sm" onClick={closeMobile} />
 
-          {/* Drawer */}
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 flex flex-col animate-in slide-in-from-left duration-300">
-            {/* Drawer Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <span className="font-light tracking-widest uppercase text-sm">
-                Menu
-              </span>
-
+          <div className="fixed top-0 left-0 w-72 h-full bg-white shadow-2xl z-50 flex flex-col animate-in slide-in-from-left duration-500">
+            
+            <div className="flex items-center justify-between px-8 py-6 border-b border-stone-100">
+              <span className="font-serif text-lg tracking-tight text-stone-900">Menu</span>
               <button onClick={closeMobile} aria-label="Close menu">
-                <img
-                  src="/assets/icons/icon-close.svg"
-                  alt="close"
-                  className="h-6 w-6"
-                />
+                <img src="/assets/icons/icon-close.svg" alt="close" className="h-5 w-5 opacity-60" />
               </button>
             </div>
-            {/* Nav Links */}
-            <ul className="mt-6 flex flex-col gap-6 px-6 flex-1 text-sm tracking-widest uppercase font-light">
-              <li>
-                <Link to="/" onClick={closeMobile}>
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/collections" onClick={closeMobile}>
-                  Collections
-                </Link>
-              </li>
-              <li>
-                <span className="font-medium">Shop</span>
-                <ul className="mt-4 ml-4 flex flex-col gap-4 text-xs text-gray-500">
-                  {categories.map(([label, slug]) => (
-                    <li key={slug}>
-                      <Link to={`/collections/${slug}`} onClick={closeMobile}>
-                        {label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            </ul>
 
-            {/* Profile at bottom */}
+            <nav className="flex-1 overflow-y-auto py-8 px-8">
+              <ul className="flex flex-col gap-8 text-[11px] tracking-[0.25em] uppercase font-bold text-stone-400">
+                <li><Link to="/" onClick={closeMobile} className="hover:text-stone-900 transition-colors">Home</Link></li>
+                <li><Link to="/collections" onClick={closeMobile} className="hover:text-stone-900 transition-colors">Collections</Link></li>
+                
+                <li>
+                  <span className="text-stone-900 mb-6 block">Shop</span>
+                  <ul className="mt-4 ml-4 flex flex-col gap-5 text-[10px] lowercase italic font-medium text-stone-400 border-l border-stone-100 pl-6">
+                    {categories.map(([label, slug]) => (
+                      <li key={slug}>
+                        <Link to={`/collections/${slug}`} onClick={closeMobile} className="hover:text-stone-900 transition-colors">{label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
 
-            <div className="px-6 py-6 border-t border-gray-200 flex flex-row items-center justify-between">
+                {/* Dashboard Tabs for Mobile/Tablet accessibility */}
+                {user && (
+                  <li className="mt-4 pt-8 border-t border-stone-100">
+                    <span className="text-stone-900 mb-6 block">Your Collection</span>
+                    <ul className="mt-4 ml-4 flex flex-col gap-6 text-[10px] uppercase tracking-widest font-bold text-stone-500">
+                      <button 
+                        onClick={() => handleTabClick("overview")} 
+                        className={`flex items-center gap-3 transition-colors ${activeTab === "overview" ? "text-stone-900" : "hover:text-stone-900"}`}
+                      >
+                        <LayoutDashboard size={14} /> Overview
+                      </button>
+                      <button 
+                        onClick={() => handleTabClick("orders")} 
+                        className={`flex items-center gap-3 transition-colors ${activeTab === "orders" ? "text-stone-900" : "hover:text-stone-900"}`}
+                      >
+                        <ShoppingBag size={14} /> My Orders
+                      </button>
+                      <button 
+                        onClick={() => handleTabClick("reviews")} 
+                        className={`flex items-center gap-3 transition-colors ${activeTab === "reviews" ? "text-stone-900" : "hover:text-stone-900"}`}
+                      >
+                        <MessageSquare size={14} /> My Reviews
+                      </button>
+                      <button 
+                        onClick={() => handleTabClick("settings")} 
+                        className={`flex items-center gap-3 transition-colors ${activeTab === "settings" ? "text-stone-900" : "hover:text-stone-900"}`}
+                      >
+                        <Settings size={14} /> Settings
+                      </button>
+                    </ul>
+                  </li>
+                )}
+              </ul>
+            </nav>
+
+            <div className="px-8 py-8 border-t border-stone-100 flex items-center justify-between bg-stone-50/50">
               <button
                 onClick={handleProfileClick}
-                className="flex items-center gap-3 hover:text-gray-600 transition-colors text-[10px] tracking-[0.2em] uppercase"
+                className="flex items-center gap-3 text-stone-900 hover:opacity-60 transition-all text-[10px] tracking-[0.2em] uppercase font-black"
               >
-                <img
-                  src="/assets/icons/icon-profile.svg"
-                  alt="profile"
-                  className="h-5 w-5"
-                />
-                <span>{user ? "Account" : "Profile"}</span>
+                <UserCircle size={20} strokeWidth={1.5} className="text-stone-400" />
+                <span>Account</span>
               </button>
 
               {user && (
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 text-gray-400 hover:text-black transition-colors text-[10px] tracking-[0.2em] uppercase"
+                  className="flex items-center gap-2 text-stone-400 hover:text-red-500 transition-colors text-[10px] tracking-[0.2em] uppercase font-bold"
                 >
-                  <img
-                    src="/assets/icons/icon-logout.svg"
-                    alt="logout"
-                    className="h-5 w-5 opacity-40"
-                  />
+                  <LogOut size={16} strokeWidth={2} />
                   <span>Logout</span>
                 </button>
               )}

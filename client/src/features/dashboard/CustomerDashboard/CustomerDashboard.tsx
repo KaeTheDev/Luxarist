@@ -38,8 +38,6 @@ export function CustomerDashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         <Header
           activeTab={activeTab}
-          onMenuClick={() => setIsMobileMenuOpen(true)}
-          userName="Shakira"
         />
 
         <main className="flex-1 p-6 md:p-10 lg:p-16 max-w-7xl mx-auto w-full">
