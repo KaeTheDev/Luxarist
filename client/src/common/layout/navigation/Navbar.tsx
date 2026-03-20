@@ -20,7 +20,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ onOpenAuth }: NavbarProps) {
-  const { user, logout } = useAuth(); // Access global auth state
+  const { user } = useAuth(); // Access global auth state
 
   return (
     <header className="bg-white border-b border-gray-100">
@@ -74,15 +74,6 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
               </Link>
             </button>
 
-            {/* If logged in, show a subtle Logout link next to the icon */}
-            {user && (
-              <button 
-                onClick={logout}
-                className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors"
-              >
-                Logout
-              </button>
-            )}
           </div>
         </div>
 
