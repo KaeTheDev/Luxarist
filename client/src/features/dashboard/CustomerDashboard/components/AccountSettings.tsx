@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Lock,  Mail, Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { User, Lock, MapPin, CreditCard, Trash2, Plus, Save, Loader2 } from "lucide-react";
 
 export default function AccountSettings() {
     const [loading, setLoading] = useState(false);
@@ -7,159 +7,167 @@ export default function AccountSettings() {
         type: null, message: ""
     });
 
-    // Setup Form State
     const [formData, setFormData] = useState({
-        firstName: "Shakira", // in production, this comes from the Auth context/API
+        firstName: "Shakira",
         lastName: "Reid-Thomas",
-        email: "shakira@luxarist",
+        email: "shakira@luxarist.com",
         newPassword: "",
         confirmPassword: ""
     });
+
+    const addresses = [
+        { id: 1, type: "Home", isDefault: true, address: "123 Luxury Avenue, New York, NY 10022" }
+    ];
+
+    const payments = [
+        { id: 1, brand: "Visa", last4: "4532", isDefault: true, expiry: "12/26" }
+    ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setStatus({ type: null, message: "" });
 
-        // Validate Passwords Match
         if(formData.newPassword && formData.newPassword !== formData.confirmPassword) {
             setStatus({ type: 'error', message: "Passwords do not match." });
             setLoading(false);
             return;
         }
 
-        // Implement simulated PATCH /api/users/me
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-
-            console.log("PATCH /api/users/me", {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                password: formData.newPassword || undefined
-            });
-
+            await new Promise(resolve => setTimeout(resolve, 1500));
             setStatus({ type: 'success', message: "Profile updated successfully." });
-            setFormData(prev => ({ ...prev, newPassword: "", confirmPassword: "" }));
         } catch (err) {
-            setStatus({ type: 'error', message: "Failed to update profile. Please try again." });
+            setStatus({ type: 'error', message: "Update failed." });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-2xl space-y-8 animate-in fade-in duration-700">
+        <div className="max-w-4xl space-y-10 animate-in fade-in duration-700 pb-20">
           <header>
-            <h2 className="text-2xl font-serif text-stone-900">Account Settings</h2>
-            <p className="text-sm text-stone-500 italic">Refine your profile and security credentials.</p>
+            <h2 className="text-3xl font-serif text-stone-900 tracking-tight">Account Settings</h2>
+            <p className="text-sm text-stone-500 italic mt-1">Manage your account information and security.</p>
           </header>
     
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="grid gap-8">
             
-            {/* Section: Personal Details */}
-            <div className="bg-white border border-stone-100 p-8 rounded-4xl shadow-sm space-y-6">
-              <div className="flex items-center gap-2 pb-4 border-b border-stone-50">
-                <User size={16} className="text-stone-400" />
-                <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-900">Identity</h3>
+            {/* 1. Profile Information */}
+            <section className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-stone-50">
+                <div className="flex items-center gap-3">
+                    <User size={18} className="text-stone-400" />
+                    <h3 className="text-sm font-semibold text-stone-900">Profile Information</h3>
+                </div>
+                <button type="button" className="text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-stone-900 transition-colors">Edit</button>
               </div>
     
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-stone-400 font-bold ml-1">First Name</label>
-                  <input 
-                    name="firstName"
-                    type="text" 
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="w-full bg-stone-50 border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-stone-900 transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-stone-400 font-bold ml-1">Last Name</label>
-                  <input 
-                    name="lastName"
-                    type="text" 
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className="w-full bg-stone-50 border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-stone-900 transition-all"
-                  />
+              <div className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-stone-400 font-bold ml-1">Full Name</label>
+                        <input name="firstName" type="text" value={`${formData.firstName} ${formData.lastName}`} onChange={handleChange} className="w-full bg-stone-50/50 border border-stone-100 rounded-2xl px-5 py-3 text-sm focus:ring-1 focus:ring-stone-900 transition-all" />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-stone-400 font-bold ml-1">Email Address</label>
+                        <input type="email" value={formData.email} disabled className="w-full bg-stone-50/30 border border-stone-50 rounded-2xl px-5 py-3 text-sm text-stone-400 cursor-not-allowed italic" />
+                    </div>
                 </div>
               </div>
+            </section>
     
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-stone-400 font-bold ml-1 flex items-center gap-2">
-                  Email Address <span className="normal-case font-medium italic text-stone-300">(Read-only)</span>
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-300" size={16} />
-                  <input 
-                    type="email" 
-                    value={formData.email}
-                    disabled 
-                    className="w-full bg-stone-100 border-none rounded-2xl pl-12 pr-5 py-3 text-sm text-stone-400 cursor-not-allowed font-light"
-                  />
+             {/* 2. Password Section */}
+            <section className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-stone-50">
+                <div className="flex items-center gap-3">
+                    <Lock size={18} className="text-stone-400" />
+                    <h3 className="text-sm font-semibold text-stone-900">Password</h3>
                 </div>
+                <button type="button" className="text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-stone-900 transition-colors">Change</button>
               </div>
-            </div>
-    
-            {/* Section: Security */}
-            <div className="bg-white border border-stone-100 p-8 rounded-4xl shadow-sm space-y-6">
-              <div className="flex items-center gap-2 pb-4 border-b border-stone-50">
-                <Lock size={16} className="text-stone-400" />
-                <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-900">Security</h3>
-              </div>
-    
-              <div className="grid md:grid-cols-2 gap-6">
-                <input 
-                  name="newPassword"
-                  type="password" 
-                  placeholder="New Password"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  className="w-full bg-stone-50 border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-stone-900 transition-all placeholder:text-stone-300"
-                />
-                <input 
-                  name="confirmPassword"
-                  type="password" 
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full bg-stone-50 border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-stone-900 transition-all placeholder:text-stone-300"
-                />
-              </div>
-            </div>
-    
-            {/* Footer: Feedback & Save */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-4">
-              <div className="min-h-6">
-                {status.type === 'success' && (
-                  <div className="flex items-center gap-2 text-green-600 animate-in fade-in slide-in-from-left-2">
-                    <CheckCircle2 size={18} />
-                    <span className="text-sm font-medium">{status.message}</span>
-                  </div>
-                )}
-                {status.type === 'error' && (
-                  <div className="flex items-center gap-2 text-red-500 animate-in shake duration-300">
-                    <AlertCircle size={18} />
-                    <span className="text-sm font-medium">{status.message}</span>
-                  </div>
-                )}
+              <input type="password" placeholder="••••••••" disabled className="w-full bg-stone-50/50 border border-stone-100 rounded-2xl px-5 py-3 text-sm" />
+            </section>
+
+            {/* 3. Shipping Addresses */}
+            <section className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-stone-50">
+                <div className="flex items-center gap-3">
+                    <MapPin size={18} className="text-stone-400" />
+                    <h3 className="text-sm font-semibold text-stone-900">Shipping Addresses</h3>
+                </div>
+                <button type="button" className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-stone-900 transition-colors">
+                    <Plus size={12} /> Add New
+                </button>
               </div>
               
+              {addresses.map(addr => (
+                <div key={addr.id} className="p-6 border border-stone-100 rounded-3xl flex justify-between items-start">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-stone-900">{addr.type}</span>
+                            {addr.isDefault && <span className="bg-stone-900 text-white text-[8px] px-2 py-0.5 rounded-full uppercase tracking-tighter">Default</span>}
+                        </div>
+                        <p className="text-xs text-stone-500 max-w-50 leading-relaxed">{addr.address}</p>
+                    </div>
+                    <button type="button" className="text-stone-300 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                </div>
+              ))}
+            </section>
+
+          {/* 4. Payment Methods */}
+            <section className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-stone-50">
+                    <div className="flex items-center gap-3">
+                        <CreditCard size={18} className="text-stone-400" />
+                        <h3 className="text-sm font-semibold text-stone-900">Payment Methods</h3>
+                    </div>
+                    <button type="button" className="text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-stone-900">Add New</button>
+                </div>
+                {payments.map(pay => (
+                    <div key={pay.id} className="p-6 border border-stone-100 rounded-3xl flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-6 bg-stone-50 rounded border border-stone-100 flex items-center justify-center text-[10px] font-bold italic text-stone-400">{pay.brand}</div>
+                            <div>
+                                <p className="text-sm font-medium text-stone-900">•••• •••• •••• {pay.last4}</p>
+                                <p className="text-[10px] text-stone-400 uppercase tracking-widest">Expires {pay.expiry}</p>
+                            </div>
+                        </div>
+                        <button type="button" className="text-stone-300 hover:text-red-500"><Trash2 size={16} /></button>
+                    </div>
+                ))}
+            </section>
+
+          {/* 5. Danger Zone */}
+            <section className="border border-red-50 rounded-[2.5rem] p-8 bg-red-50/10">
+                <h3 className="text-sm font-bold text-red-900 mb-2">Danger Zone</h3>
+                <p className="text-xs text-red-600/60 mb-6">Permanently delete your account and all associated data.</p>
+                <button type="button" className="px-6 py-3 border border-red-200 text-red-600 rounded-2xl text-[10px] uppercase tracking-widest font-black hover:bg-red-50 transition-all">
+                    Delete Account
+                </button>
+            </section>
+    
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-4">
+              {/* Status Feedback */}
+              <div className="text-sm font-medium">
+                {status.type === 'success' && <span className="text-green-600">{status.message}</span>}
+                {status.type === 'error' && <span className="text-red-500">{status.message}</span>}
+              </div>
+
               <button 
-                type="submit"
-                disabled={loading}
-                className="w-full md:w-auto bg-stone-900 text-white px-10 py-4 rounded-2xl text-[10px] uppercase tracking-[0.3em] font-black flex items-center justify-center gap-3 hover:bg-stone-800 disabled:bg-stone-200 transition-all shadow-lg active:scale-95"
+                type="submit" 
+                disabled={loading} 
+                className="bg-stone-900 text-white px-10 py-4 rounded-2xl text-[10px] uppercase tracking-[0.3em] font-black flex items-center gap-3 hover:bg-stone-800 transition-all shadow-lg"
               >
                 {loading ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
-                {loading ? "Updating..." : "Save Changes"}
+                {loading ? "Updating..." : "Save All Changes"}
               </button>
             </div>
           </form>
         </div>
       );
-    }
+}

@@ -9,7 +9,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     return (
         <div className="bg-white border border-stone-100 p-6 md:p-8 rounded-4xl hover:shadow-xl hover:shadow-stone-200/10 transition-all duration-500 group flex flex-col md:flex-row gap-6">
             
-            {/* 1. PRODUCT IMAGE: Added square thumbnail with soft border */}
+            {/* Product Image */}
             <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-stone-50 rounded-2xl overflow-hidden border border-stone-100">
                 <img 
                     src={review.image || "/api/placeholder/100/100"} 
