@@ -30,3 +30,14 @@ export interface Review {
     date: string;
     image?: string;
   }
+
+  export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: "Customer" | "Admin";
+    memberSince: string;
+  }
+
+  export type DashboardTab = "overview" | "orders" | "reviews" | "settings";

@@ -1,25 +1,25 @@
 import { LayoutDashboard, ShoppingBag, MessageSquare, Settings, LogOut } from "lucide-react";
 import NavItem from "./NavItem";
-
-// Define the Tab Type for strict consistency
-export type DashboardTab = "overview" | "orders" | "reviews" | "settings";
+import type { DashboardTab, User } from "../../shared/types";
 
 interface SidebarProps {
   activeTab: DashboardTab;
   setActiveTab: (tab: DashboardTab) => void;
+  user: User | null;
 }
 
-export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, user }: SidebarProps) {
+  const displayName = user?.firstName || "Client";
   return (
     <aside className="w-72 bg-white bordr-r border-stone-100 h-screen sticky top-0 hidden lg:flex flex-col p-8 transition-all">
       {/* Luxarist Branding */}
       <div className="mb-12 px-4">
-        <h1 className="text-2xl font-serif text-stone-900 tracking-tight">
-          Luxarist
-        </h1>
-        <p className="text-[10px] uppercase tracking-[0.3em] text-stone-300 font-bold mt-1">
-          Client Dashboard
-        </p>
+        <span className="text-[9px] uppercase tracking-[0.4em] text-stone-300 font-bold block mb-1">
+          Client Portal
+        </span>
+        <h2 className="text-xs font-medium text-stone-500 italic">
+        {displayName}'s Collection
+        </h2>
       </div>
 
       {/* Primary Navigation */}
