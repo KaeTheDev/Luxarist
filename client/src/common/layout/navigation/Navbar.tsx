@@ -74,7 +74,6 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
               </Link>
             </button>
 
-           
           </div>
         </div>
 

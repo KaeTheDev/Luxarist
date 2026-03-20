@@ -1,84 +1,6 @@
-// import { LayoutDashboard, ShoppingBag, MessageSquare, Settings, LogOut } from "lucide-react";
-// import NavItem from "./NavItem";
-// import type { DashboardTab, User } from "../../shared/types";
-// import { useAuth } from "../../../../context/AuthContext";
-
-// interface SidebarProps {
-//   activeTab: DashboardTab;
-//   setActiveTab: (tab: DashboardTab) => void;
-//   user: User | null;
-// }
-
-// export default function Sidebar({ activeTab, setActiveTab, user }: SidebarProps) {
-//   const { logout } = useAuth();
-//   return (
-//     <aside className="hidden md:flex flex-col w-64 border-r border-stone-100 bg-white h-[calc(100vh-80px)] sticky top-20">
-//       {/* Luxarist Branding */}
-//       <div className="p-8">
-//         <p className="text-[10px] uppercase tracking-[0.2em] text-stone-400 mt-1">Client Dashboard</p>
-//       </div>
-
-//       {/* Primary Navigation */}
-//       <nav className="flex-1 space-y-2">
-//         <NavItem
-//           icon={<LayoutDashboard size={18} />}
-//           label="Overview"
-//           isActive={activeTab === "overview"}
-//           onClick={() => setActiveTab("overview")}
-//         />
-
-//         <NavItem
-//           icon={<ShoppingBag size={18} />}
-//           label="My Orders"
-//           isActive={activeTab === "orders"}
-//           onClick={() => setActiveTab("orders")}
-//         />
-
-//         <NavItem
-//           icon={<MessageSquare size={18} />}
-//           label="My Reviews"
-//           isActive={activeTab === "reviews"}
-//           onClick={() => setActiveTab("reviews")}
-//         />
-
-//         <NavItem
-//           icon={<Settings size={18} />}
-//           label="Settings"
-//           isActive={activeTab === "settings"}
-//           onClick={() => setActiveTab("settings")}
-//         />
-//       </nav>
-
-//       {/* Secondary Actions (Logout) */}
-//       <div className="pt-8 border-t border-stone-50">
-//         <button
-//           onClick={() => console.log("Logging out...")}
-//           className="w-full flex items-center gap-4 px-4 py-4 text-stone-400 hover:text-red-500 transition-colors group"
-//         >
-//           <LogOut
-//             size={18}
-//             className="group-hover:translate-x-1 transition-transform"
-//           />
-//           <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
-//             Sign Out
-//           </span>
-//         </button>
-//       </div>
-//     </aside>
-//   );
-// }
-
-import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  MessageSquare, 
-  Settings, 
-  LogOut,
-  UserCircle 
-} from "lucide-react";
+import {  LayoutDashboard, ShoppingBag, MessageSquare, Settings, LogOut, UserCircle } from "lucide-react";
 import type { DashboardTab, User } from "../../shared/types";
 import { useAuth } from "../../../../context/AuthContext";
-
 
 interface SidebarProps {
   activeTab: DashboardTab;
@@ -114,7 +36,7 @@ export default function Sidebar({ activeTab, setActiveTab, user }: SidebarProps)
         </div>
       </div>
 
-      {/* 2. Navigation Section */}
+      {/* Navigation Section */}
       <nav className="flex-1 px-6">
         <ul className="space-y-3">
           {navItems.map((item) => (
@@ -135,7 +57,7 @@ export default function Sidebar({ activeTab, setActiveTab, user }: SidebarProps)
         </ul>
       </nav>
 
-      {/* 3. Footer Action */}
+      {/* Footer Action */}
       <div className="p-8 mt-auto border-t border-stone-50">
         <button 
           onClick={logout}
