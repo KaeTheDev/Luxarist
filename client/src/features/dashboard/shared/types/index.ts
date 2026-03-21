@@ -23,7 +23,7 @@ export interface Order {
 
 export interface Review {
     id: string;
-    productId: string;
+    productId?: string;
     productName: string;
     rating: number; 
     comment: string;

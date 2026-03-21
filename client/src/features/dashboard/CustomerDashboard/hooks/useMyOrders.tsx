@@ -23,7 +23,7 @@ export function useMyOrders() {
 
                 const data = await res.json();
 
-                // Map DB fields → your frontend Order type
+                // Map DB fields → the frontend Order type
                 const mapped: Order[] = data.map((o: any) => ({
                     id: o.orderNumber,
                     date: new Date(o.orderDate).toLocaleDateString("en-US", {
@@ -35,7 +35,7 @@ export function useMyOrders() {
                         name: item.name,
                         price: item.price,
                         quantity: item.quantity,
-                        category: "",   // not in your DB model, safe default
+                        category: "",   
                     })),
                 }));
 
