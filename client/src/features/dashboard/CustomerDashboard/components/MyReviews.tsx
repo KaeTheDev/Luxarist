@@ -1,47 +1,12 @@
-import { useState, useEffect } from "react";
-import { MessageSquare, Loader2, Star } from "lucide-react";
-import type { Review } from "../../shared/types";
+import { useState } from "react";
 import ReviewCard from "./ReviewCard";
+import { MessageSquare, Loader2, Star } from "lucide-react";
+import { useReviews } from "../hooks/useReviews";
+
 
 export default function MyReviews() {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setReviews([
-        {
-          id: "REV-9921",
-          productId: "prod-001",
-          productName: "Solaire Statement Necklace",
-          image: "https://ik.imagekit.io/gwbd4eva2026/products/necklaces/necklace-002-main.png?updatedAt=1770533144005",
-          rating: 5,
-          comment: "Absolutely stunning! The craftsmanship is exceptional and it looks even more beautiful in person. I receive compliments every time I wear it.",
-          date: "December 18, 2024",
-        },
-        {
-          id: "REV-9925",
-          productId: "prod-004",
-          productName: "Éternité Diamond Ring",
-          image: "https://ik.imagekit.io/gwbd4eva2026/products/rings/ring-001-main.png?updatedAt=1770533319348",
-          rating: 5,
-          comment: "Perfect engagement ring! The diamond sparkles beautifully and the setting is timeless. My fiancée absolutely loves it.",
-          date: "December 4, 2024",
-        },
-        {
-          id: "REV-9928",
-          productId: "prod-007",
-          productName: "Celestial Diamond Studs",
-          image: "https://ik.imagekit.io/gwbd4eva2026/products/earrings/earring-006-main.jpeg?updatedAt=1770533119660",
-          rating: 4,
-          comment: "Beautiful earrings with excellent quality. Very elegant and versatile. Only minor note is they feel slightly heavier than expected, but still comfortable.",
-          date: "December 18, 2024",
-        }
-      ]);
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { reviews, loading } = useReviews();
+  const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
 
   // Logic for Metric Cards
   const totalReviews = reviews.length;
@@ -93,7 +58,9 @@ export default function MyReviews() {
         ) : (
           <div className="divide-y divide-stone-50">
             {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
+                <div key={review.id} onClick={() => setSelectedReviewId(review.id)} className="cursor-pointer">
+                  <ReviewCard review={review} /> 
+                </div>
             ))}
           </div>
         )}

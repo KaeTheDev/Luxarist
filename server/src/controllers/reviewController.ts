@@ -32,3 +32,39 @@ export async function getMyReviews(req: AuthRequest, res: Response) {
         });
     }
 }
+
+/**
+ * Update a review by ID.
+ * PUT /api/reviews/:reviewId
+ */
+export async function updateReview(req: AuthRequest, res: Response) {
+    try {
+        const { reviewId } = req.params;
+        const { rating, comment } = req.body;
+
+        // Find the review first so we can verify ownership
+        const review = await Review.findById(reviewId);
+
+        if(!review) {
+            return res.status(404).json({ message: "Review not found." });
+        }
+
+        // Only the owner or an admin can update
+        if(!req.user || (req.user.id !== review.customerId && req.user.role !== "admin")){
+            return res.status(403).json({ message: "Unauthorized to updated this review." });
+        }
+
+        // Only allow rating and comment to be updated
+        review.rating = rating ?? review.rating;
+        review.comment = comment ?? review.comment;
+
+        const updated = await review.save();
+
+        return res.status(200).json(updated);
+    } catch (error: any) {
+        return res.status(500).json({
+            message: "Error updating review",
+            error: error.message,
+        });
+    }
+}
