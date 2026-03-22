@@ -22,6 +22,7 @@ import cors from "cors";
 // ROUTES GET IMPORTED HERE 👇🏾
 import productRoutes from "./routes/api/productRoutes";
 import categoryRoutes from "./routes/api/categoryRoutes";
+import reviewRoutes from "./routes/api/reviewRoutes";
 import authRoutes from "./routes/api/authRoutes";
 
  // TEST ROUTES (DELETE LATER w/ Test Routes and Controllers)
@@ -106,6 +107,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 
 // Mount Review Routes Here 👇🏾
+app.use("/api/reviews", reviewRoutes);
 
 // Mount Test Routes Here 👇🏾 (DELETE LATER)
 app.use('/api/test', productTestRoutes);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMyReviews } from "../../controllers/reviewController";
+import { getMyReviews, updateReview } from "../../controllers/reviewController";
 import { authMiddleware } from "../../middleware/auth";
 
 const router = Router();
@@ -12,5 +12,7 @@ const router = Router();
 
 // Use 'authMiddleware' specifically 
 router.get("/:userId", authMiddleware, getMyReviews);
+
+router.put("/:reviewId", authMiddleware, updateReview);
 
 export default router;
