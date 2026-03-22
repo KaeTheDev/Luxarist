@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext"; 
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
-import MyOrders from "./components/MyOrders";
-import MyReviews from "./components/MyReviews";
-import AccountSettings from "./components/AccountSettings";
-import ProfileOverview from "./components/ProfileOverview";
+import Sidebar from "./components/layout/Sidebar";
+import Header from "./components/layout/Header";
+import MyOrders from "./components/orders/MyOrders";
+import MyReviews from "./components/reviews/MyReviews";
+import AccountSettings from "./components/settings/AccountSettings";
+import ProfileOverview from "./components/overview/ProfileOverview";
 import type { DashboardTab } from "../shared/types"; 
 
 export function CustomerDashboard() {

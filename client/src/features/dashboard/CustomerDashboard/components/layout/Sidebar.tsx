@@ -1,6 +1,6 @@
 import {  LayoutDashboard, ShoppingBag, MessageSquare, Settings, LogOut, UserCircle } from "lucide-react";
-import type { DashboardTab, User } from "../../shared/types";
-import { useAuth } from "../../../../context/AuthContext";
+import type { DashboardTab, User } from "../../../shared/types";
+import { useAuth } from "../../../../../context/AuthContext";
 
 interface SidebarProps {
   activeTab: DashboardTab;

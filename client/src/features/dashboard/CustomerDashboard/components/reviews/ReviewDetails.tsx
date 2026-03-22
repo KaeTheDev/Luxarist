@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Star, Calendar, Package, Pencil, X, Check, Loader2 } from "lucide-react";
-import type { Review } from "../../shared/types";
+import type { Review } from "../../../shared/types";
 
 const API_URL = import.meta.env.DEV
   ? "http://localhost:3000/api"

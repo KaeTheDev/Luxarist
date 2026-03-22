@@ -1,6 +1,6 @@
 import { Package, Star, Calendar, ArrowUpRight } from "lucide-react";
-import { useAuth } from "../../../../context/AuthContext";
-import { useDashboardStats } from "../hooks/useDashboardStats";
+import { useAuth } from "../../../../../context/AuthContext";
+import { useDashboardStats } from "../../hooks/useDashboardStats";
 
 function formatMemberSince(iso: string) {
     return new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric" });

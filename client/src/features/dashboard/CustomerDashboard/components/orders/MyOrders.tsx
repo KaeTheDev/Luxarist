@@ -1,8 +1,9 @@
 import { useState } from "react";
-import OrderCard from "./OrderCard";
-import OrderDetails from "./OrderDetails";
+import { useMyOrders } from "../../hooks/useMyOrders";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { useMyOrders } from "../hooks/useMyOrders";
+import OrderDetails from "./OrderDetails";
+import OrderCard from "./OrderCard";
+
 
 export default function MyOrders() {
     const { orders, loading } = useMyOrders(); 

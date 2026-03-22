@@ -2,8 +2,8 @@ import { useState } from "react";
 import ReviewCard from "./ReviewCard";
 import ReviewDetails from "./ReviewDetails";
 import { MessageSquare, Loader2, Star, ArrowLeft } from "lucide-react";
-import { useReviews } from "../hooks/useReviews";
-import { useAuth } from "../../../../context/AuthContext";
+import { useReviews } from "../../hooks/useReviews";
+import { useAuth } from "../../../../../context/AuthContext";
 
 export default function MyReviews() {
   const { reviews, loading, setReviews } = useReviews();
