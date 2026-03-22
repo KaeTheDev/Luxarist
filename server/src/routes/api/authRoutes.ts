@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateBody } from "../../middleware/validate";
-import { register, login, getMe, updateMe, changePassword, addAddress, deleteAddress } from "../../controllers/authController";
+import { register, login, getMe, updateMe, changePassword, addAddress, deleteAddress, deleteAccount } from "../../controllers/authController";
 import { authMiddleware } from "../../middleware/auth";
 import { z } from "zod";
 
@@ -68,5 +68,12 @@ router.post("/me/addresses", authMiddleware, addAddress);
  * @access  Private
  */
 router.delete("/me/addresses/:addressId", authMiddleware, deleteAddress);
+
+/**
+ * @route   DELETE /api/auth/me
+ * @desc    Delete a user account
+ * @access  Private
+ */
+router.delete("/me", authMiddleware, deleteAccount);
 
 export default router;
