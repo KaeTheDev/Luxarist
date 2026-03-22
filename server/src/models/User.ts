@@ -1,6 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
+interface IAddress {
+    _id?: string;
+    type: string;
+    address: string;
+    isDefault: boolean;
+}
+
 // The Shape of a User Document
 export interface IUser extends Document {
     firstName: string;
@@ -9,8 +16,15 @@ export interface IUser extends Document {
     password: string;
     role: 'admin' | 'customer';
     memberSince: Date;
+    addresses: IAddress[];
     comparePassword(password: string): Promise<boolean>;
 }
+
+const addressSchema = new Schema<IAddress>({
+    type: { type: String, required: true },
+    address: { type: String, required: true },
+    isDefault: { type: Boolean, default: false }
+}, {_id: true });
 
 // Mongoose Schema = enforces this shape at DB level
 const userSchema = new Schema<IUser>({
@@ -30,7 +44,8 @@ const userSchema = new Schema<IUser>({
         enum: ['admin', 'customer'], 
         default: 'customer'
     },
-    memberSince: { type: Date, default: Date.now }
+    memberSince: { type: Date, default: Date.now },
+    addresses: { type: [addressSchema], default: [] },
 });
 
 // Pre-save hook to hash password before saving
