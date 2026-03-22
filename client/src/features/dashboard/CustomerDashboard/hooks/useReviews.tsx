@@ -9,7 +9,7 @@ export function useReviews() {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    
     useEffect(() => {
         if(!user || !token) return;
 
@@ -47,5 +47,5 @@ export function useReviews() {
         fetchReviews();
     }, [user, token]);
 
-    return { reviews, loading, error };
+    return { reviews, setReviews, loading, error };
 }

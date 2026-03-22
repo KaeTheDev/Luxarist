@@ -1,11 +1,13 @@
 import { useState } from "react";
 import ReviewCard from "./ReviewCard";
-import { MessageSquare, Loader2, Star } from "lucide-react";
+import ReviewDetails from "./ReviewDetails";
+import { MessageSquare, Loader2, Star, ArrowLeft } from "lucide-react";
 import { useReviews } from "../hooks/useReviews";
-
+import { useAuth } from "../../../../context/AuthContext";
 
 export default function MyReviews() {
-  const { reviews, loading } = useReviews();
+  const { reviews, loading, setReviews } = useReviews();
+const { token } = useAuth();
   const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
 
   // Logic for Metric Cards
@@ -26,6 +28,30 @@ export default function MyReviews() {
       <Loader2 className="animate-spin text-stone-200" size={40} />
     </div>
   );
+
+  // ✅ Switch to ReviewDetails when a card is clicked
+  if (selectedReviewId) {
+    const currentReview = reviews.find(r => r.id === selectedReviewId);
+    return (
+        <div className="space-y-6 animate-in fade-in duration-500">
+            <button
+                onClick={() => setSelectedReviewId(null)}
+                className="flex items-center gap-2 text-stone-400 hover:text-stone-900 transition-colors uppercase text-[10px] tracking-[0.2em] font-bold"
+            >
+                <ArrowLeft size={16} /> Back to Reviews
+            </button>
+            {currentReview && (
+                <ReviewDetails
+                    review={currentReview}
+                    token={token!}
+                    onUpdated={(updated) => {
+                        setReviews(prev => prev.map(r => r.id === updated.id ? updated : r));
+                    }}
+                />
+            )}
+        </div>
+    );
+}
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
@@ -67,4 +93,4 @@ export default function MyReviews() {
       </section>
     </div>
   );
-}
+} 
