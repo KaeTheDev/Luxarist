@@ -1,5 +1,5 @@
 import { Star, Calendar } from "lucide-react";
-import type { Review } from "../../shared/types";
+import type { Review } from "../../../shared/types";
 
 interface ReviewCardProps {
     review: Review;
