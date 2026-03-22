@@ -1,4 +1,4 @@
-import type { DashboardTab } from "../../shared/types";
+import type { DashboardTab } from "../../../shared/types";
 
 interface HeaderProps {
     activeTab: DashboardTab;
