@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 import { User } from "../models/User";
+import { Order } from "../models/Order";
+import { Review } from "../models/Review";
 
 // Define a custom interface to handle the 'user' property added by your auth middleware
 interface AuthRequest extends Request {
@@ -267,6 +269,28 @@ export async function deleteAddress(req: AuthRequest, res: Response) {
         );
         await user.save();
         res.status(200).json(user.addresses);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
+
+/**
+ * @desc    Delete account
+ * @route   DELETE /api/auth/me
+ * @access  Private
+ */
+export async function deleteAccount(req: AuthRequest, res: Response) {
+    try {
+        const userId = req.user?.id;
+
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        await User.findByIdAndDelete(userId);
+        await Order.deleteMany({ customerId: userId as string });
+        await Review.deleteMany({ customerId: userId as string });
+
+        res.status(200).json({ message: "Account deleted successfully" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
         res.status(500).json({ message, error: message });
