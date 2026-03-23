@@ -1,6 +1,6 @@
 import { Router } from "express";
 import z from "zod";
-import { getAdminMetrics, createProduct, updateProduct, deleteProduct } from "../../controllers/adminController";
+import { getAdminMetrics, createProduct, updateProduct, deleteProduct, getAllOrders, updateOrderStatus } from "../../controllers/adminController";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 
@@ -52,6 +52,8 @@ const createProductSchema = z.object({
 // reuse createProductSchema but make all fields optional for partial updates
 const updateProductSchema = createProductSchema.partial();
 
+const updateOrderStatusSchema = z.object({ status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) });
+
 /**
  * @route   GET /api/admin/metrics
  * @desc    Get admin dashboard metrics
@@ -82,5 +84,19 @@ router.put("/products/:id", authMiddleware, adminOnly, validateBody(updateProduc
  * @access  Private (Admin only)
  */
 router.delete("/products/:id", authMiddleware, adminOnly, deleteProduct);
+
+/**
+ * @route   GET /api/admin/orders
+ * @desc    Get all orders
+ * @access  Private (Admin only)
+ */
+router.get("/orders", authMiddleware, adminOnly, getAllOrders);
+
+/**
+ * @route   PUT /api/admin/orders/:id
+ * @desc    Update order status
+ * @access  Private (Admin only)
+ */
+router.put("/orders/:id", authMiddleware, adminOnly, validateBody(updateOrderStatusSchema), updateOrderStatus);
 
 export default router;
