@@ -162,3 +162,46 @@ export async function updateOrderStatus(req: AuthRequest, res: Response) {
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Get all reviews
+ * @route   GET /api/admin/reviews
+ * @access  Private (Admin only)
+ */
+
+export async function getAllReviews(req: AuthRequest, res: Response) {
+    try {
+        const reviews = await Review.find()
+            .sort({ createdAt: -1 });
+
+        res.status(200).json(reviews);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
+
+/**
+ * @desc    Approve or reject a review
+ * @route   PUT /api/admin/reviews/:id
+ * @access  Private (Admin only)
+ */
+
+export async function updateReviewApproval(req: AuthRequest, res: Response) {
+    try {
+        const { approved } = req.body;
+
+        const review = await Review.findByIdAndUpdate(
+            req.params.id,
+            { approved },
+            { new: true, runValidators: true }
+        );
+
+        if (!review) return res.status(404).json({ message: "Review not found" });
+
+        res.status(200).json(review);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
