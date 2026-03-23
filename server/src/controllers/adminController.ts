@@ -102,3 +102,22 @@ export async function updateProduct(req: AuthRequest, res: Response) {
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Delete a product
+ * @route   DELETE /api/admin/products/:id
+ * @access  Private (Admin only)
+ */
+
+export async function deleteProduct(req: AuthRequest, res: Response) {
+    try {
+        const product = await Product.findByIdAndDelete(req.params.id);
+
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        res.status(200).json({ message: "Product deleted successfully" });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}

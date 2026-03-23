@@ -1,6 +1,6 @@
 import { Router } from "express";
 import z from "zod";
-import { getAdminMetrics, createProduct, updateProduct } from "../../controllers/adminController";
+import { getAdminMetrics, createProduct, updateProduct, deleteProduct } from "../../controllers/adminController";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 
@@ -75,5 +75,12 @@ router.post("/products", authMiddleware, adminOnly, validateBody(createProductSc
  */
 
 router.put("/products/:id", authMiddleware, adminOnly, validateBody(updateProductSchema), updateProduct);
+
+/**
+ * @route   DELETE api/admin/products/:id
+ * @desc    Delete products from dashboard
+ * @access  Private (Admin only)
+ */
+router.delete("/products/:id", authMiddleware, adminOnly, deleteProduct);
 
 export default router;
