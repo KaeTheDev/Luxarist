@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import type { AdminProduct } from "../../../../shared/types";
+import SectionBasicInfo from "./SectionBasicInfo";
 
 interface ProductFormProps {
     isOpen: boolean;
@@ -49,7 +50,7 @@ export default function ProductForm({ isOpen, onClose, initialData, onSubmit, is
 
                 <div className="flex-1 overflow-y-auto p-8 space-y-12">
                     {/* 3. Pass state and handler to sub-sections */}
-                    {/* <SectionBasicInfo formData={formData} onChange={handleChange} /> */}
+                    <SectionBasicInfo formData={formData} onChange={handleChange} />
                 </div>
 
                 <div className="p-8 border-t border-stone-100 flex gap-4 bg-stone-50/50">
