@@ -107,3 +107,11 @@ export interface AdminReview {
   isApproved: boolean;
   createdAt: string;
 }
+
+export interface DashboardMetrics {
+  totalProducts: number;
+  activeProducts: number;
+  totalOrders: number;
+  totalReviews: number;
+  revenue?: number; // Optional: may show earnings later
+}
