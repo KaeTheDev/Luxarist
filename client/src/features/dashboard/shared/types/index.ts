@@ -1,4 +1,6 @@
 export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered";
+export type AdminTab = 'overview' | 'products' | 'orders' | 'reviews' | 'settings';
+export type DashboardTab = "overview" | "orders" | "reviews" | "settings";
 
 export interface Order {
   id: string;
@@ -40,4 +42,34 @@ export interface Review {
     role: "customer" | "admin"; 
   }
 
-  export type DashboardTab = "overview" | "orders" | "reviews" | "settings";
+export interface AdminProduct {
+    _id: string;
+    name: string;
+    subtitle: string;
+    category?: { _id: string; name: string; slug: string } | null;
+    price: number;
+    status: "active" | "inactive";
+    isNewArrival: boolean;
+    primaryImageUrl: string;
+    galleryImageUrls: string[];
+    sizes: string[];
+    material: string;
+    gemstoneType: string;
+    weightPreset: string;
+    style: string;
+    description: string;
+    careTemplateKey: string;
+    specsFromAttributes: boolean;
+    sku: string;
+    slug: string;
+    diamondSpecs?: {
+        carat?: string; cut?: string; color?: string;
+        clarity?: string; halo?: string; stones?: string;
+    };
+    metalSpecs?: {
+        type?: string; weight?: string; finish?: string;
+        setting?: string; width?: string; length?: string;
+        clasp?: string; movement?: string; waterResistance?: string;
+        glass?: string; strap?: string; battery?: string;
+    };
+}

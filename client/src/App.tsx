@@ -14,7 +14,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 import { CustomerDashboard } from "./features/dashboard/CustomerDashboard/CustomerDashboard";
-import { AdminDashboard } from "./features/dashboard/AdminDashboard";
+import { AdminDashboard } from "./features/dashboard/AdminDashboard/AdminDashboard";
 
 export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
