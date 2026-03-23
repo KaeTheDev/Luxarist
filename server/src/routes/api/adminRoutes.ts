@@ -1,6 +1,6 @@
 import { Router } from "express";
 import z from "zod";
-import { getAdminMetrics, createProduct, updateProduct, deleteProduct, getAllOrders, updateOrderStatus } from "../../controllers/adminController";
+import { getAdminMetrics, createProduct, updateProduct, deleteProduct, getAllOrders, updateOrderStatus, getAllReviews, updateReviewApproval } from "../../controllers/adminController";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 
@@ -54,6 +54,8 @@ const updateProductSchema = createProductSchema.partial();
 
 const updateOrderStatusSchema = z.object({ status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) });
 
+const updateReviewApprovalSchema = z.object({ approved: z.boolean() });
+
 /**
  * @route   GET /api/admin/metrics
  * @desc    Get admin dashboard metrics
@@ -98,5 +100,19 @@ router.get("/orders", authMiddleware, adminOnly, getAllOrders);
  * @access  Private (Admin only)
  */
 router.put("/orders/:id", authMiddleware, adminOnly, validateBody(updateOrderStatusSchema), updateOrderStatus);
+
+/**
+ * @route   GET /api/admin/reviews
+ * @desc    Get all reviews
+ * @access  Private (Admin only)
+ */
+router.get("/reviews", authMiddleware, adminOnly, getAllReviews);
+
+/**
+ * @route   PUT /api/admin/reviews/:id
+ * @desc    Approve or reject a review
+ * @access  Private (Admin only)
+ */
+router.put("/reviews/:id", authMiddleware, adminOnly, validateBody(updateReviewApprovalSchema), updateReviewApproval);
 
 export default router;
