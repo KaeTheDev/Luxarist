@@ -24,6 +24,7 @@ import productRoutes from "./routes/api/productRoutes";
 import categoryRoutes from "./routes/api/categoryRoutes";
 import reviewRoutes from "./routes/api/reviewRoutes";
 import authRoutes from "./routes/api/authRoutes";
+import adminRoutes from "./routes/api/adminRoutes";
 
  // TEST ROUTES (DELETE LATER w/ Test Routes and Controllers)
 import productTestRoutes from './routes/api/productTestRoutes';
@@ -105,6 +106,9 @@ app.use("/api/products", productRoutes);
 
 // Mount Category Here 👇🏾
 app.use("/api/categories", categoryRoutes);
+
+// Mount Admin Routes Here 👇🏾
+app.use("/api/admin", adminRoutes);
 
 // Mount Review Routes Here 👇🏾
 app.use("/api/reviews", reviewRoutes);
