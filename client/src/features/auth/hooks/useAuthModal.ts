@@ -53,7 +53,7 @@ export function useAuthModal(onClose: () => void) {
       onClose();
       navigate("/dashboard", { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed.");
+      setError(err.message || "Registration failed.");
     } finally {
       setIsLoading(false);
     }
