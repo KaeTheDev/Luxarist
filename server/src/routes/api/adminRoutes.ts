@@ -1,6 +1,6 @@
 import { Router } from "express";
 import z from "zod";
-import { getAdminMetrics, createProduct } from "../../controllers/adminController";
+import { getAdminMetrics, createProduct, updateProduct } from "../../controllers/adminController";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 
@@ -49,6 +49,9 @@ const createProductSchema = z.object({
     }).optional(),
 });
 
+// reuse createProductSchema but make all fields optional for partial updates
+const updateProductSchema = createProductSchema.partial();
+
 /**
  * @route   GET /api/admin/metrics
  * @desc    Get admin dashboard metrics
@@ -64,5 +67,13 @@ router.get("/metrics", authMiddleware, adminOnly, getAdminMetrics);
  */
 
 router.post("/products", authMiddleware, adminOnly, validateBody(createProductSchema), createProduct);
+
+/**
+ * @route   PUT api/admin/products/:id
+ * @desc    Update products to dashboard
+ * @access  Private (Admin only)
+ */
+
+router.put("/products/:id", authMiddleware, adminOnly, validateBody(updateProductSchema), updateProduct);
 
 export default router;
