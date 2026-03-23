@@ -8,7 +8,7 @@ interface OrderRowProps {
   onUpdate: (id: string, status: OrderStatus) => void;
 }
 
-export const OrderRow = ({ order, isUpdating, onUpdate }: OrderRowProps) => {
+export function OrderRow({ order, isUpdating, onUpdate }: OrderRowProps) {
   const config = ORDER_STATUS_CONFIG[order.status] || ORDER_STATUS_CONFIG.Pending;
   const StatusIcon = config.icon;
 
@@ -47,7 +47,9 @@ export const OrderRow = ({ order, isUpdating, onUpdate }: OrderRowProps) => {
       </td>
 
       <td className="px-8 py-6 text-xs text-stone-500 font-serif italic">
-        {new Date(order.orderDate).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
+        {new Date(order.orderDate).toLocaleDateString(undefined, { 
+          month: "short", day: "numeric", year: "numeric" 
+        })}
       </td>
 
       <td className="px-8 py-6 text-right">
@@ -57,4 +59,4 @@ export const OrderRow = ({ order, isUpdating, onUpdate }: OrderRowProps) => {
       </td>
     </tr>
   );
-};
+}

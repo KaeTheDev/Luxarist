@@ -97,3 +97,13 @@ export interface AdminOrder {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface AdminReview {
+  _id: string;
+  customerName: string;
+  productName: string; 
+  rating: number;
+  comment: string;
+  isApproved: boolean;
+  createdAt: string;
+}
