@@ -80,3 +80,25 @@ export async function createProduct(req: AuthRequest, res: Response) {
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Update a product
+ * @route   PUT /api/admin/products/:id
+ * @access  Private (Admin only)
+ */
+export async function updateProduct(req: AuthRequest, res: Response) {
+    try {
+        const product = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        res.status(200).json(product);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
