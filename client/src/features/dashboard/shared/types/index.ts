@@ -1,4 +1,4 @@
-export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered";
+export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
 export type AdminTab = 'overview' | 'products' | 'orders' | 'reviews' | 'settings';
 export type DashboardTab = "overview" | "orders" | "reviews" | "settings";
 
@@ -72,4 +72,28 @@ export interface AdminProduct {
         clasp?: string; movement?: string; waterResistance?: string;
         glass?: string; strap?: string; battery?: string;
     };
+}
+
+
+export interface AdminOrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface AdminOrder {
+    _id: string;              // Mongo unique ID
+    orderNumber: string;      // e.g., "LUX-1001"
+    customerId: string; 
+    customerFirstName: string;
+    customerLastName: string;
+    customerEmail: string;
+    orderDate: string;        // Dates come as strings over JSON
+    status: OrderStatus;
+    items: AdminOrderItem[];
+    total: number;
+    createdAt: string;
+    updatedAt: string;
 }

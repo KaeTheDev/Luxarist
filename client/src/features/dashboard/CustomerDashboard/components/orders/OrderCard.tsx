@@ -4,7 +4,7 @@ interface OrderCardProps {
   orderNumber: string;
   orderDate: string;
   total: number;
-  status: "Pending" | "Processing" | "Shipped" | "Delivered";
+  status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
   itemImages?: string[];
   itemCount: number;
 }
