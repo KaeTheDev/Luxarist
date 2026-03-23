@@ -25,6 +25,7 @@ import categoryRoutes from "./routes/api/categoryRoutes";
 import reviewRoutes from "./routes/api/reviewRoutes";
 import authRoutes from "./routes/api/authRoutes";
 import adminRoutes from "./routes/api/adminRoutes";
+import orderRoutes from "./routes/api/orderRoutes";
 
  // TEST ROUTES (DELETE LATER w/ Test Routes and Controllers)
 import productTestRoutes from './routes/api/productTestRoutes';
@@ -100,6 +101,7 @@ app.use(morgan("dev")); // logs details about each HTTP request to console
 app.use("/api/auth", authRoutes);
 
 // Mount Order Routes Here 👇🏾
+app.use("/api/orders", orderRoutes);
 
 // Mount Product Routes Here 👇🏾
 app.use("/api/products", productRoutes);

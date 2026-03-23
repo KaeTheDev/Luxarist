@@ -85,7 +85,8 @@ export const getActiveProduct = async (req: Request, res: Response) => {
     }
 
     // Step 3: Fetch resource
-    const product = await Product.findOne({ _id: id, status: "active" });
+    const product = await Product.findOne({ _id: id, status: "active" })
+      .populate("category", "name slug");
 
     // Step 4: Authorize
     // Not required for public products

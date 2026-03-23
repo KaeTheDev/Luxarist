@@ -123,7 +123,7 @@ if(loading) return (
                   slug={product.slug ?? product._id}
                   imageUrl={product.primaryImageUrl}
                   title={product.name}
-                  category={product.category.name}
+                  category={product.category?.name ?? ""}
                   price={product.price}
                   isNewArrival={product.isNewArrival}
                   className="w-full"
