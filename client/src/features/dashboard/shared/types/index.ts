@@ -101,7 +101,7 @@ export interface AdminOrder {
 export interface AdminReview {
   _id: string;
   customerName: string;
-  productName: string; // or productId if you're joining data
+  productName: string; 
   rating: number;
   comment: string;
   isApproved: boolean;
