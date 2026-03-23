@@ -46,7 +46,7 @@ export interface AdminProduct {
     _id: string;
     name: string;
     subtitle: string;
-    category: { _id: string; name: string; slug: string } | null;
+    category?: { _id: string; name: string; slug: string } | null;
     price: number;
     status: "active" | "inactive";
     isNewArrival: boolean;
