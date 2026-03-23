@@ -29,6 +29,7 @@ export interface Review {
     comment: string;
     date: string;
     image?: string;
+    approved?: boolean;
   }
 
   export interface User {
