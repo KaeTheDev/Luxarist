@@ -121,3 +121,44 @@ export async function deleteProduct(req: AuthRequest, res: Response) {
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Get all orders
+ * @route   GET /api/admin/orders
+ * @access  Private (Admin only)
+ */
+export async function getAllOrders(req: AuthRequest, res: Response) {
+    try {
+        const orders = await Order.find()
+            .sort({ orderDate: -1 });
+
+        res.status(200).json(orders);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
+
+/**
+ * @desc    Update order status
+ * @route   PUT /api/admin/orders/:id
+ * @access  Private (Admin only)
+ */
+export async function updateOrderStatus(req: AuthRequest, res: Response) {
+    try {
+        const { status } = req.body;
+
+        const order = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true, runValidators: true }
+        );
+
+        if (!order) return res.status(404).json({ message: "Order not found" });
+
+        res.status(200).json(order);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
