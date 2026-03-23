@@ -114,7 +114,7 @@ const productSchema = new Schema<IProduct>(
     careTemplateKey:    { type: String, required: true },
     specsFromAttributes:{ type: Boolean, default: true },
     sku:                { type: String, required: true, unique: true },
-    slug:               { type: String, required: true, unique: true },
+    slug:               { type: String, unique: true },
   },
   { timestamps: true }
 );

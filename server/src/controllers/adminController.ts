@@ -65,3 +65,18 @@ export async function getAdminMetrics(req: AuthRequest, res: Response) {
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Create a new product
+ * @route   POST /api/admin/products
+ * @access  Private (Admin only)
+ */
+export async function createProduct(req: AuthRequest, res: Response) {
+    try {
+        const product = await Product.create(req.body);
+        res.status(201).json(product);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
