@@ -8,9 +8,19 @@ interface ProductTableProps {
     deletingId: string | null;
     confirmDeleteId: string | null;
     setConfirmDeleteId: (id: string | null) => void;
+    isLoading: boolean; 
 }
 
-export default function ProductTable({ products, onEdit, onDelete, deletingId, confirmDeleteId, setConfirmDeleteId }: ProductTableProps) {
+export default function ProductTable({ products, onEdit, onDelete, deletingId, confirmDeleteId, setConfirmDeleteId, isLoading }: ProductTableProps) {
+    if (isLoading) {
+        return (
+            <div className="bg-white border border-stone-100 rounded-4xl p-20 flex flex-col items-center justify-center text-center shadow-sm">
+                <Loader2 size={40} className="animate-spin text-stone-200 mb-4" />
+                <h3 className="text-lg font-serif italic text-stone-900">Curating Collection...</h3>
+            </div>
+        );
+    }
+    
     if(products.length === 0) {
         return (
             <div className="bg-white border border-stone-100 rounded-4xl p-20 flex flex-col items-center justify-center text-center shadow-sm">

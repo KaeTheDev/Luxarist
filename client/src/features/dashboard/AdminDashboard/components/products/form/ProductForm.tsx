@@ -11,9 +11,10 @@ interface ProductFormProps {
     initialData: AdminProduct | null;
     onSubmit: (data: Partial<AdminProduct>) => void;
     isSubmitting?: boolean;
+    onSuccess: () => void;
 }
 
-export default function ProductForm({ isOpen, onClose, initialData, onSubmit, isSubmitting } : ProductFormProps) {
+export default function ProductForm({ isOpen, onClose, initialData, onSubmit, isSubmitting, onSuccess } : ProductFormProps) {
     // Initialize state with initialData or empty defaults
     const [formData, setFormData] = useState<Partial<AdminProduct>>({});
 
@@ -28,6 +29,17 @@ export default function ProductForm({ isOpen, onClose, initialData, onSubmit, is
     // Centralized Change Handler
     const handleChange = <K extends keyof AdminProduct>(field: K, value: AdminProduct[K]) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleInternalSubmit = async () => {
+        try {
+            await onSubmit(formData);
+            // 2. Trigger the success callback (refreshing list, closing modal, etc.)
+            onSuccess(); 
+        } catch (error) {
+            console.error("Submission failed in Form:", error);
+            // You could add an error state here to show the user
+        }
     };
 
     if(!isOpen) return null;
@@ -51,7 +63,6 @@ export default function ProductForm({ isOpen, onClose, initialData, onSubmit, is
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-8 space-y-12">
-                    {/* 3. Pass state and handler to sub-sections */}
                     <SectionBasicInfo formData={formData} onChange={handleChange} />
                     <SectionImages formData={formData} onChange={handleChange} />
                     <SectionSpecs formData={formData} onChange={handleChange} />
@@ -66,9 +77,9 @@ export default function ProductForm({ isOpen, onClose, initialData, onSubmit, is
                         Discard
                     </button>
                     <button 
-                        onClick={() => onSubmit(formData)}
+                        onClick={handleInternalSubmit} // Use the internal handler
                         disabled={isSubmitting}
-                        className="flex-2 py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] font-black rounded-2xl hover:bg-stone-800 transition-all shadow-lg shadow-stone-200 flex items-center justify-center gap-2"
+                        className="flex-2 py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] font-black rounded-2xl hover:bg-stone-800 transition-all shadow-lg shadow-stone-200 flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                         {isSubmitting ? (
                             <Loader2 size={16} className="animate-spin" />
