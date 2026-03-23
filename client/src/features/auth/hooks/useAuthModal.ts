@@ -38,7 +38,7 @@ export function useAuthModal(onClose: () => void) {
       const origin = location.state?.from?.pathname || "/dashboard";
       navigate(origin, { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Invalid credentials.");
+      setError(err.message || "Invalid credentials.");
     } finally {
       setIsLoading(false);
     }

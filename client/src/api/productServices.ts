@@ -24,16 +24,10 @@
  * consistently for the frontend UI.
  */
 
-import axios from "axios";
+import api from "./axios";
 import type { Product } from "../types/Product";
 import type { Category } from "../types/Category";
 import type { FeaturedCategory } from "../types/FeaturedCategory";
-
-const API_BASE_URL = 
-import.meta.env.MODE === "development"
-? import.meta.env.VITE_API_BASE_URL
-: import.meta.env.VITE_API_URL;
-
 
 // Covers all parameters used across the shop, category and arrivals pages
 export interface FetchParams {
@@ -51,45 +45,40 @@ export interface FetchParams {
  * Used by: Homepage, New Arrivals Page, Favorites Page
  */
 
-export async function fetchProducts(params?: FetchParams):
-Promise<Product[]> {
-    const response = await axios.get(`${API_BASE_URL}/api/products`,
-        { params });
-        return response.data;
+export async function fetchProducts(params?: FetchParams): Promise<Product[]> {
+  const response = await api.get('/api/products', { params });
+  return response.data;
 }
 
 /** Category Specific Data
  * Used by: CategoryPage (for the Hero/Description)
  */
 
-export async function fetchCategoryDetail(slug: string): Promise<Category>{
-    const response = await axios.get(`${API_BASE_URL}/api/categories/${slug}`);
-    return response.data;
+export async function fetchCategoryDetail(slug: string): Promise<Category> {
+  const response = await api.get(`/api/categories/${slug}`);
+  return response.data;
 }
 
 /** Category Products (with Pagination)
  * Used by: CategoryPage, ShopAllPage
  */
 export async function fetchCategoryProducts(slug: string, params?: FetchParams) {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/products/category/${slug}`, 
-      { params }
-    );
-    return response.data; // Returns { products: Product[], pagination: ... }
-  }
+  const response = await api.get(`/api/products/category/${slug}`, { params });
+  return response.data; 
+}
   
   /** Single Product Detail
    * Used by: ProductDetailPage
    */
   export async function fetchOneProduct(slug: string): Promise<Product> {
-    const response = await axios.get(`${API_BASE_URL}/api/products/slug/${slug}`);
+    const response = await api.get(`/api/products/slug/${slug}`);
     return response.data;
-  }
+}
 
   /** * 5. FEATURED CATEGORIES
  * Used by: FeaturedCollectionsSection (on the Homepage)
  */
-export async function fetchFeaturedCategories(): Promise<FeaturedCategory[]> {
-    const response = await axios.get(`${API_BASE_URL}/api/categories/featured`);
+  export async function fetchFeaturedCategories(): Promise<FeaturedCategory[]> {
+    const response = await api.get('/api/categories/featured');
     return response.data;
-  }
+}
