@@ -38,7 +38,7 @@ export function useAuthModal(onClose: () => void) {
       const origin = location.state?.from?.pathname || "/dashboard";
       navigate(origin, { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Invalid credentials.");
+      setError(err.message || "Invalid credentials.");
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +53,7 @@ export function useAuthModal(onClose: () => void) {
       onClose();
       navigate("/dashboard", { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed.");
+      setError(err.message || "Registration failed.");
     } finally {
       setIsLoading(false);
     }

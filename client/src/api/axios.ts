@@ -31,17 +31,12 @@ const api = axios.create({
 
 // Intercept requests to automatically attach token
 api.interceptors.request.use((config) => {
-    // Get user from localStorage
-    const user = localStorage.getItem("user");
-    if(user) {
-        // Extract JWT Token
-        const token = JSON.parse(user).token;
-        // Ensure headers object exists
-        if(config.headers)
-        // Attach token
-    config.headers["Authorization"] = `Bearer ${token}`;
+    const token = localStorage.getItem("token");
+    
+    if (token && config.headers) {
+        config.headers["Authorization"] = `Bearer ${token}`;
     }
-    // Return the modified config to Axios
+    
     return config;
 });
 

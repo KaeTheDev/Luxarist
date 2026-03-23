@@ -26,8 +26,8 @@ export function useReviews() {
                 // Map DB fields → the frontend Review type
                 const mapped: Review[] = data.map((r: any) => ({
                     id: r._id,
-                    productId: r.product[0]?.productName ?? "",
-                    productName: r.product[0]?.productName ?? "",
+                    productId: r.products[0]?.productName ?? "",
+                    productName: r.products[0]?.productName ?? "",
                     rating: r.rating,
                     comment: r.comment,
                     date: new Date(r.date).toLocaleDateString("en-US", {
