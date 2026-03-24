@@ -74,7 +74,6 @@ export interface AdminProduct {
     };
 }
 
-
 export interface AdminOrderItem {
   productId: string;
   name: string;
