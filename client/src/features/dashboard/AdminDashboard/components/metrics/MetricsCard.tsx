@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { Package, ShoppingBag, Star, LayoutGrid, User } from "lucide-react";
 import type { DashboardData } from "../../../shared/types";
+import { useAuth } from "../../../../../context/AuthContext";
 
 export default function MetricsCard() {
     const [data, setData] = useState<DashboardData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
+    const { token } = useAuth();
 
     useEffect(() => {
         async function fetchMetrics() {
             try {
-                const res = await fetch("/api/admin/metrics");
+              const res = await fetch(`${API_URL}/admin/metrics`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
                 if(res.ok) setData(await res.json());
             } catch(err) { console.error("Metrics fetch failed", err); }
             finally { setIsLoading(false); }
