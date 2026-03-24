@@ -108,10 +108,19 @@ export interface AdminReview {
   createdAt: string;
 }
 
-export interface DashboardMetrics {
+export interface DashboardData {
   totalProducts: number;
   activeProducts: number;
   totalOrders: number;
   totalReviews: number;
-  revenue?: number; // Optional: may show earnings later
+  totalCustomers: number;
+  recentActivity: Array<{
+    type: "order" | "review";
+    id: string;
+    title: string;
+    subtitle: string;
+    value: string;
+    status: string | null;
+    date: string;
+  }>;
 }
