@@ -1,37 +1,19 @@
-import { useState, useEffect } from "react";
 import { Package, ShoppingBag, Star, LayoutGrid, User } from "lucide-react";
-import type { DashboardData } from "../../../shared/types";
-import { useAuth } from "../../../../../context/AuthContext";
+import { useAdminMetrics } from "../hooks/useAdminMetrics";
 
 export default function MetricsCard() {
-    const [data, setData] = useState<DashboardData | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
-    const { token } = useAuth();
+  const { data, isLoading } = useAdminMetrics();
 
-    useEffect(() => {
-        async function fetchMetrics() {
-            try {
-              const res = await fetch(`${API_URL}/admin/metrics`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-                if(res.ok) setData(await res.json());
-            } catch(err) { console.error("Metrics fetch failed", err); }
-            finally { setIsLoading(false); }
-        }
-        fetchMetrics();
-    }, []);
+  if (isLoading || !data) return <div className="p-20 text-center animate-pulse text-stone-400 italic">Syncing Ledger...</div>;
 
-    if (isLoading || !data) return <div className="p-20 text-center animate-pulse text-stone-400 italic">Syncing Ledger...</div>;
+  const stats = [
+    { label: "Total Products", value: data.totalProducts, icon: Package },
+    { label: "Active Items", value: data.activeProducts, icon: LayoutGrid },
+    { label: "Total Orders", value: data.totalOrders, icon: ShoppingBag },
+    { label: "Customers", value: data.totalCustomers, icon: User },
+  ];
 
-    const stats = [
-        { label: "Total Products", value: data.totalProducts, icon: Package },
-        { label: "Active Items", value: data.activeProducts, icon: LayoutGrid },
-        { label: "Total Orders", value: data.totalOrders, icon: ShoppingBag },
-        { label: "Customers", value: data.totalCustomers, icon: User },
-      ];
-
-      return (
+ return (
         <div className="space-y-12">
           {/* 4-Column Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
