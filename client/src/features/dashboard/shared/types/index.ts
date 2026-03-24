@@ -107,3 +107,20 @@ export interface AdminReview {
   isApproved: boolean;
   createdAt: string;
 }
+
+export interface DashboardData {
+  totalProducts: number;
+  activeProducts: number;
+  totalOrders: number;
+  totalReviews: number;
+  totalCustomers: number;
+  recentActivity: Array<{
+    type: "order" | "review";
+    id: string;
+    title: string;
+    subtitle: string;
+    value: string;
+    status: string | null;
+    date: string;
+  }>;
+}
