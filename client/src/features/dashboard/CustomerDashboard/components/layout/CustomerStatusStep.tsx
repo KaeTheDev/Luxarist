@@ -7,7 +7,7 @@ interface StatusStepProps {
     isLast?: boolean; 
   }
 
-export default function StatusStep({ title, date, completed, isLast = false }: StatusStepProps) {
+export default function CustomerStatusStep({ title, date, completed, isLast = false }: StatusStepProps) {
     return (
       <div className="flex gap-6 relative z-10">
         {/* The Dot & The Line */}

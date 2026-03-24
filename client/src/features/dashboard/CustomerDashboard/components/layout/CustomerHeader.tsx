@@ -4,7 +4,7 @@ interface HeaderProps {
     activeTab: DashboardTab;
 }
 
-export default function Header({ activeTab }: HeaderProps) {
+export default function CustomerHeader({ activeTab }: HeaderProps) {
     // Dynamic Page Title Logic
     const getPageTitle = (tab: DashboardTab) => {
         switch(tab) {

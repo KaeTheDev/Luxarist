@@ -7,7 +7,7 @@ interface NavItemProps {
     onClick: () => void;
 }
 
-export default function NavItem({ icon, label, isActive, onClick }: NavItemProps) {
+export default function CustomerNavItem({ icon, label, isActive, onClick }: NavItemProps) {
     return (
         <button
           onClick={onClick}

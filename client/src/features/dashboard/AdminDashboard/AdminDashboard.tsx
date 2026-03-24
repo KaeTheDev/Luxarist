@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { LayoutGrid, ShoppingBag, Star, Package, Settings, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import MetricsCard from "./components/metrics/MetricsCard";
 import OrdersTable from "./components/orders/OrdersTable";
 import ReviewsTable from "./components/reviews/ReviewsTable";
+import AdminProducts from "./components/products/AdminProducts";
 import type { AdminTab } from "../shared/types";
 
 export default function AdminDashboardPage() {

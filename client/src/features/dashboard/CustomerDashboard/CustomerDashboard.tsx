@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext"; 
-import Sidebar from "./components/layout/Sidebar";
-import Header from "./components/layout/Header";
+import Sidebar from "./components/layout/CustomerSidebar";
+import Header from "./components/layout/CustomerHeader";
 import MyOrders from "./components/orders/MyOrders";
 import MyReviews from "./components/reviews/MyReviews";
 import AccountSettings from "./components/settings/AccountSettings";

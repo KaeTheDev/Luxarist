@@ -8,7 +8,7 @@ interface SidebarProps {
   user: User | null;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, user }: SidebarProps) {
+export default function CustomerSidebar({ activeTab, setActiveTab, user }: SidebarProps) {
   const { logout } = useAuth();
 
   const navItems: { id: DashboardTab; label: string; icon: any }[] = [
