@@ -1,9 +1,9 @@
 import { ExternalLink } from "lucide-react";
-import type { AdminOrder, OrderStatus } from "../../../shared/types";
+import type { Order, OrderStatus } from "../../../shared/types";
 import { ORDER_STATUS_CONFIG } from "../../../../../constants/orderConfig";
 
 interface OrderRowProps {
-  order: AdminOrder;
+  order: Order;
   isUpdating: boolean;
   onUpdate: (id: string, status: OrderStatus) => void;
 }
