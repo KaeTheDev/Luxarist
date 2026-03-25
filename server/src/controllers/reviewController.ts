@@ -10,43 +10,42 @@ export async function getMyReviews(req: AuthRequest, res: Response) {
     try {
         const { userId } = req.params;
 
-        // 1. Authorization Guard
-        if (!req.user || (req.user.id !== userId && req.user.role !== "admin")) {
+        // 1. Authorization Guard + Null Check
+        // Adding !userId ensures TypeScript knows we have a value before querying
+        if (!userId || !req.user || (req.user.id !== userId && req.user.role !== "admin")) {
             return res.status(403).json({ 
                 message: "Unauthorized access to these reviews." 
             });
         }
 
         // 2. Fetch reviews from MongoDB
-        const reviews = await Review.find({ customerId: userId })
+        // We cast userId as string to satisfy the Mongoose QueryFilter type
+        const reviews = await Review.find({ customerId: userId as string })
             .sort({ createdAt: -1 });
 
-        // 3. Transform the data to match the Frontend "Review" Interface
-        // This ensures review.productImage and review.productName exist for the UI
+        // 3. Transform the data
         const formattedReviews = reviews.map(rev => {
-            // Grab the first product associated with this review
             const mainProduct = rev.products[0];
 
             return {
                 _id: rev._id,
-                productId: mainProduct?.productId || null,
+                // We ensure these fallbacks match your frontend Review interface
+                productId: mainProduct && 'productId' in mainProduct ? mainProduct.productId : null,
                 productName: mainProduct?.productName || "Luxarist Piece",
-                productImage: mainProduct?.productImage || "/api/placeholder/100/100",
+                productImage: mainProduct && 'productImage' in mainProduct ? mainProduct.productImage : "/api/placeholder/100/100",
                 customerName: `${rev.customerFirstName} ${rev.customerLastName}`,
                 rating: rev.rating,
                 comment: rev.comment,
                 isApproved: rev.approved,
-                // Format the date string for the 'Calendar' icon in the ReviewCard
                 date: new Date(rev.date).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
                     year: 'numeric'
                 }),
-                createdAt: rev.createdAt
+                createdAt: (rev as any).createdAt // Cast to any if timestamps aren't in IReview interface
             };
         });
 
-        // 4. Return the clean, formatted array
         return res.status(200).json(formattedReviews);
 
     } catch (error: any) {
