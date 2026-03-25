@@ -38,13 +38,16 @@ export default function SectionBasicInfo({ formData, onChange } : SectionProps) 
                             className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 transition-all"
                         />
                     </div>
-{/* Price */}
-<div className="space-y-2">
+
+                    {/* Price - Validated to prevent negative values */}
+                    <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Price (USD)</label>
                         <input 
                             type="number"
+                            min="0"
+                            step="0.01"
                             value={formData.price || ""}
-                            onChange={(e) => onChange("price", Number(e.target.value))}
+                            onChange={(e) => onChange("price", Math.max(0, Number(e.target.value)) as any)}
                             placeholder="0.00"
                             className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 transition-all"
                         />

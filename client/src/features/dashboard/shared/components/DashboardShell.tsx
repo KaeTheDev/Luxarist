@@ -27,7 +27,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
         { label: 'Overview', href: '/admin', icon: <LayoutDashboard size={18} /> },
         { label: 'Inventory', href: '/admin/products', icon: <Package size={18} /> },
         { label: 'Orders', href: '/admin/orders', icon: <ShoppingBag size={18} /> },
-        { label: 'Customers', href: '/admin/users', icon: <Users size={18} /> },
+        { label: 'Customers', href: '/admin/customers', icon: <Users size={18} /> },
     ];
 
     const customerLinks: NavItem[] = [
@@ -49,11 +49,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
                 - fixed: Floats for mobile
                 - z-50: Stays above everything else
             */}
-            <aside className={`
-                fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-stone-100 flex flex-col transition-transform duration-500 ease-in-out
-                lg:relative lg:translate-x-0 
-                ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
-            `}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-stone-100 flex flex-col transition-transform duration-500 ease-in-out lg:relative lg:translate-x-0 ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}`}>
                 {/* Mobile Close Button */}
                 <button 
                     onClick={() => setIsSidebarOpen(false)}
@@ -73,17 +69,13 @@ export default function DashboardShell({ children, role, title }: DashboardShell
 
                 <nav className="flex-1 px-6 space-y-2">
                     {links.map((link) => {
-                        const isActive = location.pathname === link.href;
+                        const isActive = link.href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(link.href);
                         return (
                             <Link 
                                 key={link.label}
                                 to={link.href}
                                 onClick={handleLinkClick}
-                                className={`flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300 group ${
-                                    isActive 
-                                    ? 'bg-stone-50 text-stone-900 shadow-sm' 
-                                    : 'text-stone-400 hover:text-stone-600 hover:bg-stone-50/50'
-                                }`}
+                                className={`flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-stone-50 text-stone-900 shadow-sm' : 'text-stone-400 hover:text-stone-600 hover:bg-stone-50/50'}`}
                             >
                                 <div className="flex items-center gap-4">
                                     <span className={`${isActive ? 'scale-110' : 'group-hover:scale-110'} transition-transform`}>

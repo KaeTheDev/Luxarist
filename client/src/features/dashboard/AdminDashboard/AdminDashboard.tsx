@@ -6,7 +6,6 @@ import OrdersTable from "./components/orders/OrdersTable";
 import ReviewsTable from "./components/reviews/ReviewsTable";
 import InventoryManager from "./components/products/InventoryManager";
 
-
 export default function AdminDashboard() {
 
     const { user, isLoading } = useAuth();
@@ -25,10 +24,18 @@ export default function AdminDashboard() {
                 <Route index element={<AdminOverview />} />
 
                 {/* URL: /admin/products */}
-                <Route path="products" element={<InventoryManager />} />
+                <Route path="products/*" element={<InventoryManager />} /> {/* Added * for sub-routes */}
 
-                {/* URL: /admin/ordrs */}
+                {/* URL: /admin/orders */}
                 <Route path="orders" element={<OrdersTable />} />
+
+                {/* URL: /admin/customers */}
+                <Route path="customers" element={
+                    <div className="p-20 border border-stone-100 bg-white rounded-4xl text-center">
+                        <h3 className="text-lg font-serif italic text-stone-900">Client Directory</h3>
+                        <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-2 font-black">Archive under construction</p>
+                    </div>
+                } />
 
                 {/* URL: /admin/reviews */}
                 <Route path="reviews" element={<ReviewsTable />} />
