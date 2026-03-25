@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ProductActions } from "./ProductActions";
 import { ProductDetails } from "./ProductDetails";
 import { useFavorites } from "../../../hooks/useFavorites";
-import type { Product } from "../../../types/Product";
+import type { Product } from "../../dashboard/shared/types";
 
 export function ProductInformation({ product }: { product: Product }) {
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export function ProductInformation({ product }: { product: Product }) {
       {/* Header Section */}
       <section className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <span className="text-xs tracking-widest text-gray-500 uppercase">{product.category.name}</span>
+          <span className="text-xs tracking-widest text-gray-500 uppercase">{product.category?.name}</span>
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <p className="text-xl font-medium text-gray-800">${product.price.toLocaleString()}</p>
         </div>

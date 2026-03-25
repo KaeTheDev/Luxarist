@@ -59,16 +59,18 @@ export function ShopAllFilters({
         </button>
 
         {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => onCategoryChange(cat)}
-            className={`px-8 py-3 text-[10px] uppercase tracking-[0.2em] ${
-              activeCategory === cat ? "bg-black text-white font-bold" : "bg-[#F5F5F5] text-gray-500"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+  <button
+    key={cat}
+    onClick={() => onCategoryChange(cat)}
+    className={`px-8 py-3 text-[10px] uppercase tracking-[0.2em] transition-all duration-300 ${
+      activeCategory === cat 
+        ? "bg-black text-white font-bold" 
+        : "bg-[#F5F5F5] text-gray-500 hover:bg-[#ebebeb]"
+    }`}
+  >
+    {cat}
+  </button>
+))}
       </div>
 
       {/* RIGHT: Sort Dropdown */}

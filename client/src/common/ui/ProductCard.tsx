@@ -16,44 +16,35 @@
 
 import { Link } from "react-router-dom";
 import { useFavorites } from "../../hooks/useFavorites";
+import type { Product } from "../../features/dashboard/shared/types";
 
 interface ProductCardProps {
-  id: string; 
-  slug: string;
-  imageUrl: string;
-  title: string;
-  category: string;
-  price: number;
-  isNewArrival: boolean;
+  product: Product; // Pass the whole object
+  isNewArrival?: boolean;
   className?: string;
 }
 
-export function ProductCard({
-  id,
-  slug,
-  imageUrl,
-  title,
-  category,
-  price,
-  isNewArrival,
-  className,
-}: ProductCardProps) {
+export function ProductCard({ product, isNewArrival, className }: ProductCardProps) {
+ // THE GUARD: If product is missing, don't crash.
+  if (!product) {
+    console.warn("ProductCard received an undefined product.");
+    return null; 
+  }
+  
   const { favorites, toggleFavorite } = useFavorites();
-  const isFavorite = favorites.includes(id);
+  const isFavorite = favorites.includes(product._id);
 
   return (
     <div
-      
       className={`group/card relative flex flex-col shrink-0 overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-500 hover:shadow-2xl hover:shadow-gray-200/50 ${className}`}
     >
-      {/* Favorite Button */}
+      {/* Favorite Button - Uses product._id */}
       <button
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          toggleFavorite(id); // Saves to localStorage
+          toggleFavorite(product._id);
         }}
-      
         className={`absolute right-4 top-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all duration-300 hover:scale-110
           ${isFavorite 
             ? "opacity-100" 
@@ -80,26 +71,33 @@ export function ProductCard({
         </span>
       )}
 
-      {/* Link wrapper */}
-      <Link to={`/product/${slug}`} className="flex flex-col h-full">
+      {/* Link wrapper using product.slug */}
+      <Link to={`/product/${product.slug}`} className="flex flex-col h-full">
         <div className="aspect-4/5 overflow-hidden bg-[#fafafa]">
           <img
-            src={imageUrl}
-            alt={title}
-            //  Scoped image scale to group-hover/card 
+            src={product.primaryImageUrl || "/placeholder.jpg"}
+            alt={product.name}
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
           />
         </div>
 
         <div className="flex flex-col p-6 space-y-2">
+          {/* Category Name with Optional Chaining */}
           <span className="text-[11px] font-medium uppercase tracking-widest text-gray-400">
-            {category}
+            {product.category?.name || "Bespoke"}
           </span>
+          
           <h3 className="text-base font-light text-gray-900 leading-snug line-clamp-2">
-            {title}
+            {product.name}
           </h3>
+
+          {/* Luxury Detail: Showing the Material defined in SectionSpecs */}
+          <p className="text-[10px] text-stone-400 uppercase tracking-tighter">
+            {product.material}
+          </p>
+
           <p className="text-sm font-medium text-gray-700 tracking-wide mt-1">
-            ${price.toLocaleString()}
+            ${product.price.toLocaleString()}
           </p>
         </div>
       </Link>

@@ -38,18 +38,47 @@ export default function SectionBasicInfo({ formData, onChange } : SectionProps) 
                             className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 transition-all"
                         />
                     </div>
-                    {/* Price */}
-                    <div className="space-y-2">
+{/* Price */}
+<div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Price (USD)</label>
                         <input 
                             type="number"
                             value={formData.price || ""}
-                            // Cast to Number here because the Generic handler 
-                            // now strictly requires a number for the "price" key.
                             onChange={(e) => onChange("price", Number(e.target.value))}
                             placeholder="0.00"
                             className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 transition-all"
                         />
+                    </div>
+                </div>
+
+                {/* Status & Care Logic */}
+                <div className="grid grid-cols-2 gap-4 pt-4">
+                    {/* Publication Status */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Availability Status</label>
+                        <select 
+                            value={formData.status || "active"}
+                            onChange={(e) => onChange("status", e.target.value as any)}
+                            className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 appearance-none transition-all cursor-pointer"
+                        >
+                            <option value="draft">Draft (Hidden)</option>
+                            <option value="active">Active (Live)</option>
+                            <option value="archived">Archived (Sold Out)</option>
+                        </select>
+                    </div>
+
+                    {/* Care Instruction Template */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Care Template</label>
+                        <select 
+                            value={formData.careTemplateKey || "gold-care"}
+                            onChange={(e) => onChange("careTemplateKey", e.target.value)}
+                            className="w-full px-5 py-4 bg-stone-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-stone-200 appearance-none transition-all cursor-pointer"
+                        >
+                            <option value="gold-care">Standard Gold Care</option>
+                            <option value="stone-care">Gemstone & Diamond Care</option>
+                            <option value="delicate-care">Delicate / Vintage Care</option>
+                        </select>
                     </div>
                 </div>
             </div>

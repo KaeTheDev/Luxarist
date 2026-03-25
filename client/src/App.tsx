@@ -1,19 +1,27 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
+// Layout & Shells
 import { MainLayout } from "./common/layout/MainLayout";
+import { ScrollToTop } from "./common/utils/ScrollToTop";
+
+// Public Pages
 import { Homepage } from "./pages/Homepage";
 import { ShopAllPage } from "./pages/ShopAllPage";
 import { CategoryPage } from "./pages/CategoryPage";
 import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
-import { ScrollToTop } from "./common/utils/ScrollToTop";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+
+// Auth
 import AuthModal from "./features/auth/components/AuthModal";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
-import { CustomerDashboard } from "./features/dashboard/CustomerDashboard/CustomerDashboard";
+
+// Dashboards (These will use the DashboardShell internally)
+import CustomerDashboard from "./features/dashboard/CustomerDashboard/CustomerDashboard";
 import AdminDashboard from "./features/dashboard/AdminDashboard/AdminDashboard";
 
 export default function App() {
@@ -21,7 +29,7 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => {
-    // Check if we arrived here from the Login Page via the "Register Now" button
+    // If arriving from Login via "Register Now", trigger the modal
     if (location.state?.openRegister) {
       setIsAuthModalOpen(true);
 
@@ -47,22 +55,21 @@ export default function App() {
           {/* Collections Routes */}
           <Route path="collections" element={<ShopAllPage />} />
           <Route path="collections/:slug" element={<CategoryPage />} />
+          <Route path="collections/new-arrivals" element={<NewArrivalsPage />} />
 
-          {/* New Arrivals Route */}
-          <Route
-            path="collections/new-arrivals"
-            element={<NewArrivalsPage />}
-          />
-
-          {/* Favorites Page Route */}
+          {/* User Features */}
           <Route path="/favorites" element={<FavoritesPage />} />
-
-          {/* Product Routes */}
           <Route path="/product/:slug" element={<ProductDetailPage />} />
 
+          {/* Auth Pages */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+        </Route>
 
+        {/* Private Dashboard Routes
+        These are OUTSIDE MainLayout
+        They use the DashboardShell for a dedicated, edge-to-edge UI 
+        */}
           <Route
             path="/dashboard/*"
             element={
@@ -80,12 +87,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-        </Route>
       </Routes>
-      {/* Keep the Modal outside of Routes. 
-          This ensures it stays mounted and can animate properly 
-          with AnimatePresence during page transitions.
-      */}
+      {/* The AuthModal stays globally accessible */}
       <AuthModal isOpen={isAuthModalOpen} onClose={closeAuth} />
     </>
   );

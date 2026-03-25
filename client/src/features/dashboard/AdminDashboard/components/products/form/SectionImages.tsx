@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Image as ImageIcon, Loader2, Plus, X } from "lucide-react";
-import type { SectionProps } from "./SectionBasicInfo";
+import { Loader2, Plus, X } from "lucide-react";
 import { uploadImage } from "../../../../../../common/utils/imageUtils";
+import type { AdminProduct } from "../../../../shared/types";
 
-export default function SectionImages({ formData, onChange }: SectionProps) {
+interface ExtendedSectionProps {
+    formData: Partial<AdminProduct & { images: string[] }>;
+    onChange: (field: string, value: any) => void;
+}
+
+export default function SectionImages({ formData, onChange }: ExtendedSectionProps) {
     const [isUploading, setIsUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,12 +18,30 @@ export default function SectionImages({ formData, onChange }: SectionProps) {
         try {
             setIsUploading(true);
             const url = await uploadImage(file);
-            onChange("primaryImageUrl", url);
+            
+            // 1. If there's no primary yet, set this as the primary
+            if (!formData.primaryImageUrl) {
+                onChange("primaryImageUrl", url);
+            }
+            
+            // 2. Add to the overall gallery array
+            const currentGallery = formData.images || [];
+            onChange("images", [...currentGallery, url]);
+            
         } catch (error) {
             console.error("Upload failed", error);
             alert("Image upload failed. Please try again.");
         } finally {
             setIsUploading(false);
+        }
+    };
+
+    const removeGalleryImage = (urlToRemove: string) => {
+        const newGallery = (formData.images || []).filter(url => url !== urlToRemove);
+        onChange("images", newGallery);
+        // If we removed the primary, set it to the next available image or empty
+        if (formData.primaryImageUrl === urlToRemove) {
+            onChange("primaryImageUrl", newGallery[0] || "");
         }
     };
 
@@ -61,17 +84,30 @@ export default function SectionImages({ formData, onChange }: SectionProps) {
 
                 {/* Gallery Placeholder - Logic for multiple images can go here later */}
                 <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Gallery Preview</label>
-                    <div className="grid grid-cols-2 gap-4">
-                        {[1, 2].map((i) => (
-                            <div key={i} className="aspect-square rounded-3xl bg-stone-50 border border-stone-100 flex flex-col items-center justify-center border-dashed">
-                                <ImageIcon size={20} className="text-stone-200 mb-1" />
-                                <span className="text-[8px] uppercase tracking-tighter text-stone-300 font-bold">Slot {i}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <p className="text-[9px] text-stone-400 italic px-1">Secondary views and lifestyle shots will appear here.</p>
+        <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Collection Gallery</label>
+        <div className="grid grid-cols-2 gap-4">
+            {/* Show actual uploaded gallery images */}
+            {(formData.images || []).map((url, index) => (
+                <div key={index} className="relative aspect-square rounded-3xl bg-stone-50 border border-stone-100 overflow-hidden group">
+                    <img src={url} className="w-full h-full object-cover" alt={`Gallery ${index}`} />
+                    <button 
+                        onClick={() => removeGalleryImage(url)}
+                        className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                    >
+                        <X size={16} />
+                    </button>
                 </div>
+            ))}
+            
+            {/* The "Add More" Slot */}
+            <label className="aspect-square rounded-3xl bg-stone-50 border border-stone-100 flex flex-col items-center justify-center border-dashed cursor-pointer hover:bg-stone-100 transition-colors">
+                <Plus size={20} className="text-stone-300 mb-1" />
+                <span className="text-[8px] uppercase tracking-tighter text-stone-300 font-bold">Add View</span>
+                <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+            </label>
+        </div>
+        <p className="text-[9px] text-stone-400 italic px-1">Secondary views and lifestyle shots will appear here.</p>
+    </div>
             </div>
         </section>
     );

@@ -1,6 +1,5 @@
 import { MapPin, CreditCard, Package } from "lucide-react";
 import type { Order } from "../../../shared/types";
-import StatusStep from "../layout/CustomerStatusStep";
 
 interface OrderDetailsProps {
     order: Order;
@@ -14,38 +13,13 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                 <div className="flex justify-between items-start mb-10">
                 <div>
             <p className="text-[10px] text-stone-400 uppercase tracking-[0.2em] font-bold">Details for</p>
-            <h3 className="text-xl font-semibold text-stone-900">{order.id}</h3>
+            <h3 className="text-xl font-semibold text-stone-900">{order._id}</h3>
           </div>
           <span className="px-5 py-2 rounded-full bg-stone-900 text-white text-[10px] uppercase tracking-widest font-black">
             {order.status}
           </span>
                 </div>
 
-                {/* Vertical Timeline */}
-                <div className="space-y-8 relative before:absolute before:left-2.75 before:top-2 before:bottom-2 before:w-px before:bg-stone-100">
-          <StatusStep 
-            title="Order Placed" 
-            date={order.date} 
-            completed={true} 
-          />
-          <StatusStep 
-            title="Processing" 
-            date={order.status === 'Pending' ? "Awaiting confirmation" : "Confirmed"} 
-            completed={order.status !== 'Pending'} 
-          />
-          <StatusStep 
-            title="Shipped" 
-            date={['Shipped', 'Delivered'].includes(order.status) ? "In Transit" : "Preparing for dispatch"} 
-            completed={['Shipped', 'Delivered'].includes(order.status)} 
-          />
-          <StatusStep 
-            title="Delivered" 
-            date={order.status === 'Delivered' ? "Arrived at destination" : "Arrival"} 
-            completed={order.status === 'Delivered'} 
-            isLast={true}
-          />
-            </div>
-        </div>
 
         {/* Order Summary & Totals */}
         <div className="bg-white border border-stone-100 p-8 rounded-[2.5rem] shadow-sm space-y-6">
@@ -106,6 +80,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
           </div>
         </div>
       </div>
+        </div>
         </div>
     )
 }

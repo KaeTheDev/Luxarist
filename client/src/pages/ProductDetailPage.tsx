@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { Product } from "../types/Product";
+import type { Product } from "../features/dashboard/shared/types";
 import { ProductInformation } from "../features/product-details/components/ProductInformation";
 import { ProductImageGallery } from "../features/product-details/components/ProductImageGallery";
 import { ProductDetailsTab } from "../features/product-details/components/ProductDetailsTab";

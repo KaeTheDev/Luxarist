@@ -22,25 +22,70 @@
  * category ID to the options object.
  */
 
-import { useState, useEffect } from "react";
-import { fetchProducts } from "../api/productServices";
-import type { Product } from "../types/Product";
+import { useState, useEffect, useCallback } from "react";
+import { fetchProducts, adminFetchAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct } from "../api/productServices";
+import type { Product } from "../features/dashboard/shared/types";
 
-export function useProducts(options: { isNewArrival?: boolean; limit?: number; category?: string; }) {
+interface ProductOptions {
+    isNewArrival?: boolean;
+    limit?: number;
+    category?: string;
+    isAdmin?: boolean; 
+  }
+
+  export function useProducts(options: ProductOptions = {}) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        // Stringify options so useEffect knows when to refetch if filters change
-        fetchProducts(options)
-        .then(setProducts)
-        .catch((err) => {
-            console.error("Error fetching featured categories:", err);
-            setError(err.message || "Failed to load products")
-        })
-        .finally(() => setLoading(false));
-    }, [JSON.stringify(options)]); // Dependency on options
+    // Memoize the load function so it can be called manually (refresh)
+    const loadData = useCallback(async () => {
+        setLoading(true);
+        try {
+            // Logic: If isAdmin is true, hit the /admin/all route. Otherwise, hit public.
+            const data = options.isAdmin 
+                ? await adminFetchAllProducts() 
+                : await fetchProducts(options);
+            setProducts(data);
+            setError(null);
+        } catch (err: any) {
+            console.error("Error in useProducts hook:", err);
+            setError(err.message || "Failed to load products");
+        } finally {
+            setLoading(false);
+        }
+    }, [JSON.stringify(options)]);
 
-    return { products, loading, error };
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    // --- ADMIN CRUD ACTIONS ---
+
+    const addProduct = async (data: Partial<Product>) => {
+        const newProduct = await adminCreateProduct(data);
+        setProducts((prev) => [newProduct, ...prev]);
+        return newProduct;
+    };
+
+    const editProduct = async (id: string, data: Partial<Product>) => {
+        const updated = await adminUpdateProduct(id, data);
+        setProducts((prev) => prev.map((p) => (p._id === id ? updated : p)));
+        return updated;
+    };
+
+    const removeProduct = async (id: string) => {
+        await adminDeleteProduct(id);
+        setProducts((prev) => prev.filter((p) => p._id !== id));
+    };
+
+    return { 
+        products, 
+        loading, 
+        error, 
+        refresh: loadData, // Useful for pull-to-refresh or "Refresh" buttons
+        addProduct, 
+        editProduct, 
+        removeProduct 
+    };
 }

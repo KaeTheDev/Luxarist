@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Product } from "../../../types/Product";
+import type { Product } from "../../dashboard/shared/types";
 import { CARE_GUIDE } from "../../../constants/careGuide";
 
 interface ProductDetailsTabsProps {
@@ -101,9 +101,7 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
             {/* Metal/Product Column - Dynamic based on category */}
             <div className="space-y-4">
               <h3 className="font-bold text-xs uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">
-                {product.category.name === "watch"
-                  ? "Movement & Build"
-                  : "Material Details"}
+              {product.category?.name === "watch" ? "Movement & Build" : "Material Details"}
               </h3>
               <div className="space-y-3 text-sm">
                 {product.metalSpecs ? (
@@ -213,8 +211,10 @@ export function ProductDetailsTab({ product }: ProductDetailsTabsProps) {
   );
 }
 
-function SpecRow({ label, value }: { label: string; value: string | number }) {
+function SpecRow({ label, value }: { label: string; value?: string | number }) {
+  // Add this guard clause to hide the row if there is no value
   if (value === undefined || value === null || value === "") return null;
+  
   return (
     <div className="flex justify-between border-b border-gray-50 pb-2">
       <span className="text-gray-500">{label}:</span>

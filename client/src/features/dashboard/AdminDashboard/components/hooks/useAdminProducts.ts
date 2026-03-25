@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
-import type { AdminProduct } from "../../../shared/types";
+import type { Product } from "../../../shared/types";
 
 const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
 
 export function useAdminProducts() {
     const { token } = useAuth();
-    const [products, setProducts] = useState<AdminProduct[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +35,7 @@ export function useAdminProducts() {
         }
     };
 
-    const createProduct = async(productData: Omit<AdminProduct, "_id" | "slug">) => {
+    const createProduct = async(productData: Omit<Product, "_id" | "slug">) => {
         const res = await fetch(`${API_URL}/admin/products`, {
             method: "POST",
             headers,
@@ -48,7 +48,7 @@ export function useAdminProducts() {
         await fetchProducts();
     };
 
-    const updateProduct = async(id: string, productData: Partial<AdminProduct>) => {
+    const updateProduct = async(id: string, productData: Partial<Product>) => {
         const res = await fetch(`${API_URL}/admin/products/${id}`, {
             method: "PUT",
             headers,

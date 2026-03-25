@@ -25,7 +25,7 @@ import { fetchCategoryProducts } from "../api/productServices";
 import { PageHero } from "../common/ui/PageHero";
 import { ShopAllFilters } from "../features/shop-all/ShopAllFilters";
 import { ProductList } from "../common/ui/ProductList";
-import type { Product } from "../types/Product";
+import type { Product } from "../features/dashboard/shared/types";
 
 export function ShopAllPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -53,18 +53,14 @@ export function ShopAllPage() {
         // Your fetchProducts returns Product[] directly
         const allProducts = await fetchProducts();
 
-        // Derive categories
-        const uniqueCats = Array.from(
-          new Set(
-            allProducts.map((p) =>
-              typeof p.category === "object"
-                ? (p.category as any).name
-                : p.category
-            )
-          )
-        ).filter(Boolean) as string[];
+// Derive categories from the object structure
+const uniqueCats = Array.from(
+  new Set(
+    allProducts.map((p) => p.category?.name) // Safely grab the .name
+  )
+).filter((name): name is string => Boolean(name)); // Typescript-safe filter
 
-        setCategories(uniqueCats);
+setCategories(uniqueCats);
         setProducts(applyLocalSort(allProducts, sort));
       } catch (error) {
         console.error("Failed to initialize shop:", error);
@@ -75,33 +71,32 @@ export function ShopAllPage() {
     initShop();
   }, []);
 
-  // 2. Refresh Products on Filter/Sort Change
-  useEffect(() => {
-    async function updateProducts() {
-      if (categories.length === 0) return;
+// 2. Refresh Products on Filter/Sort Change
+useEffect(() => {
+  async function updateProducts() {
+    // Allow "all" to load even if categories list is still being built
+    if (activeCategory !== "all" && categories.length === 0) return;
 
-      setLoading(true);
-      try {
-        if (activeCategory === "all") {
-          const data = await fetchProducts();
-          setProducts(applyLocalSort(data, sort));
-        } else {
-          // fetchCategoryProducts returns response.data (likely {products: []} or raw [])
-          const response = await fetchCategoryProducts(activeCategory.toLowerCase(), { sort });
-          // Handle object vs array response safely
-          const data = Array.isArray(response)
-            ? response
-            : response.products || [];
-          setProducts(data);
-        }
-      } catch (error) {
-        console.error("Error fetching filtered products:", error);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    try {
+      if (activeCategory === "all") {
+        const data = await fetchProducts();
+        setProducts(applyLocalSort(data, sort));
+      } else {
+        // fetchCategoryProducts now returns Product[] directly
+        const data = await fetchCategoryProducts(activeCategory.toLowerCase(), { sort });
+        
+        // No more .products check needed! Just set the data.
+        setProducts(applyLocalSort(data, sort));
       }
+    } catch (error) {
+      console.error("Error fetching filtered products:", error);
+    } finally {
+      setLoading(false);
     }
-    updateProducts();
-  }, [activeCategory, sort]);
+  }
+  updateProducts();
+}, [activeCategory, sort]);
 
   return (
     <div className="min-h-screen bg-white">

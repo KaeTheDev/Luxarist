@@ -28,7 +28,7 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import type { Product } from "../../types/Product";
+import type { Product } from "../../features/dashboard/shared/types";
 import { ProductCard } from "./ProductCard";
 
 interface ProductListProps {
@@ -37,11 +37,7 @@ interface ProductListProps {
   className?: string;
 }
 
-export function ProductList({
-  products,
-  emptyMessage,
-  className,
-}: ProductListProps) {
+export function ProductList({ products, emptyMessage, className }: ProductListProps) {
   // Handle Empty State
   if (products.length === 0) {
     return (
@@ -65,29 +61,22 @@ export function ProductList({
       className={`grid grid-cols-2 gap-y-16 gap-x-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 ${className}`}
     >
       <AnimatePresence mode="popLayout">
-        {products.map((product) => (
-          <motion.div
-            key={product._id}
-            layout // Smoothly slides neighboring cards into the empty spot
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-          >
-            <ProductCard
-              key={product._id}
-              slug={product.slug ?? product._id}
-              id={product._id}
-              imageUrl={product.primaryImageUrl}
-              title={product.name}
-              category={product.category.name}
-              price={product.price}
-              isNewArrival={product.isNewArrival}
-              // Note: We don't pass a width like 'w-72' here.
-              // The grid-cols will dictate the width automatically.
-              className="w-full"
-            />
-          </motion.div>
-        ))}
+      {products.map((product) => (
+  <motion.div
+    key={product._id}
+    layout 
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+  >
+    {/* PASS THE WHOLE OBJECT HERE */}
+    <ProductCard
+      product={product}
+      isNewArrival={product.isNewArrival}
+      className="w-full"
+    />
+  </motion.div>
+))}
       </AnimatePresence>
     </div>
   );
