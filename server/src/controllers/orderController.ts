@@ -23,7 +23,6 @@ export async function getMyOrders(req: AuthRequest, res: Response) {
 
     // We cast customerId as string because we verified it in the security check above
     const orders = await Order.find({ customerId: customerId as string })
-      .select("orderNumber items total status orderDate")
       .sort({ orderDate: -1 });
 
     // Return JSON response
