@@ -10,22 +10,47 @@ export async function getMyReviews(req: AuthRequest, res: Response) {
     try {
         const { userId } = req.params;
 
-        // Verify req.user matches userId 
+        // 1. Authorization Guard
         if (!req.user || (req.user.id !== userId && req.user.role !== "admin")) {
             return res.status(403).json({ 
                 message: "Unauthorized access to these reviews." 
             });
         }
 
-        // Query MongoDB for reviews 
-        const reviews = await Review.find({ customerId: userId as string })
+        // 2. Fetch reviews from MongoDB
+        const reviews = await Review.find({ customerId: userId })
             .sort({ createdAt: -1 });
 
-        // Return JSON response 
-        return res.status(200).json(reviews);
+        // 3. Transform the data to match the Frontend "Review" Interface
+        // This ensures review.productImage and review.productName exist for the UI
+        const formattedReviews = reviews.map(rev => {
+            // Grab the first product associated with this review
+            const mainProduct = rev.products[0];
+
+            return {
+                _id: rev._id,
+                productId: mainProduct?.productId || null,
+                productName: mainProduct?.productName || "Luxarist Piece",
+                productImage: mainProduct?.productImage || "/api/placeholder/100/100",
+                customerName: `${rev.customerFirstName} ${rev.customerLastName}`,
+                rating: rev.rating,
+                comment: rev.comment,
+                isApproved: rev.approved,
+                // Format the date string for the 'Calendar' icon in the ReviewCard
+                date: new Date(rev.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                }),
+                createdAt: rev.createdAt
+            };
+        });
+
+        // 4. Return the clean, formatted array
+        return res.status(200).json(formattedReviews);
 
     } catch (error: any) {
-        // Handle errors gracefully
+        console.error("Error in getMyReviews:", error);
         return res.status(500).json({
             message: "Error fetching reviews",
             error: error.message,

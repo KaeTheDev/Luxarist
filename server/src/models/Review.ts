@@ -1,8 +1,10 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 // The Shape of a Product Item
 export interface IProductItem {
+    productId: Types.ObjectId;
     productName: string;
+    productImage?: string;
 }
 
 // The Shape of a Review Document
@@ -21,7 +23,9 @@ export interface IReview extends Document {
 
 // Sub-schema for items to keep the main schema clean
 const productItemSchema = new Schema<IProductItem>({
-    productName: { type: String, required: true }
+    productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+    productName: { type: String, required: true },
+    productImage: { type: String }
 }, { _id: false });
 
 
