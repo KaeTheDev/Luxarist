@@ -6,13 +6,12 @@ import { User } from "../models/User";
 import { AuthRequest } from "../types/auth";
 
 /**
- * @desc    Get admin dashboard metrics
+ * @desc    Fetch high-level business metrics and recent activity for the dashboard
  * @route   GET /api/admin/metrics
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-export async function getAdminMetrics(req: AuthRequest, res: Response) {
+export async function adminGetMetrics(req: AuthRequest, res: Response) {
     try {
-        // Run all count queries in parallel for performance
         const [totalProducts, activeProducts, totalOrders, totalReviews, totalCustomers, recentOrders, recentReviews] = await Promise.all([
             Product.countDocuments(),
             Product.countDocuments({ status: "active" }),
@@ -20,16 +19,15 @@ export async function getAdminMetrics(req: AuthRequest, res: Response) {
             Review.countDocuments(),
             User.countDocuments({ role: "customer" }),
             Order.find()
-            .sort({ createdAt: -1 })
-            .limit(5)
-            .select("orderNumber customerFirstName customerLastName total status orderDate"),
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select("orderNumber customerFirstName customerLastName total status orderDate"),
             Review.find()
-            .sort({ createdAt: -1 })
-            .limit(5)
-            .select("customerFirstName customerLastName rating comment date products"),
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select("customerFirstName customerLastName rating comment date products"),
         ]);
 
-        // Merge and sort recent activity by date
         const recentActivity = [
             ...recentOrders.map(o => ({
                 type: "order" as const,
@@ -67,11 +65,26 @@ export async function getAdminMetrics(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Create a new product
- * @route   POST /api/admin/products
- * @access  Private (Admin only)
+ * @desc    Retrieve all products in the database including inactive/draft items
+ * @route   GET /api/admin/products
+ * @access  Private (Admin Only)
  */
-export async function createProduct(req: AuthRequest, res: Response) {
+export async function adminGetAllProducts(req: AuthRequest, res: Response) {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 });
+        res.status(200).json(products);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
+
+/**
+ * @desc    Initialize and save a new product to the boutique catalog
+ * @route   POST /api/admin/products
+ * @access  Private (Admin Only)
+ */
+export async function adminCreateProduct(req: AuthRequest, res: Response) {
     try {
         const product = await Product.create(req.body);
         res.status(201).json(product);
@@ -82,20 +95,18 @@ export async function createProduct(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Update a product
+ * @desc    Modify specifications or status of an existing product
  * @route   PUT /api/admin/products/:id
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-export async function updateProduct(req: AuthRequest, res: Response) {
+export async function adminUpdateProduct(req: AuthRequest, res: Response) {
     try {
         const product = await Product.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true, runValidators: true }
         );
-
         if (!product) return res.status(404).json({ message: "Product not found" });
-
         res.status(200).json(product);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -104,17 +115,14 @@ export async function updateProduct(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Delete a product
+ * @desc    Permanently remove a product from the database
  * @route   DELETE /api/admin/products/:id
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-
-export async function deleteProduct(req: AuthRequest, res: Response) {
+export async function adminDeleteProduct(req: AuthRequest, res: Response) {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
-
         if (!product) return res.status(404).json({ message: "Product not found" });
-
         res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -123,15 +131,13 @@ export async function deleteProduct(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Get all orders
+ * @desc    Retrieve full list of client acquisitions for the ledger
  * @route   GET /api/admin/orders
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-export async function getAllOrders(req: AuthRequest, res: Response) {
+export async function adminGetAllOrders(req: AuthRequest, res: Response) {
     try {
-        const orders = await Order.find()
-            .sort({ orderDate: -1 });
-
+        const orders = await Order.find().sort({ orderDate: -1 });
         res.status(200).json(orders);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -140,22 +146,19 @@ export async function getAllOrders(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Update order status
+ * @desc    Update the fulfillment status of a client order
  * @route   PUT /api/admin/orders/:id
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-export async function updateOrderStatus(req: AuthRequest, res: Response) {
+export async function adminUpdateOrderStatus(req: AuthRequest, res: Response) {
     try {
         const { status } = req.body;
-
         const order = await Order.findByIdAndUpdate(
             req.params.id,
             { status },
             { new: true, runValidators: true }
         );
-
         if (!order) return res.status(404).json({ message: "Order not found" });
-
         res.status(200).json(order);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -164,16 +167,13 @@ export async function updateOrderStatus(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Get all reviews
+ * @desc    Fetch all client reviews for moderation
  * @route   GET /api/admin/reviews
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-
-export async function getAllReviews(req: AuthRequest, res: Response) {
+export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
-        const reviews = await Review.find()
-            .sort({ createdAt: -1 });
-
+        const reviews = await Review.find().sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -182,23 +182,19 @@ export async function getAllReviews(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Approve or reject a review
+ * @desc    Toggle approval status to show or hide a review on the storefront
  * @route   PUT /api/admin/reviews/:id
- * @access  Private (Admin only)
+ * @access  Private (Admin Only)
  */
-
-export async function updateReviewApproval(req: AuthRequest, res: Response) {
+export async function adminUpdateReviewApproval(req: AuthRequest, res: Response) {
     try {
         const { approved } = req.body;
-
         const review = await Review.findByIdAndUpdate(
             req.params.id,
             { approved },
             { new: true, runValidators: true }
         );
-
         if (!review) return res.status(404).json({ message: "Review not found" });
-
         res.status(200).json(review);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";

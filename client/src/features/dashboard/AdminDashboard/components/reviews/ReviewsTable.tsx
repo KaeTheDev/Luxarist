@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import type { AdminReview } from "../../../shared/types";
+import type { Review } from "../../../shared/types";
 import { ReviewRow } from "./ReviewRow";
 
 export default function ReviewsTable() {
-    const [reviews, setReviews] = useState<AdminReview[]>([]);
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchReviews = async() => {

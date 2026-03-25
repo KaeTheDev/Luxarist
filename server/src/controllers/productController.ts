@@ -209,3 +209,57 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error fetching products" });
   }
 };
+
+/**
+ * --- ADMIN CONTROLLERS (The Equivalence Bridge) ---
+ */
+
+// GET /admin/products (Admin Only)
+export const getAllProductsAdmin = async (req: Request, res: Response) => {
+  try {
+    // No status filter here - Admin needs to see 'inactive' items to toggle them
+    const products = await Product.find({})
+      .populate("category", "name slug")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Admin fetch failed" });
+  }
+};
+
+// POST /admin/products (Create New Piece)
+export const createProduct = async (req: Request, res: Response) => {
+  try {
+    // This is where the Admin Dashboard 'Save' button lands
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// UPDATE an existing piece (e.g., toggling status or updating price)
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedProduct) return res.status(404).json({ message: "Product not found" });
+    res.status(200).json(updatedProduct);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// DELETE a piece
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) return res.status(404).json({ message: "Product not found" });
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Delete failed" });
+  }
+};

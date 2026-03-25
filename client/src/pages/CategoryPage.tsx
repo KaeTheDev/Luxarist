@@ -26,7 +26,7 @@ import { fetchCategoryDetail } from "../api/productServices";
 import { fetchCategoryProducts } from "../api/productServices";
 
 import type { Category } from "../types/Category";
-import type { Product } from "../types/Product";
+import type { Product } from "../features/dashboard/shared/types";
 
 import { CategoryFilters, type FiltersState } from "../features/category/CategoryFilters";
 import { PageHero} from "../common/ui/PageHero";
@@ -65,21 +65,29 @@ export function CategoryPage() {
     loadCategory();
   }, [slug]);
 
-  // Fetch products whenever filters change
-  useEffect(() => {
-    if (!slug) return;
-    async function loadProducts() {
-      try {
-        const data = await fetchCategoryProducts(slug, filters);
-        setProducts(data.products);
-        setPagination(data.pagination);
-      } catch (error) {
-        console.error("Failed to load products:", error);
-      }
+// Fetch products whenever filters change
+useEffect(() => {
+  if (!slug) return;
+  async function loadProducts() {
+    try {
+      // Now returns Product[] directly
+      const data = await fetchCategoryProducts(slug, filters);
+      
+      // 1. DATA IS THE ARRAY: Update this line
+      setProducts(Array.isArray(data) ? data : []);
+      
+      // 2. PAGINATION: If your service now only returns the array, 
+      // you might need to adjust your backend or service to keep the meta-data.
+      // For now, let's set it to null to prevent crashes.
+      setPagination(null); 
+    } catch (error) {
+      console.error("Failed to load products:", error);
+      setProducts([]); // Fallback to empty array to prevent .length crash
     }
+  }
 
-    loadProducts();
-  }, [slug, filters]);
+  loadProducts();
+}, [slug, filters]);
 
   if (!category) {
     return (

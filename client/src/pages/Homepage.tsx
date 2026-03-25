@@ -26,7 +26,7 @@ import { BrandPromiseSection } from "../features/home/sections/BrandPromiseSecti
 import { NewsletterSection } from "../features/home/sections/NewsletterSection";
 
 import { fetchProducts } from "../api/productServices";
-import type { Product } from "../types/Product";
+import type { Product } from "../features/dashboard/shared/types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 

@@ -16,7 +16,7 @@ export default function MyOrders() {
     );
 
     if (selectedOrderId) {
-        const currentOrder = orders.find(o => o.id === selectedOrderId);
+        const currentOrder = orders.find(o => o._id === selectedOrderId);
         return (
             <div className="space-y-6 animate-in fade-in duration-500">
                 <button
@@ -43,10 +43,10 @@ export default function MyOrders() {
             ) : (
                 <div className="grid gap-6">
                     {orders.map((order) => (
-                        <div key={order.id} onClick={() => setSelectedOrderId(order.id)} className="cursor-pointer">
+                        <div key={order._id} onClick={() => setSelectedOrderId(order._id)} className="cursor-pointer">
                             <OrderCard
-                                orderNumber={order.id}
-                                orderDate={order.date}
+                                orderNumber={order._id}
+                                orderDate={order.orderDate}
                                 total={order.total}
                                 status={order.status}
                                 itemCount={order.items?.length ?? 0}

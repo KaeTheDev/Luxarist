@@ -22,7 +22,7 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                 <h3 className="text-[10px] uppercase tracking-[0.2em] text-stone-400 font-black">Specifications & Craft</h3>
                 <div className="h-px w-full bg-stone-100 mt-2" />
             </header>
-
+    
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Dynamic Material Selection */}
                 <div className="space-y-2">
@@ -38,7 +38,7 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                         ))}
                     </select>
                 </div>
-
+    
                 {/* Dynamic Gemstone Selection */}
                 <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Gemstone Type</label>
@@ -47,8 +47,6 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                         onChange={(e) => {
                             const val = e.target.value;
                             onChange("gemstoneType", val);
-                            
-                            // Dynamic SKU Update: If the gemstone changes, the SKU updates via buildSku
                             const newSku = buildSku(currentCategory, val);
                             onChange("sku", newSku);
                         }}
@@ -59,7 +57,7 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                         ))}
                     </select>
                 </div>
-
+    
                 {/* Dynamic Style Selection */}
                 <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Design Style</label>
@@ -73,7 +71,7 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                         ))}
                     </select>
                 </div>
-
+    
                 {/* Dynamic Weight Selection */}
                 <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Weight Class</label>
@@ -88,9 +86,9 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                     </select>
                 </div>
             </div>
-
+    
             {/* Sizes Selection (Chip UI) */}
-            <div className="space-y-3">
+            <div className="space-y-3 pb-8">
                 <label className="text-[10px] uppercase tracking-widest text-stone-500 ml-1">Available Sizes</label>
                 <div className="flex flex-wrap gap-2">
                     {sizes.map((size) => {
@@ -116,6 +114,66 @@ export default function SectionSpecs({ formData, onChange }: SectionProps) {
                             </button>
                         );
                     })}
+                </div>
+            </div>
+    
+            {/* NEW: Gemstone & Metal Precision Fields */}
+            <div className="pt-8 border-t border-stone-100 space-y-8 bg-stone-50/30 p-6 rounded-3xl">
+                <header>
+                    <h3 className="text-[10px] uppercase tracking-[0.2em] text-stone-400 font-black italic">Gemstone & Metal Precision</h3>
+                </header>
+    
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Diamond/Gemstone Details */}
+                    <div className="space-y-4">
+                        <h4 className="text-[9px] uppercase tracking-widest font-bold text-stone-900">Technical Diamond Specs</h4>
+                        <div className="grid grid-cols-2 gap-3">
+                            <input 
+                                placeholder="Carat (e.g. 1.25)"
+                                value={formData.diamondSpecs?.carat || ""}
+                                onChange={(e) => onChange("diamondSpecs", { 
+                                    ...(formData.diamondSpecs || {}), 
+                                    carat: e.target.value 
+                                })}
+                                className="p-3 bg-white border border-stone-100 rounded-xl text-xs outline-none focus:border-stone-300 transition-all"
+                            />
+                            <input 
+                                placeholder="Clarity (e.g. VS1)"
+                                value={formData.diamondSpecs?.clarity || ""}
+                                onChange={(e) => onChange("diamondSpecs", { 
+                                    ...(formData.diamondSpecs || {}), 
+                                    clarity: e.target.value 
+                                })}
+                                
+                                className="p-3 bg-white border border-stone-100 rounded-xl text-xs outline-none focus:border-stone-300 transition-all"
+                            />
+                        </div>
+                    </div>
+    
+                    {/* Metal Details */}
+                    <div className="space-y-4">
+                        <h4 className="text-[9px] uppercase tracking-widest font-bold text-stone-900">Metal Precision</h4>
+                        <div className="grid grid-cols-2 gap-3">
+                            <input 
+                                placeholder="Finish (e.g. Polished)"
+                                value={formData.metalSpecs?.finish || ""}
+                                onChange={(e) => onChange("metalSpecs", { 
+                                    ...(formData.metalSpecs || {}), 
+                                    finish: e.target.value 
+                                })}
+                                className="p-3 bg-white border border-stone-100 rounded-xl text-xs outline-none focus:border-stone-300 transition-all"
+                            />
+                            <input 
+                                placeholder="Setting (e.g. Prong)"
+                                value={formData.metalSpecs?.setting || ""}
+                                onChange={(e) => onChange("metalSpecs", { 
+                                    ...(formData.metalSpecs || {}), 
+                                    setting: e.target.value 
+                                })}
+                                className="p-3 bg-white border border-stone-100 rounded-xl text-xs outline-none focus:border-stone-300 transition-all"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

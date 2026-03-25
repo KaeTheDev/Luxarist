@@ -1,6 +1,6 @@
 import React from "react";
 import { Award, ShieldCheck } from "lucide-react";
-import type { Product } from "../../../types/Product";
+import type { Product } from "../../dashboard/shared/types";
 
 export function ProductDetails({ product }: { product: Product }) {
   const details = [

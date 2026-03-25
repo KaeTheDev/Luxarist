@@ -1,44 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Package, Search } from "lucide-react";
 import ProductTable from "./ProductTable";
 import ProductForm from "./form/ProductForm";
-import type { AdminProduct } from "../../../shared/types";
+import { useProducts } from "../../../../../hooks/useProducts";
+import type { Product } from "../../../shared/types";
 
 export default function AdminProducts() {
-    const [products, setProducts] = useState<AdminProduct[]>([]);
+    // Hook replaces all manual fetch, delete, and loading states
+    const { products, loading, error, addProduct, editProduct, removeProduct, refresh } = useProducts({ isAdmin: true });
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<AdminProduct | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    
-    // State for delete orchestration
-    const [deletingId, setDeletingId] = useState<string | null>(null);
-    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const fetchProducts = async () => {
-        setIsLoading(true);
-        try {
-            const response = await fetch("/api/products");
-            if (!response.ok) throw new Error("Failed to fetch collections");
-            const data = await response.json();
-            setProducts(data);
-        } catch (error) {
-            console.error("Error loading products:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+     // Track which ID is being deleted for the ProductTable spinner
+     const [deletingId, setDeletingId] = useState<string | null>(null);
+     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
     const handleAddProduct = () => {
         setSelectedProduct(null);
         setIsFormOpen(true);
     };
 
-    const handleEditProduct = (product: AdminProduct) => {
+    const handleEditProduct = (product: Product) => {
         setSelectedProduct(product);
         setIsFormOpen(true);
     };
@@ -46,36 +29,27 @@ export default function AdminProducts() {
     const handleDelete = async (id: string) => {
         setDeletingId(id);
         try {
-            const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-            if (response.ok) {
-                setProducts(prev => prev.filter(p => p._id !== id));
-                setConfirmDeleteId(null);
-            }
-        } catch (error) {
-            console.error("Delete failed:", error);
+            await removeProduct(id);
+            setConfirmDeleteId(null);
+        } catch (err) {
+            console.error("Delete failed", err);
         } finally {
             setDeletingId(null);
         }
     };
 
-    const handleSubmit = async (data: Partial<AdminProduct>) => {
+    // Simplified Submit Logic
+    const handleSubmit = async (data: Partial<Product>) => {
         setIsSubmitting(true);
         try {
-            const method = selectedProduct ? 'PUT' : 'POST';
-            const url = selectedProduct ? `/api/products/${selectedProduct._id}` : '/api/products';
-            
-            const response = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                await fetchProducts(); // Refresh list
-                setIsFormOpen(false);
+            if (selectedProduct) {
+                await editProduct(selectedProduct._id, data);
+            } else {
+                await addProduct(data);
             }
-        } catch (error) {
-            console.error("Save failed:", error);
+            setIsFormOpen(false);
+        } catch (err) {
+            console.error("Save failed", err);
         } finally {
             setIsSubmitting(false);
         }
@@ -116,14 +90,16 @@ export default function AdminProducts() {
                 </div>
             </div>
 
+            {error && <p className="text-red-500 font-bold">Error: {error}</p>}
+
             <ProductTable 
                 products={products} 
                 onEdit={handleEditProduct}
-                onDelete={handleDelete}
-                deletingId={deletingId}
+                onDelete={handleDelete} // Using our new handler above
+                isLoading={loading}
+                deletingId={deletingId} // Added to satisfy error
                 confirmDeleteId={confirmDeleteId}
                 setConfirmDeleteId={setConfirmDeleteId}
-                isLoading={isLoading}
             />
 
             <ProductForm 
@@ -132,7 +108,7 @@ export default function AdminProducts() {
                 initialData={selectedProduct}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
-                onSuccess={fetchProducts}
+                onSuccess={refresh} // Added to satisfy error and trigger a refresh
             />
         </main>
     );

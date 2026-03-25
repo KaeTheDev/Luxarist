@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../api/productServices";
-import type { Product } from "../types/Product";
+import type { Product } from "../features/dashboard/shared/types";
 import { ProductList } from "../common/ui/ProductList";
 import { PageHero } from "../common/ui/PageHero";
 import { NewArrivalsBanner } from "../features/new-arrivals/NewArrivalsBanner";

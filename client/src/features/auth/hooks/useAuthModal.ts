@@ -30,13 +30,13 @@ export function useAuthModal(onClose: () => void) {
     setError(null);
     try {
       const result = await loginUser(data);
-      
-      // use context login instead of manual localStorage
-      // result should ideally contain { token, user }
       login(result.token, result.user);
       onClose();
-      const origin = location.state?.from?.pathname || "/dashboard";
-      navigate(origin, { replace: true });
+
+      // Route based on role
+      const destination = result.user.role === "admin" ? "/admin" : location.state?.from?.pathname || "/dashboard";
+
+      navigate(destination, { replace: true });
     } catch (err: any) {
       setError(err.message || "Invalid credentials.");
     } finally {

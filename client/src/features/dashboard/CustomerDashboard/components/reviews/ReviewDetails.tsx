@@ -26,7 +26,7 @@ export default function ReviewDetails({ review, token, onUpdated }: ReviewDetail
     setError(null);
 
     try {
-      const res = await fetch(`${API_URL}/reviews/${review.id}`, {
+      const res = await fetch(`${API_URL}/reviews/${review._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -83,9 +83,9 @@ export default function ReviewDetails({ review, token, onUpdated }: ReviewDetail
 
         <div className="flex gap-6 items-center">
           <div className="w-24 h-24 shrink-0 bg-stone-50 rounded-2xl overflow-hidden border border-stone-100 flex items-center justify-center text-stone-300">
-            {currentReview.image ? (
+            {currentReview.productImage ? (
               <img
-                src={currentReview.image}
+                src={currentReview.productImage}
                 alt={currentReview.productName}
                 className="w-full h-full object-cover"
               />

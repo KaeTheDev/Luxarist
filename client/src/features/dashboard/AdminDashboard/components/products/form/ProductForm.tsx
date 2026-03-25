@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Loader2 } from "lucide-react";
-import type { AdminProduct } from "../../../../shared/types";
+import type { Product } from "../../../../shared/types"; 
 import SectionBasicInfo from "./SectionBasicInfo";
 import SectionImages from "./SectionImages";
 import SectionSpecs from "./SectionSpecs";
@@ -8,45 +8,61 @@ import SectionSpecs from "./SectionSpecs";
 interface ProductFormProps {
     isOpen: boolean;
     onClose: () => void;
-    initialData: AdminProduct | null;
-    onSubmit: (data: Partial<AdminProduct>) => void;
+    initialData: Product | null; 
+    onSubmit: (data: Partial<Product>) => Promise<void>; 
     isSubmitting?: boolean;
-    onSuccess: () => void;
+    onSuccess?: () => void; // Made optional just in case
 }
 
 export default function ProductForm({ isOpen, onClose, initialData, onSubmit, isSubmitting, onSuccess } : ProductFormProps) {
-    // Initialize state with initialData or empty defaults
-    const [formData, setFormData] = useState<Partial<AdminProduct>>({});
+    // 1. Initialize with specific defaults to satisfy TypeScript
+    const [formData, setFormData] = useState<Partial<Product>>({
+        status: 'active',
+        isNewArrival: false,
+        galleryImageUrls: [],
+        sizes: [],
+        diamondSpecs: {},
+        metalSpecs: {}
+    });
 
     useEffect(() => {
-        if(initialData) {
+        if (initialData && isOpen) {
             setFormData(initialData);
-        } else {
-            setFormData({}); // Reset for new products
+        } else if (isOpen) {
+            setFormData({
+                status: 'active',
+                isNewArrival: false,
+                galleryImageUrls: [],
+                sizes: [],
+                diamondSpecs: {},
+                metalSpecs: {}
+            }); 
         }
     }, [initialData, isOpen]);
 
-    // Centralized Change Handler
-    const handleChange = <K extends keyof AdminProduct>(field: K, value: AdminProduct[K]) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
+   // 2. Centralized Change Handler 
+    const onChange = (field: keyof Product, value: any) => {
+        setFormData(prev => ({ 
+            ...prev, 
+            [field]: value 
+        }));
     };
 
     const handleInternalSubmit = async () => {
         try {
             await onSubmit(formData);
-            // 2. Trigger the success callback (refreshing list, closing modal, etc.)
-            onSuccess(); 
+            if (onSuccess) onSuccess(); 
+            onClose(); 
         } catch (error) {
             console.error("Submission failed in Form:", error);
-            // You could add an error state here to show the user
         }
     };
 
     if(!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex justify-end bg-stone-900/20 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="w-full max-w-2xl bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-500 ease-out">
+        <div className="fixed inset-0 z-50 flex justify-end bg-stone-900/20 backdrop-blur-sm">
+            <div className="w-full max-w-2xl bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
                 
                 <div className="px-8 py-6 border-b border-stone-100 flex items-center justify-between">
                     <div>
@@ -57,35 +73,31 @@ export default function ProductForm({ isOpen, onClose, initialData, onSubmit, is
                             {initialData ? `Editing SKU: ${initialData.sku}` : "Add to the collection"}
                         </p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-stone-50 rounded-full transition-colors text-stone-400">
+                    <button onClick={onClose} className="p-2 hover:bg-stone-50 rounded-full text-stone-400">
                         <X size={20} />
                     </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-8 space-y-12">
-                    <SectionBasicInfo formData={formData} onChange={handleChange} />
-                    <SectionImages formData={formData} onChange={handleChange} />
-                    <SectionSpecs formData={formData} onChange={handleChange} />
+                    {/* IMPORTANT: Ensure these components expect Partial<Product> */}
+                    <SectionBasicInfo formData={formData} onChange={onChange} />
+                    <SectionImages formData={formData} onChange={onChange} />
+                    <SectionSpecs formData={formData} onChange={onChange} />
                 </div>
 
                 <div className="p-8 border-t border-stone-100 flex gap-4 bg-stone-50/50">
                     <button 
                         onClick={onClose}
-                        type="button"
-                        className="flex-1 py-4 text-[10px] uppercase tracking-widest font-black text-stone-400 hover:text-stone-900 transition-colors"
+                        className="flex-1 py-4 text-[10px] uppercase tracking-widest font-black text-stone-400"
                     >
                         Discard
                     </button>
                     <button 
-                        onClick={handleInternalSubmit} // Use the internal handler
+                        onClick={handleInternalSubmit} 
                         disabled={isSubmitting}
-                        className="flex-2 py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] font-black rounded-2xl hover:bg-stone-800 transition-all shadow-lg shadow-stone-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                        className="flex-2 py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] font-black rounded-2xl disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                        {isSubmitting ? (
-                            <Loader2 size={16} className="animate-spin" />
-                        ) : (
-                            initialData ? "Update Product" : "Publish to Store"
-                        )}
+                        {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : (initialData ? "Update Product" : "Publish to Store")}
                     </button>
                 </div>
             </div>

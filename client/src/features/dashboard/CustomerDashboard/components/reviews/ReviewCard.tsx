@@ -12,7 +12,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             {/* Product Image */}
             <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-stone-50 rounded-2xl overflow-hidden border border-stone-100">
                 <img 
-                    src={review.image || "/api/placeholder/100/100"} 
+                    src={review.productImage || "/api/placeholder/100/100"} 
                     alt={review.productName}
                     className="w-full h-full object-cover grayscale-20 group-hover:grayscale-0 transition-all duration-700"
                 />

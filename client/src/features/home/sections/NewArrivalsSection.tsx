@@ -22,7 +22,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import type { Product } from "../../../types/Product";
+import type { Product } from "../../../features/dashboard/shared/types";
 import { ProductCard } from "../../../common/ui/ProductCard";
 
 interface NewArrivalsSectionProps {
@@ -116,20 +116,15 @@ if(loading) return (
               div::-webkit-scrollbar { display: none; }
             `}} />
 
-            {products.map((product) => (
-              <div key={product._id} className="w-70 sm:w-[320px] shrink-0 snap-start">
-                <ProductCard
-                  id={product._id}
-                  slug={product.slug ?? product._id}
-                  imageUrl={product.primaryImageUrl}
-                  title={product.name}
-                  category={product.category?.name ?? ""}
-                  price={product.price}
-                  isNewArrival={product.isNewArrival}
-                  className="w-full"
-                />
-              </div>
-            ))}
+{products.map((product) => (
+  <div key={product._id} className="w-70 sm:w-[320px] shrink-0 snap-start">
+    <ProductCard
+      product={product} // Pass the whole object
+      isNewArrival={product.isNewArrival}
+      className="w-full"
+    />
+  </div>
+))}
           </div>
         </div>
       </div>
