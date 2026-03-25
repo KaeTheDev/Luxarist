@@ -4,7 +4,7 @@ import DashboardShell from "../shared/components/DashboardShell";
 import AdminOverview from "./components/overview/AdminOverview";
 import OrdersTable from "./components/orders/OrdersTable";
 import ReviewsTable from "./components/reviews/ReviewsTable";
-import AdminProducts from "./components/products/AdminProducts";
+import InventoryManager from "./components/products/InventoryManager";
 
 
 export default function AdminDashboard() {
@@ -25,7 +25,7 @@ export default function AdminDashboard() {
                 <Route index element={<AdminOverview />} />
 
                 {/* URL: /admin/products */}
-                <Route path="products" element={<AdminProducts />} />
+                <Route path="products" element={<InventoryManager />} />
 
                 {/* URL: /admin/ordrs */}
                 <Route path="orders" element={<OrdersTable />} />

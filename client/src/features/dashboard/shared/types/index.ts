@@ -71,6 +71,7 @@ export interface Product {
   };
   metalSpecs?: {
     type?: string; weight?: string; finish?: string;
+    purity?: string;
     setting?: string; width?: string; length?: string;
     clasp?: string; movement?: string; waterResistance?: string;
     glass?: string; strap?: string; battery?: string;
