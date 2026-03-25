@@ -13,7 +13,7 @@ export default function CustomerDashboard() {
           <Route index element={<ProfileOverview />} />
 
           {/* URL: /dashboard/orders */}
-          <Route path="ordewrs" element={<MyOrders />} />
+          <Route path="orders" element={<MyOrders />} />
     
           {/* URL: /dashbord/reviews */}
           <Route path="reviews" element={<MyReviews />} />

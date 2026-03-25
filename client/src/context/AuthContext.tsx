@@ -12,22 +12,23 @@ interface User {
 
 interface AuthContextType {
     user: User | null;
+    isAuthenticated: boolean;
     token: string | null;
     isLoading: boolean;
     login: (token: string, userData: User) => void;
     logout: () => void;
-
 }
 
-// Create Context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Provider Component
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+
+    // Derive authentication status based on the presence of a user
+    const isAuthenticated = !!user;
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -60,18 +61,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("user");
         navigate("/login");
     }
+
     return (
-        <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, token, isLoading, login, logout }}>
           {children}
         </AuthContext.Provider>
-      );
-    }
+    );
+}
     
-    // 4. Custom Hook (Using Arrow Function - standard for hooks)
-    export const useAuth = () => {
-      const context = useContext(AuthContext);
-      if (context === undefined) {
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
         throw new Error("useAuth must be used within an AuthProvider");
-      }
-      return context;
-    };
+    }
+    return context;
+};
