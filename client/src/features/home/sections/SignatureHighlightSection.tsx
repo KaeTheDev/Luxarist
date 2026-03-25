@@ -28,7 +28,7 @@
  */
 
 import { useNavigate } from "react-router-dom";
-import type { Product } from "../../../types/Product";
+import type { Product } from "../../dashboard/shared/types";
 
 interface SignatureHighlightSectionProps {
   product: Product;
