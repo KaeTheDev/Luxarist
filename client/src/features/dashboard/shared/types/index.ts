@@ -113,6 +113,7 @@ export interface Review {
   _id: string;
   productId?: string;
   productName: string;
+  productImage?: string;
   customerName: string; // Combined from AdminReview
   rating: number;
   comment: string;

@@ -31,7 +31,7 @@ const { token } = useAuth();
 
   // ✅ Switch to ReviewDetails when a card is clicked
   if (selectedReviewId) {
-    const currentReview = reviews.find(r => r.id === selectedReviewId);
+    const currentReview = reviews.find(r => r._id === selectedReviewId);
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <button
@@ -45,7 +45,7 @@ const { token } = useAuth();
                     review={currentReview}
                     token={token!}
                     onUpdated={(updated) => {
-                        setReviews(prev => prev.map(r => r.id === updated.id ? updated : r));
+                        setReviews(prev => prev.map(r => r._id === updated._id ? updated : r));
                     }}
                 />
             )}
@@ -84,7 +84,7 @@ const { token } = useAuth();
         ) : (
           <div className="divide-y divide-stone-50">
             {reviews.map((review) => (
-                <div key={review.id} onClick={() => setSelectedReviewId(review.id)} className="cursor-pointer">
+                <div key={review._id} onClick={() => setSelectedReviewId(review._id)} className="cursor-pointer">
                   <ReviewCard review={review} /> 
                 </div>
             ))}

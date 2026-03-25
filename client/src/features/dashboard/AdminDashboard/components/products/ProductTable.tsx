@@ -1,9 +1,9 @@
 import { Pencil, Trash2, Package, Loader2 } from "lucide-react";
-import type { AdminProduct } from "../../../shared/types";
+import type { Product } from "../../../shared/types";
 
 interface ProductTableProps {
-    products: AdminProduct[];
-    onEdit: (product: AdminProduct) => void;
+    products: Product[];
+    onEdit: (product: Product) => void;
     onDelete: (id: string) => void;
     deletingId: string | null;
     confirmDeleteId: string | null;
