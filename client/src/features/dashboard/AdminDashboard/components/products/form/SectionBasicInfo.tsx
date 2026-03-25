@@ -1,8 +1,8 @@
-import type { AdminProduct } from "../../../../shared/types";
+import type { Product } from "../../../../shared/types";
 
 export interface SectionProps {
-    formData: Partial<AdminProduct>;
-    onChange: <K extends keyof AdminProduct>(field: K, value: AdminProduct[K]) => void;
+    formData: Partial<Product>;
+    onChange: <K extends keyof Product>(field: K, value: Product[K]) => void;
 }
 
 export default function SectionBasicInfo({ formData, onChange } : SectionProps) {

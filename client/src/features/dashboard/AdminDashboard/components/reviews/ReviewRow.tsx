@@ -1,8 +1,8 @@
 import { Check, X, Star } from "lucide-react";
-import type { AdminReview } from "../../../shared/types";
+import type { Review } from "../../../shared/types";
 
 interface ReviewRowProps {
-    review: AdminReview;
+    review: Review;
     onToggle: (id: string, status: boolean) => void;
 }
 
