@@ -1,11 +1,23 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import DashboardShell from "../shared/components/DashboardShell";
 import AdminOverview from "./components/overview/AdminOverview";
 import OrdersTable from "./components/orders/OrdersTable";
 import ReviewsTable from "./components/reviews/ReviewsTable";
 import AdminProducts from "./components/products/AdminProducts";
 
+
 export default function AdminDashboard() {
+
+    const { user, isLoading } = useAuth();
+
+    if (isLoading) return null;
+
+    // PROTECTION: If they aren't an admin, bounce back to Customer Dashboard
+    if (user?.role !== 'admin') {
+        return <Navigate to="/dashboard" replace />;
+    }
+
     return (
         <DashboardShell role="admin" title="Management Suite">
             <Routes>
