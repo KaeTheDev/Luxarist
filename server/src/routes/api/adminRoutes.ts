@@ -2,18 +2,7 @@ import { Router } from "express";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 import { z } from "zod";
-import { 
-  adminGetAllProducts, 
-  adminCreateProduct, 
-  adminUpdateProduct, 
-  adminDeleteProduct, 
-  adminGetAllOrders, 
-  adminUpdateOrderStatus, 
-  adminGetAllCustomers,
-  adminGetAllReviews, 
-  adminUpdateReviewApproval,
-  adminGetMetrics
-} from "../../controllers/adminController";
+import { adminGetAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminGetAllOrders, adminUpdateOrderStatus, adminGetAllCustomers, adminGetAllReviews, adminUpdateReviewApproval, adminGetMetrics } from "../../controllers/adminController";
 
 const router = Router();
 
