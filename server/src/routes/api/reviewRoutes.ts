@@ -11,7 +11,7 @@ const router = Router();
  */
 
 // Use 'authMiddleware' specifically 
-router.get("/:userId", authMiddleware, getMyReviews);
+router.get("/customer/:userId", authMiddleware, getMyReviews);
 
 router.put("/:reviewId", authMiddleware, updateReview);
 

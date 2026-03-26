@@ -11,33 +11,32 @@ export function useReviews() {
     const [error, setError] = useState<string | null>(null);
     
     useEffect(() => {
-        if(!user || !token) return;
+        // Prevent running if user isn't logged in
+        if (!user?.id || !token) return;
 
         const fetchReviews = async () => {
+            setLoading(true);
             try {
-                const res = await fetch(`${API_URL}/reviews/${user.id}`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                const res = await fetch(`${API_URL}/reviews/customer/${user.id}`, {
+                    method: 'GET',
+                    headers: { 
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
                 });
 
-                if(!res.ok) throw new Error("Failed to fetch reviews");
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.message || "Could not retrieve reviews");
+                }
 
                 const data = await res.json();
             
-                // Map DB fields → the frontend Review type
-                const mapped: Review[] = data.map((r: any) => ({
-                    id: r._id,
-                    productId: r.products[0]?.productName ?? "",
-                    productName: r.products[0]?.productName ?? "",
-                    rating: r.rating,
-                    comment: r.comment,
-                    date: new Date(r.date).toLocaleDateString("en-US", {
-                        month: "long", day: "numeric", year: "numeric"
-                    }),
-                    image: r.image ?? undefined
-                }));
-
-                setReviews(mapped);
-            } catch(err: any) {
+                // The data is already formatted by the backend controller
+                setReviews(Array.isArray(data) ? data : []);
+                setError(null);
+            } catch (err: any) {
+                console.error("Fetch Error:", err.message);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -45,7 +44,7 @@ export function useReviews() {
         };
 
         fetchReviews();
-    }, [user, token]);
+    }, [user?.id, token]); // Only re-run if user ID or token changes
 
     return { reviews, setReviews, loading, error };
 }

@@ -4,7 +4,7 @@ import DashboardShell from "../shared/components/DashboardShell";
 import MyOrders from "./components/orders/MyOrders";
 import MyReviews from "./components/reviews/MyReviews";
 import AccountSettings from "./components/settings/AccountSettings";
-import ProfileOverview from "./components/collection/CollectionOverview";
+import CollectionOverview from "./components/collection/CollectionOverview";
 
 export default function CustomerDashboard() {
   const { user, isLoading } = useAuth();
@@ -24,7 +24,7 @@ export default function CustomerDashboard() {
       <DashboardShell role="customer" title="Client Suite">
         <Routes>
           {/* URL: /dashboard */}
-          <Route index element={<ProfileOverview />} />
+          <Route index element={<CollectionOverview />} />
 
           {/* URL: /dashboard/orders */}
           <Route path="orders" element={<MyOrders />} />

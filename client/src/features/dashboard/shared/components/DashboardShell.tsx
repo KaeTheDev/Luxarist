@@ -25,6 +25,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
   const customerLinks: NavItem[] = [
     { label: "Collection", href: "/dashboard", icon: <Heart size={18} /> },
     { label: "Orders", href: "/dashboard/orders", icon: <ShoppingBag size={18} /> },
+    { label: "Reviews", href: "/dashboard/reviews", icon: <Star size={18} /> },
     { label: "Settings", href: "/dashboard/settings", icon: <Settings size={18} /> },
   ];
 
