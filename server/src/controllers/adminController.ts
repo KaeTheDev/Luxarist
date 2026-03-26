@@ -71,11 +71,14 @@ export async function adminGetMetrics(req: AuthRequest, res: Response) {
  */
 export async function adminGetAllProducts(req: AuthRequest, res: Response) {
     try {
-        const products = await Product.find().sort({ createdAt: -1 });
+        // Use .select() to exclude heavy fields like full descriptions or extra image arrays
+        const products = await Product.find()
+            .select('name sku price status primaryImageUrl metalSpecs diamondSpecs') 
+            .sort({ createdAt: -1 });
+            
         res.status(200).json(products);
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Server error";
-        res.status(500).json({ message, error: message });
+        res.status(500).json({ message: "Inventory retrieval failed" });
     }
 }
 
@@ -169,38 +172,56 @@ export async function adminUpdateOrderStatus(req: AuthRequest, res: Response) {
 /**
  * @desc    Retrieve the full client directory with investment metrics
  * @route   GET /api/admin/customers
- * @access  Private (Admin Only)
  */
 export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
     try {
         const customers = await User.aggregate([
+            // 1. Filter for only customers
             { $match: { role: 'customer' } }, 
+            
+            // 2. Perform the JOIN
             {
                 $lookup: {
-                    from: Order.collection.name, // Dynamically uses the Order model collection name
-                    localField: '_id',
-                    foreignField: 'customerId',
+                    from: 'orders', // Ensure this matches your collection name in Compass
+                    let: { userId: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    // This converts the string ID in Orders to an ObjectId 
+                                    // to match the User._id
+                                    $eq: ["$customerId", { $toString: "$$userId" }]
+                                }
+                            }
+                        }
+                    ],
                     as: 'orderHistory'
                 }
             },
+            
+            // 3. Shape the data for the frontend
             {
                 $project: {
                     firstName: 1,
                     lastName: 1,
                     email: 1,
                     createdAt: 1,
+                    // Use a fallback of 0 if orderHistory is empty
                     totalInvestment: { $sum: "$orderHistory.total" },
                     acquisitionCount: { $size: "$orderHistory" },
+                    // Get the date of the most recent order
                     lastAcquisition: { $max: "$orderHistory.orderDate" }
                 }
             },
+            
+            // 4. Sort by the highest spending clients first
             { $sort: { totalInvestment: -1 } }
         ]);
 
         res.status(200).json(customers);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
-        res.status(500).json({ message, error: message });
+        res.status(500).json({ message });
     }
 }
 

@@ -6,6 +6,7 @@ import OrdersTable from "./components/orders/OrdersTable";
 import ReviewsTable from "./components/reviews/ReviewsTable";
 import InventoryManager from "./components/products/InventoryManager";
 import CustomerDirectory from "./components/customers/CustomerDirectory";
+import AdminSettings from "./components/settings/AdminSettings";
 
 export default function AdminDashboard() {
 
@@ -37,12 +38,7 @@ export default function AdminDashboard() {
                 <Route path="reviews" element={<ReviewsTable />} />
 
                 {/* URL: /admin/settings */}
-                <Route path="settings" element={
-                    <div className="p-20 border border-stone-100 bg-white rounded-4xl text-center text-stone-400 italic font-serif">
-                        System Configuration Coming Soon
-                    </div>
-                }
-                />
+                <Route path="settings" element={<AdminSettings />} />
             </Routes>
         </DashboardShell>
     );

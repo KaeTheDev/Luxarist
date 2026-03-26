@@ -53,6 +53,7 @@ export default function InventoryTable({ products, onEdit, onDelete, deletingId,
                                             src={product.primaryImageUrl || '/assets/placeholder.jpg'} 
                                             alt={product.name} 
                                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                                            loading="lazy"
                                         />
                                     </div>
                                     <div>
