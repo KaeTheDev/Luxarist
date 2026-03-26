@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../context/AuthContext";
-
-// Ensure /api is consistently applied for Local and Production
-const BASE = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
-const BASE_URL = `${BASE.replace(/\/$/, "")}/api`;
+// Ensure this path leads to your new config.ts file
+import { API_URL, getAuthHeaders } from "../../../../api/config";
 
 interface TimelineEvent { 
   id: string; 
@@ -29,26 +27,24 @@ export function useDashboardStats() {
     // Safety check for user and token
     if (!user?.id || !token) return;
 
-    const headers = { 
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    };
+    // Use centralized header helper
+    const headers = getAuthHeaders(token);
 
     const fetchStats = async () => {
       try {
-        // Parallel fetch with corrected paths
+        // Parallel fetch using the unified API_URL
         const [oRes, rRes, mRes] = await Promise.all([
           // Orders endpoint
-          fetch(`${BASE_URL}/orders/customer/${user.id}`, { headers }),
+          fetch(`${API_URL}/orders/customer/${user.id}`, { headers }),
           
           // Reviews endpoint 
-          fetch(`${BASE_URL}/reviews/customer/${user.id}`, { headers }),
+          fetch(`${API_URL}/reviews/customer/${user.id}`, { headers }),
           
-          // Auth endpoint for join date
-          fetch(`${BASE_URL}/auth/me`, { headers }),
+          // Auth endpoint for profile/join date
+          fetch(`${API_URL}/auth/me`, { headers }),
         ]);
 
-        // Debugging log if any call fails
+        // Error handling if any parallel request fails
         if (!oRes.ok || !rRes.ok || !mRes.ok) {
           console.error("Dashboard Sync Failed:", {
             orders: oRes.status,
@@ -80,7 +76,7 @@ export function useDashboardStats() {
           message: `Shared a reflection on ${r.productName || 'your latest piece'}`
         }));
 
-        // Create Join Event
+        // Create Join Event from Auth data
         const joinEvent: TimelineEvent = { 
           id: 'join', 
           type: 'join' as const, 
@@ -88,7 +84,7 @@ export function useDashboardStats() {
           message: "Initiated Client Suite membership" 
         };
 
-        // Combine and Sort (Most recent first)
+        // Combine and Sort (Most recent first, top 5 only)
         const combinedTimeline = [...orderEvents, ...reviewEvents, joinEvent]
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .slice(0, 5);

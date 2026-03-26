@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
+import { API_URL, getAuthHeaders } from "../../../../../api/config"; 
 import type { DashboardData } from "../../../shared/types";
 
 export function useAdminMetrics() {
@@ -7,16 +8,13 @@ export function useAdminMetrics() {
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuth();
 
-  const BASE = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
-  const API_URL = `${BASE.replace(/\/$/, "")}/api`;
-
   useEffect(() => {
     if (!token) return;
 
     async function fetchMetrics() {
       try {
         const res = await fetch(`${API_URL}/admin/metrics`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: getAuthHeaders(token)
         });
         
         if (res.ok) {
@@ -31,7 +29,7 @@ export function useAdminMetrics() {
     }
 
     fetchMetrics();
-  }, [token, API_URL]);
+  }, [token]); // API_URL is now a stable constant from config
 
   return { data, isLoading };
 }

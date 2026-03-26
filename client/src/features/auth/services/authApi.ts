@@ -1,9 +1,6 @@
+import { API_URL } from "../../../api/config";
 import type { RegisterFormData } from "../types";
 import type { LoginFormData } from "../types";
-
-const BASE_URL = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
-
-const API_URL = `${BASE_URL.replace(/\/$/, "")}/api`;
 
 export async function registerUser(data: RegisterFormData) {
     const response = await fetch(`${API_URL}/auth/register`, {

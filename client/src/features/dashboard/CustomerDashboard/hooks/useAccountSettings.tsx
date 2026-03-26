@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../../context/AuthContext";
-
-// Replace the old API_URL line with this:
-const BASE = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
-const API_URL = `${BASE.replace(/\/$/, "")}/api`;
+import { API_URL, getAuthHeaders } from "../../../../api/config";
 
 export interface Address {
     _id: string;
@@ -31,6 +28,7 @@ interface Status {
 
 export function useAccountSettings() {
     const { user, token, login: updateAuth } = useAuth();
+    const headers = getAuthHeaders(token);
 
     const [profileForm, setProfileForm] = useState<ProfileForm>({
         firstName: user?.firstName ?? "",
@@ -52,34 +50,30 @@ export function useAccountSettings() {
     const [passwordLoading, setPasswordLoading] = useState(false);
     const [addressLoading, setAddressLoading] = useState(false);
 
-    // Fetch full profile
+    // 1. Fetch full profile (Addresses and Member Data)
     useEffect(() => {
         if(!token) return;
         const fetchProfile = async () => {
             try {
-                const res = await fetch(`${API_URL}/auth/me`, {
-                    headers: { Authorization: `Bearer ${token}`},
-                });
+                const res = await fetch(`${API_URL}/auth/me`, { headers });
                 if(!res.ok) throw new Error("Failed to fetch profile");
                 const data = await res.json();
                 setAddresses(data.addresses ?? []);
             } catch(err: any) {
-                console.error(err.message);
+                console.error("Profile Fetch Error:", err.message);
             }
         };
         fetchProfile();
     }, [token]);
 
+    // 2. Update Basic Profile (First/Last Name)
     const updateProfile = async () => {
         setProfileLoading(true);
         setProfileStatus({ type: null, message: "" });
         try {
             const res = await fetch(`${API_URL}/auth/me`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                headers,
                 body: JSON.stringify({
                     firstName: profileForm.firstName,
                     lastName: profileForm.lastName,
@@ -87,7 +81,8 @@ export function useAccountSettings() {
             });
             if (!res.ok) throw new Error("Failed to update profile");
             const data = await res.json();
-            // Update AuthContext so sidebar name updates immediately
+            
+            // Sync the AuthContext so the UI updates globally
             updateAuth(token!, {
                 id: data.id,
                 firstName: data.firstName,
@@ -103,6 +98,7 @@ export function useAccountSettings() {
         }
     };
 
+    // 3. Update Password
     const updatePassword = async () => {
         setPasswordLoading(true);
         setPasswordStatus({ type: null, message: "" });
@@ -116,10 +112,7 @@ export function useAccountSettings() {
         try {
             const res = await fetch(`${API_URL}/auth/password`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                headers,
                 body: JSON.stringify({
                     currentPassword: passwordForm.currentPassword,
                     newPassword: passwordForm.newPassword,
@@ -127,7 +120,7 @@ export function useAccountSettings() {
             });
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.message);
+                throw new Error(data.message || "Password update failed");
             }
             setPasswordStatus({ type: "success", message: "Password updated successfully." });
             setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
@@ -138,21 +131,19 @@ export function useAccountSettings() {
         }
     };
 
+    // 4. Add Shipping Address
     const addAddress = async (type: string, address: string, isDefault: boolean) => {
         setAddressLoading(true);
         setAddressStatus({ type: null, message: "" });
         try {
             const res = await fetch(`${API_URL}/auth/me/addresses`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                headers,
                 body: JSON.stringify({ type, address, isDefault }),
             });
             if (!res.ok) throw new Error("Failed to add address");
             const data = await res.json();
-            setAddresses(data);
+            setAddresses(data); // Backend returns the updated addresses array
             setAddressStatus({ type: "success", message: "Address added." });
         } catch (err: any) {
             setAddressStatus({ type: "error", message: err.message });
@@ -161,13 +152,14 @@ export function useAccountSettings() {
         }
     };
 
+    // 5. Delete Shipping Address
     const deleteAddress = async (addressId: string) => {
         setAddressLoading(true);
         setAddressStatus({ type: null, message: "" });
         try {
             const res = await fetch(`${API_URL}/auth/me/addresses/${addressId}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
             });
             if (!res.ok) throw new Error("Failed to delete address");
             const data = await res.json();
@@ -179,5 +171,12 @@ export function useAccountSettings() {
         }
     };
 
-    return { profileForm, setProfileForm, passwordForm, setPasswordForm, addresses, profileStatus, passwordStatus, addressStatus, profileLoading, passwordLoading, addressLoading, updateProfile, updatePassword, addAddress, deleteAddress };
+    return { 
+        profileForm, setProfileForm, 
+        passwordForm, setPasswordForm, 
+        addresses, 
+        profileStatus, passwordStatus, addressStatus, 
+        profileLoading, passwordLoading, addressLoading, 
+        updateProfile, updatePassword, addAddress, deleteAddress 
+    };
 }
