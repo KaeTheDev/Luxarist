@@ -20,10 +20,7 @@
  */
 
 import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_API_URL || "";
-// This ensures we have exactly one "/api" at the end of our base
-const API_URL = `${BASE_URL.replace(/\/$/, "")}/api`;
+import { API_URL } from "./config"; 
 
 const api = axios.create({
     baseURL: API_URL, 

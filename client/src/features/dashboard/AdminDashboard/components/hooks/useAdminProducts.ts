@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
+import { API_URL, getAuthHeaders } from "../../../../../api/config"; 
 import type { Product } from "../../../shared/types";
 
 export function useAdminProducts() {
@@ -8,24 +9,14 @@ export function useAdminProducts() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const API_URL = import.meta.env.DEV 
-        ? "http://localhost:3000/api" 
-        : import.meta.env.VITE_API_URL;
+    // 2. Simplified headers using the config helper
+    const headers = getAuthHeaders(token);
 
-    // Shared headers for POST/PUT/DELETE
-    const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-    };
-
-    // 1. Fetch Logic
     const fetchProducts = async () => {
         if (!token) return;
         try {
             setLoading(true);
-            const res = await fetch(`${API_URL}/products`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await fetch(`${API_URL}/products`, { headers });
             if (!res.ok) throw new Error("Failed to fetch products");
             const data = await res.json();
             setProducts(data);
@@ -36,13 +27,12 @@ export function useAdminProducts() {
         }
     };
 
-    // 2. Initial Load
     useEffect(() => {
         fetchProducts();
-    }, [token, API_URL]);
+    }, [token]); // API_URL is now a stable import
 
-    // 3. Create
     const createProduct = async (productData: Omit<Product, "_id" | "slug">) => {
+        // 4. This now correctly hits .../api/admin/products
         const res = await fetch(`${API_URL}/admin/products`, {
             method: "POST",
             headers,
@@ -55,7 +45,6 @@ export function useAdminProducts() {
         await fetchProducts();
     };
 
-    // 4. Update
     const updateProduct = async (id: string, productData: Partial<Product>) => {
         const res = await fetch(`${API_URL}/admin/products/${id}`, {
             method: "PUT",
@@ -69,11 +58,10 @@ export function useAdminProducts() {
         await fetchProducts();
     };
 
-    // 5. Delete
     const deleteProduct = async (id: string) => {
         const res = await fetch(`${API_URL}/admin/products/${id}`, {
             method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
+            headers,
         });
         if (!res.ok) throw new Error("Failed to delete product");
         await fetchProducts();
@@ -86,6 +74,6 @@ export function useAdminProducts() {
         createProduct, 
         updateProduct, 
         deleteProduct, 
-        refetch: fetchProducts // Passed as reference, not execution
+        refetch: fetchProducts 
     };
 }
