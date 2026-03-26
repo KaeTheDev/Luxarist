@@ -21,6 +21,7 @@ export interface Order {
   customerEmail: string;
   orderDate: string;
   status: OrderStatus;
+  paymentMethod: string;
   items: OrderItem[];
   total: number;
   shippingAddress?: {

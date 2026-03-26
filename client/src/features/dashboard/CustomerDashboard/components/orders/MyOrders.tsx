@@ -4,7 +4,6 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import OrderDetails from "./OrderDetails";
 import OrderCard from "./OrderCard";
 
-
 export default function MyOrders() {
     const { orders, loading } = useMyOrders(); 
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -15,6 +14,7 @@ export default function MyOrders() {
         </div>
     );
 
+    // This section handles the Drill-down view
     if (selectedOrderId) {
         const currentOrder = orders.find(o => o._id === selectedOrderId);
         return (
@@ -36,6 +36,7 @@ export default function MyOrders() {
                 <h2 className="text-2xl font-serif text-stone-900">Order History</h2>
                 <p className="text-sm text-stone-500 italic">Review your past acquisitions and tracking status.</p>
             </header>
+
             {orders.length === 0 ? (
                 <div className="py-20 text-center bg-white border border-stone-100 rounded-4xl">
                     <p className="text-stone-400 italic font-light">Your collection is waiting for its first piece.</p>
@@ -43,13 +44,23 @@ export default function MyOrders() {
             ) : (
                 <div className="grid gap-6">
                     {orders.map((order) => (
-                        <div key={order._id} onClick={() => setSelectedOrderId(order._id)} className="cursor-pointer">
+                        <div 
+                            key={order._id} 
+                            onClick={() => setSelectedOrderId(order._id)} 
+                            className="cursor-pointer"
+                        >
                             <OrderCard
-                                orderNumber={order._id}
-                                orderDate={order.orderDate}
+                                // Fallback to a sliced ID if orderNumber isn't set yet
+                                orderNumber={order.orderNumber || order._id.slice(-6).toUpperCase()}
+                                // Format the ISO date for the UI
+                                orderDate={new Date(order.orderDate).toLocaleDateString('en-US', {
+                                    month: 'long', day: 'numeric', year: 'numeric'
+                                })}
                                 total={order.total}
                                 status={order.status}
                                 itemCount={order.items?.length ?? 0}
+                                // Pass the images from the items array to the card preview
+                                itemImages={order.items?.map(i => i.image).filter(Boolean) as string[]}
                             />
                         </div>
                     ))}
