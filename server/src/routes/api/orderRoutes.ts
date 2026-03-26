@@ -1,16 +1,25 @@
 import { Router } from "express";
-import { getMyOrders } from "../../controllers/orderController";
-import { authMiddleware } from "../../middleware/auth";
+import { getMyOrders, getAllOrdersAdmin, updateOrderStatus } from "../../controllers/orderController";
+import { authMiddleware, adminOnly } from "../../middleware/auth";
 
 const router = Router();
 
 /**
- * @route   GET /api/orders/:customerId
- * @desc    Fetch all orders for a specific customer
- * @access  Private (Self or Admin only)
+ * CLIENT SIDE
+ * GET /api/orders/customer/:customerId
+ */
+router.get("/customer/:customerId", authMiddleware, getMyOrders);
+
+/**
+ * ADMIN SIDE
+ * These routes use both authMiddleware (to identify the user) 
+ * and adminOnly (to verify their role).
  */
 
-// Use 'authMiddleware' specifically 
-router.get("/:customerId", authMiddleware, getMyOrders);
+// Matches: fetch("/api/orders/admin/all")
+router.get("/admin/all", authMiddleware, adminOnly, getAllOrdersAdmin);
+
+// Matches: fetch(`/api/orders/admin/${id}`, { method: "PUT", ... })
+router.put("/admin/:id", authMiddleware, adminOnly, updateOrderStatus);
 
 export default router;

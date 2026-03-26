@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useAuth } from "../../../../../context/AuthContext";
+import { useAuth } from "../../../../context/AuthContext";
 
 const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
 

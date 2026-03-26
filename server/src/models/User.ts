@@ -17,6 +17,7 @@ export interface IUser extends Document {
     role: 'admin' | 'customer';
     memberSince: Date;
     addresses: IAddress[];
+    lastLogin: Date | null;
     comparePassword(password: string): Promise<boolean>;
 }
 
@@ -37,6 +38,7 @@ const userSchema = new Schema<IUser>({
         lowercase: true, 
         match: [/.+@.+\..+/, "Please enter a valid email address"] 
     },
+    lastLogin: { type: Date, default: null },
     password: { type: String, required: true, minlength: 8 },
     role: { 
         type: String, 

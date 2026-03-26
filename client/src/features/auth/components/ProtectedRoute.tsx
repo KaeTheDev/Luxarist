@@ -23,7 +23,6 @@ export function ProtectedRoute({
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
-  // Handle the "Flash": Don't redirect while the app is still checking localStorage
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -44,6 +43,12 @@ export function ProtectedRoute({
   // We pass 'denied: true' so the Dashboard can show an optional "Access Denied" message
   if (requireAdmin && user.role !== "admin") {
     return <Navigate to="/dashboard" state={{ denied: true }} replace />;
+  }
+
+  // Keep Admins out of Customer Dashboard (The "Vault Lock")
+  // If we AREN'T requiring admin (Customer route), but the user IS an admin
+  if (!requireAdmin && user.role === "admin") {
+    return <Navigate to="/admin" replace />;
   }
 
   // Authorized: Render the requested page

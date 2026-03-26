@@ -1,10 +1,11 @@
 import { ChevronRight, Package } from "lucide-react";
+import type { OrderStatus } from "../../../shared/types"; 
 
 interface OrderCardProps {
   orderNumber: string;
   orderDate: string;
   total: number;
-  status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
+  status: OrderStatus; 
   itemImages?: string[];
   itemCount: number;
 }

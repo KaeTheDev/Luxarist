@@ -12,31 +12,23 @@ export function useMyOrders() {
 
     useEffect(() => {
         if (!user || !token) return;
+        const headers = { Authorization: `Bearer ${token}` };
 
         const fetchOrders = async () => {
             try {
-                const res = await fetch(`${API_URL}/orders/${user.id}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                const res = await fetch(`${API_URL}/orders/customer/${user.id}`, { headers });
 
-                if (!res.ok) throw new Error("Failed to fetch orders");
-
+                if (!res.ok) throw new Error("Registry access denied");
                 const data = await res.json();
 
-                // Map DB fields → the frontend Order type
-                const mapped: Order[] = data.map((o: any) => ({
-                    id: o.orderNumber,
-                    date: new Date(o.orderDate).toLocaleDateString("en-US", {
-                        month: "long", day: "numeric", year: "numeric"
-                    }),
-                    total: o.total,
-                    status: o.status,
+                // Map DB fields to your exact Unified Order Interface
+                const mapped: Order[] = (Array.isArray(data) ? data : []).map((o: any) => ({
+                    ...o, // Spreads all DB fields like _id, shippingAddress, etc.
+                    orderDate: o.orderDate || o.createdAt,
                     items: o.items.map((item: any) => ({
-                        name: item.name,
-                        price: item.price,
-                        quantity: item.quantity,
-                        category: "",   
-                    })),
+                        ...item,
+                        subtotal: item.subtotal || (item.price * item.quantity)
+                    }))
                 }));
 
                 setOrders(mapped);

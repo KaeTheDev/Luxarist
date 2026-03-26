@@ -1,9 +1,9 @@
 import { useAccountSettings } from "../../hooks/useAccountSettings";
-import ProfileSection from "./ProfileSection";
-import PasswordSection from "./PasswordSection";
+import ProfileSection from "../../../shared/components/ProfileSection";
+import PasswordSection from "../../../shared/components/PasswordSection";
 import AddressSection from "./AddressSection";
 import PaymentSection from "./PaymentSection";
-import DangerZone from "./DangerZone";
+import DangerZone from "../../../shared/components/DangerZone";
 
 export default function AccountSettings() {
     const { profileForm, setProfileForm, passwordForm, setPasswordForm, addresses, profileStatus, passwordStatus, addressStatus, profileLoading, passwordLoading, addressLoading, updateProfile, updatePassword, addAddress, deleteAddress } = useAccountSettings();

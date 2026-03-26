@@ -3,6 +3,7 @@ import { Schema, model, Document } from "mongoose";
 // The Shape of an Order Item
 export interface IOrderItem {
     productId: string; // Changed to string to match Mongo/Shopify ID patterns
+    primaryImageUrl: string;
     name: string;
     price: number;
     quantity: number;
@@ -25,6 +26,7 @@ export interface IOrder extends Document {
 // Sub-schema for items to keep the main schema clean
 const orderItemSchema = new Schema<IOrderItem>({
     productId: { type: String, required: true },
+    primaryImageUrl: { type: String, required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true, min: 1 },

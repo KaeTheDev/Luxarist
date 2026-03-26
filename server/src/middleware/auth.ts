@@ -1,21 +1,6 @@
-/**
- * File: auth.ts
- * Purpose:
- *   Middleware to protect private routes by verifying JWT tokens.
- *
- * Responsibilities:
- *   - Extract JWT from Authorization header
- *   - Verify and decode the token using jwt utility
- *   - Attach authenticated user ID to request object
- *   - Block access if token is missing, invalid, or expired
- *
- * Usage:
- *   - Apply to private routes to ensure only authenticated users can access them
- *   - Controllers can use req.user.id for authorization checks
- */
-
 import type { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwt";
+import { User } from "../models/User";
 
 interface AuthRequest extends Request {
     user?: { id: string; role: string };
@@ -24,24 +9,30 @@ interface AuthRequest extends Request {
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
-    // 1. Check if the Authorization header exists and follows the Bearer pattern
     if(authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.split(' ')[1];
 
-        if(!token) return res.status(401).json({ message: 'Not authorized, no token' });
+        if (!token) return res.status(401).json({ message: 'Not authorized, no token' });
 
         try {
-            // 2. Verify and decode the token
-            const decoded = verifyToken(token) as { id: string; role: string };
-            // 3. Attach the decoded user data to the request object
+            // 2. Added type assertion to ensure TypeScript knows 'id' exists
+            const decoded = verifyToken(token) as { id: string };
+            
+            // 3. 'User' (Capital U) is the model we imported above
+            const user = await User.findById(decoded.id).select("role");
+
+            if (!user) {
+                return res.status(401).json({ message: 'User no longer exists' });
+            }
+
             req.user = { 
                 id: decoded.id,
-                role: decoded.role 
+                role: user.role // Now fetching directly from the DB
             };
 
             next();
         } catch (error) {
-            console.error(error);
+            console.error("Auth Middleware Error:", error);
             res.status(401).json({ message: 'Not authorized, token failed' });
         }
     } else {

@@ -44,6 +44,10 @@ const { token } = useAuth();
                 <ReviewDetails
                     review={currentReview}
                     token={token!}
+                    onDeleted={(deletedId) => {
+                      setReviews(prev => prev.filter(r => r._id !== deletedId));
+                      setSelectedReviewId(null); 
+                  }}
                     onUpdated={(updated) => {
                         setReviews(prev => prev.map(r => r._id === updated._id ? updated : r));
                     }}
