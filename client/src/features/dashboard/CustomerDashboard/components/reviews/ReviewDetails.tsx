@@ -20,7 +20,7 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
     
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/${review._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${review._id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -37,8 +37,8 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/${review._id}`, {
-        method: "PATCH",
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${review._id}`, {
+        method: "PUT",
         headers: { 
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}` 

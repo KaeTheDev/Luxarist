@@ -85,7 +85,6 @@ export async function getMyReviews(req: AuthRequest, res: Response) {
         .json({ message: "Error fetching reviews", error: error.message });
     }
   }
-
 /**
  * Update a review by ID.
  * PUT /api/reviews/:reviewId
@@ -95,29 +94,57 @@ export async function updateReview(req: AuthRequest, res: Response) {
         const { reviewId } = req.params;
         const { rating, comment } = req.body;
 
-        // Find the review first so we can verify ownership
         const review = await Review.findById(reviewId);
 
-        if(!review) {
+        if (!review) {
             return res.status(404).json({ message: "Review not found." });
         }
 
-        // Only the owner or an admin can update
-        if(!req.user || (req.user.id !== review.customerId && req.user.role !== "admin")){
-            return res.status(403).json({ message: "Unauthorized to updated this review." });
+        // 1. Strict Ownership Check
+        // Use String() to ensure we aren't comparing a String to an ObjectId
+        const isOwner = req.user && String(req.user.id) === String(review.customerId);
+        const isAdmin = req.user?.role === "admin";
+
+        if (!isOwner && !isAdmin) {
+            return res.status(403).json({ message: "Unauthorized to update this review." });
         }
 
-        // Only allow rating and comment to be updated
         review.rating = rating ?? review.rating;
         review.comment = comment ?? review.comment;
 
         const updated = await review.save();
-
         return res.status(200).json(updated);
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Error updating review",
-            error: error.message,
-        });
+        return res.status(500).json({ message: "Error updating review", error: error.message });
+    }
+}
+
+/**
+ * Delete a review by ID.
+ * DELETE /api/reviews/:reviewId
+ */
+export async function deleteReview(req: AuthRequest, res: Response) {
+    try {
+        const { reviewId } = req.params;
+
+        const review = await Review.findById(reviewId);
+
+        if (!review) {
+            return res.status(404).json({ message: "Review not found." });
+        }
+
+        // Ownership Check
+        const isOwner = req.user && String(req.user.id) === String(review.customerId);
+        const isAdmin = req.user?.role === "admin";
+
+        if (!isOwner && !isAdmin) {
+            return res.status(403).json({ message: "Unauthorized to delete this review." });
+        }
+
+        await Review.findByIdAndDelete(reviewId);
+
+        return res.status(200).json({ message: "Review deleted successfully." });
+    } catch (error: any) {
+        return res.status(500).json({ message: "Error deleting review", error: error.message });
     }
 }
