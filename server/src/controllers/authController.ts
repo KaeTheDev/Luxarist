@@ -63,11 +63,11 @@ export async function register(req: Request, res: Response) {
             lastName,
             email,
             password,
-            role: assignedRole
+            role: assignedRole,
+            lastLogin: new Date() // Initialize first login on registration
         });
 
         // 5. Generate JWT token
-        // Pass an object with the ID converted to a string
         const token = signToken({
             id: newUser._id.toString(),
             role: newUser.role
@@ -83,16 +83,14 @@ export async function register(req: Request, res: Response) {
                 lastName: newUser.lastName,
                 email: newUser.email,
                 role: newUser.role,
+                lastLogin: newUser.lastLogin, // Added to response
                 memberSince: newUser.memberSince,
             },
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Internal server error during registration";
         console.error("Registration Error:", error);
-        res.status(500).json({
-            message,
-            error: message
-        });
+        res.status(500).json({ message, error: message });
     }
 }
 
@@ -119,6 +117,11 @@ export async function login(req: Request, res: Response) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
+        // --- UPDATE ACTIVITY ---
+        user.lastLogin = new Date();
+        await user.save();
+        // -----------------------
+
         // 3. Generate JWT
         const token = signToken({
             id: user._id.toString(),
@@ -134,7 +137,8 @@ export async function login(req: Request, res: Response) {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                lastLogin: user.lastLogin // Added to response
             }
         });
     } catch (error) {

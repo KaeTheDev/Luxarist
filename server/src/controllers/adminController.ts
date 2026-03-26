@@ -176,21 +176,19 @@ export async function adminUpdateOrderStatus(req: AuthRequest, res: Response) {
 export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
     try {
         const customers = await User.aggregate([
-            // 1. Filter for only customers
             { $match: { role: 'customer' } }, 
-            
-            // 2. Perform the JOIN
             {
                 $lookup: {
-                    from: 'orders', // Ensure this matches your collection name in Compass
-                    let: { userId: "$_id" },
+                    from: 'orders', 
+                    let: { userIdString: { $toString: "$_id" } },
                     pipeline: [
                         {
                             $match: {
                                 $expr: {
-                                    // This converts the string ID in Orders to an ObjectId 
-                                    // to match the User._id
-                                    $eq: ["$customerId", { $toString: "$$userId" }]
+                                    $or: [
+                                        { $eq: ["$customerId", "$$userIdString"] },
+                                        { $eq: [{ $toString: "$customerId" }, "$$userIdString"] }
+                                    ]
                                 }
                             }
                         }
@@ -198,23 +196,18 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
                     as: 'orderHistory'
                 }
             },
-            
-            // 3. Shape the data for the frontend
             {
                 $project: {
                     firstName: 1,
                     lastName: 1,
                     email: 1,
-                    createdAt: 1,
-                    // Use a fallback of 0 if orderHistory is empty
+                    lastLogin: 1,
                     totalInvestment: { $sum: "$orderHistory.total" },
                     acquisitionCount: { $size: "$orderHistory" },
-                    // Get the date of the most recent order
-                    lastAcquisition: { $max: "$orderHistory.orderDate" }
+                    // CHANGED: Using updatedAt since orderDate/createdAt don't exist
+                    lastAcquisition: { $max: "$orderHistory.updatedAt" }
                 }
             },
-            
-            // 4. Sort by the highest spending clients first
             { $sort: { totalInvestment: -1 } }
         ]);
 

@@ -76,8 +76,8 @@ export default function ReviewsTable() {
 
             {/* DESKTOP VIEW: Scrollable Professional Data Grid */}
             <div className="hidden lg:block bg-white border border-stone-100 rounded-[3rem] shadow-xl shadow-stone-200/20 overflow-hidden">
-                <div className="overflow-x-auto"> {/* Enable horizontal scroll here */}
-                    <table className="w-full text-left border-collapse min-w-275"> {/* Set min-width to force scroll if screen is too small */}
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-275"> 
                         <thead>
                             <tr className="border-b border-stone-50 bg-stone-50/30 text-stone-400 font-black italic">
                                 <th className="px-10 py-8 text-[9px] uppercase tracking-[0.4em]">Customer</th>
