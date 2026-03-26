@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star, Loader2, Save, Trash2 } from "lucide-react";
+import { Star, Loader2, Save, Trash2, CheckCircle2, XCircle, X } from "lucide-react";
 import type { Review } from "../../../shared/types";
 
 interface ReviewDetailsProps {
@@ -13,8 +13,15 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
   const [isEditing, setIsEditing] = useState(false);
   const [comment, setComment] = useState(review.comment);
   const [loading, setLoading] = useState(false);
+  
+  // Toast State
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
-  // Added the missing handleDelete function
+  const showToast = (message: string, type: "success" | "error" = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to withdraw this testimonial?")) return;
     
@@ -26,8 +33,12 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
       });
 
       if (!res.ok) throw new Error("Failed to delete");
-      onDeleted(review._id);
+      
+      showToast("Testimonial withdrawn successfully.");
+      // Small delay before removing from UI to let user see the toast
+      setTimeout(() => onDeleted(review._id), 1000);
     } catch (err) {
+      showToast("Could not delete testimonial. Please try again.", "error");
       console.error(err);
     } finally {
       setLoading(false);
@@ -35,6 +46,11 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
   };
 
   const handleUpdate = async () => {
+    if (comment.trim() === "") {
+        showToast("Reflection cannot be empty.", "error");
+        return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${review._id}`, {
@@ -47,10 +63,13 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
       });
 
       if (!res.ok) throw new Error("Failed to update testimonial");
+      
       const updated = await res.json();
       onUpdated(updated);
       setIsEditing(false);
+      showToast("Your reflection has been updated.");
     } catch (err) {
+      showToast("Failed to save changes.", "error");
       console.error(err);
     } finally {
       setLoading(false);
@@ -58,7 +77,29 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
   };
 
   return (
-    <div className="bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4">
+    <div className="relative bg-white border border-stone-100 rounded-[2.5rem] p-8 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4">
+      
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-8 right-8 z-100 animate-in fade-in slide-in-from-right-6 duration-500">
+          <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border ${
+            toast.type === "success" 
+              ? "bg-white border-stone-100 text-stone-900" 
+              : "bg-red-50 border-red-100 text-red-900"
+          }`}>
+            {toast.type === "success" ? (
+              <CheckCircle2 size={18} className="text-green-500" />
+            ) : (
+              <XCircle size={18} className="text-red-500" />
+            )}
+            <p className="text-[11px] uppercase tracking-widest font-bold">{toast.message}</p>
+            <button onClick={() => setToast(null)} className="ml-2 hover:opacity-50 transition-opacity">
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header: Product Info */}
       <div className="flex justify-between items-start border-b border-stone-50 pb-6">
         <div>
@@ -126,7 +167,6 @@ export default function ReviewDetails({ review, token, onUpdated, onDeleted }: R
           )}
         </div>
 
-        {/* Trash icon is now inside the main return block correctly */}
         {!isEditing && (
           <button
             onClick={handleDelete}
