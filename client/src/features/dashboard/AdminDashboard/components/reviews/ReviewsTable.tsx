@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
+import { API_URL } from "../../../../../api/config"; 
 import { ReviewRow } from "./ReviewRow";
 import { Star, Check, X } from "lucide-react";
 import type { Review } from "../../../shared/types";
@@ -13,7 +14,8 @@ export default function ReviewsTable() {
         if (!token) return;
         setIsLoading(true);
         try {
-            const res = await fetch("/api/admin/reviews", {
+            // Use the dynamic API_URL
+            const res = await fetch(`${API_URL}/admin/reviews`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (res.ok) {
@@ -36,7 +38,7 @@ export default function ReviewsTable() {
         setReviews(prev => prev.map(r => r._id === id ? { ...r, approved: !currentStatus } : r));
 
         try {
-            const res = await fetch(`/api/admin/reviews/${id}`, {
+            const res = await fetch(`${API_URL}/admin/reviews/${id}`, {
                 method: "PUT",
                 headers: { 
                     "Content-Type": "application/json",
