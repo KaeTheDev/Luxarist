@@ -21,71 +21,85 @@
  * - Can be utilized in "Related Products" widgets by passing a specific 
  * category ID to the options object.
  */
-
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchProducts, adminFetchAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct } from "../api/productServices";
 import type { Product } from "../features/dashboard/shared/types";
 
 interface ProductOptions {
-    isNewArrival?: boolean;
-    limit?: number;
-    category?: string;
-    isAdmin?: boolean; 
-  }
+  isNewArrival?: boolean;
+  limit?: number;
+  category?: string;
+  isAdmin?: boolean;
+}
 
-  export function useProducts(options: ProductOptions = {}) {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+export function useProducts(options: ProductOptions = {}) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    // Memoize the load function so it can be called manually (refresh)
-    const loadData = useCallback(async () => {
-        setLoading(true);
-        try {
-            // Logic: If isAdmin is true, hit the /admin/all route. Otherwise, hit public.
-            const data = options.isAdmin 
-                ? await adminFetchAllProducts() 
-                : await fetchProducts(options);
-            setProducts(data);
-            setError(null);
-        } catch (err: any) {
-            console.error("Error in useProducts hook:", err);
-            setError(err.message || "Failed to load products");
-        } finally {
-            setLoading(false);
-        }
-    }, [JSON.stringify(options)]);
+  // 🧠 Prevent race conditions
+  const activeRequest = useRef(0);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+  const loadData = useCallback(async () => {
+    const requestId = ++activeRequest.current;
 
-    // --- ADMIN CRUD ACTIONS ---
+    setLoading(true);
 
-    const addProduct = async (data: Partial<Product>) => {
-        const newProduct = await adminCreateProduct(data);
-        setProducts((prev) => [newProduct, ...prev]);
-        return newProduct;
-    };
+    try {
+      const data = options.isAdmin
+        ? await adminFetchAllProducts()
+        : await fetchProducts(options);
 
-    const editProduct = async (id: string, data: Partial<Product>) => {
-        const updated = await adminUpdateProduct(id, data);
-        setProducts((prev) => prev.map((p) => (p._id === id ? updated : p)));
-        return updated;
-    };
+      // ✅ Ignore stale responses
+      if (requestId !== activeRequest.current) return;
 
-    const removeProduct = async (id: string) => {
-        await adminDeleteProduct(id);
-        setProducts((prev) => prev.filter((p) => p._id !== id));
-    };
+      // ✅ HARD GUARANTEE ARRAY
+      const safeData = Array.isArray(data) ? data : [];
 
-    return { 
-        products, 
-        loading, 
-        error, 
-        refresh: loadData, // Useful for pull-to-refresh or "Refresh" buttons
-        addProduct, 
-        editProduct, 
-        removeProduct 
-    };
+      setProducts(safeData);
+      setError(null);
+    } catch (err: any) {
+      if (requestId !== activeRequest.current) return;
+
+      console.error("Error in useProducts:", err);
+      setError(err?.message || "Failed to load products");
+      setProducts([]); // 🔥 never leave UI in bad state
+    } finally {
+      if (requestId === activeRequest.current) {
+        setLoading(false);
+      }
+    }
+  }, [
+    options.isAdmin,
+    options.isNewArrival,
+    options.limit,
+    options.category,
+  ]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // --- ADMIN CRUD ACTIONS ---
+
+  const addProduct = async (data: Partial<Product>) => {
+    const newProduct = await adminCreateProduct(data);
+    setProducts((prev) => [newProduct, ...prev]);
+    return newProduct;
+  };
+
+  const editProduct = async (id: string, data: Partial<Product>) => {
+    const updated = await adminUpdateProduct(id, data);
+    setProducts((prev) =>
+      prev.map((p) => (p._id === id ? updated : p))
+    );
+    return updated;
+  };
+
+  const removeProduct = async (id: string) => {
+    await adminDeleteProduct(id);
+    setProducts((prev) => prev.filter((p) => p._id !== id));
+  };
+
+  return { products, loading, error, refresh: loadData, addProduct, editProduct, removeProduct };
 }

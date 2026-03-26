@@ -18,6 +18,8 @@ export default function InventoryManager() {
 
     // Filter products based on Name, SKU, or Material
     const filteredProducts = useMemo(() => {
+        if (!Array.isArray(products)) return [];
+    
         return products.filter(p =>
             p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             p.sku?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -88,7 +90,7 @@ export default function InventoryManager() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="p-6 bg-white border border-stone-100 rounded-3xl flex flex-col justify-center">
                     <span className="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-1">Vault Capacity</span>
-                    <span className="text-2xl font-serif italic text-stone-900">{products.length} Units</span>
+                    <span className="text-2xl font-serif italic text-stone-900">{Array.isArray(products) ? products.length : 0} Units</span>
                 </div>
                 
                 <div className="md:col-span-3 relative group flex items-center">

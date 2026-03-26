@@ -102,9 +102,19 @@ export async function fetchCategoryProducts(slug: string, params?: FetchParams):
 
 /** Fetches ALL products for the Admin Table (regardless of status) */
 export async function adminFetchAllProducts(): Promise<Product[]> {
-  // Matches backend: router.get("/products", adminGetAllProducts)
-  const response = await api.get('/api/admin/products');
-  return response.data;
+  try {
+    const response = await api.get('/api/admin/products');
+    const data = response.data;
+
+    // Handle backend shape
+    if (Array.isArray(data)) return data;
+    if (data.products) return data.products;
+
+    return [];
+  } catch (error: any) {
+    console.error("Admin fetch error:", error?.response?.data || error.message);
+    return [];
+  }
 }
 
 /** Creates a new product from the Admin Form */
