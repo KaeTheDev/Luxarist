@@ -167,6 +167,44 @@ export async function adminUpdateOrderStatus(req: AuthRequest, res: Response) {
 }
 
 /**
+ * @desc    Retrieve the full client directory with investment metrics
+ * @route   GET /api/admin/customers
+ * @access  Private (Admin Only)
+ */
+export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
+    try {
+        const customers = await User.aggregate([
+            { $match: { role: 'customer' } }, 
+            {
+                $lookup: {
+                    from: Order.collection.name, // Dynamically uses the Order model collection name
+                    localField: '_id',
+                    foreignField: 'customerId',
+                    as: 'orderHistory'
+                }
+            },
+            {
+                $project: {
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    createdAt: 1,
+                    totalInvestment: { $sum: "$orderHistory.total" },
+                    acquisitionCount: { $size: "$orderHistory" },
+                    lastAcquisition: { $max: "$orderHistory.orderDate" }
+                }
+            },
+            { $sort: { totalInvestment: -1 } }
+        ]);
+
+        res.status(200).json(customers);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Server error";
+        res.status(500).json({ message, error: message });
+    }
+}
+
+/**
  * @desc    Fetch all client reviews for moderation
  * @route   GET /api/admin/reviews
  * @access  Private (Admin Only)

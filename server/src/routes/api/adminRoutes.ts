@@ -8,6 +8,7 @@ import {
     adminDeleteProduct, 
     adminGetAllOrders, 
     adminUpdateOrderStatus, 
+    adminGetAllCustomers,
     adminGetAllReviews, 
     adminUpdateReviewApproval 
 } from "../../controllers/adminController";
@@ -50,7 +51,10 @@ const createProductSchema = z.object({
 });
 
 const updateProductSchema = createProductSchema.partial();
-const updateOrderStatusSchema = z.object({ status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) });
+// Updated to match your backend IOrder status enum
+const updateOrderStatusSchema = z.object({ 
+    status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) 
+});
 const updateReviewApprovalSchema = z.object({ approved: z.boolean() });
 
 // --- ROUTES ---
@@ -103,6 +107,13 @@ router.get("/orders", authMiddleware, adminOnly, adminGetAllOrders);
  * @access  Private (Admin Only)
  */
 router.put("/orders/:id", authMiddleware, adminOnly, validateBody(updateOrderStatusSchema), adminUpdateOrderStatus);
+
+/**
+ * @route   GET /api/admin/customers
+ * @desc    Retrieve the full client directory with investment metrics (v1.0)
+ * @access  Private (Admin Only)
+ */
+router.get("/customers", authMiddleware, adminOnly, adminGetAllCustomers);
 
 /**
  * @route   GET /api/admin/reviews

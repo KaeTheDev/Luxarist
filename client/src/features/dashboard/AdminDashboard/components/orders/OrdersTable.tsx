@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../../../../context/AuthContext";
 import type { Order, OrderStatus } from "../../../shared/types"; 
 import { OrderRow } from "./OrderRow"; 
 
@@ -6,10 +7,20 @@ export default function OrdersTable() {
   const [orders, setOrders] = useState<Order[]>([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  
+  // Destructure the token from your context
+  const { token } = useAuth();
 
   const fetchOrders = async () => {
+    if (!token) return; // Guard clause if token isn't loaded yet
+    
     try {
-      const res = await fetch("/api/admin/orders");
+      const res = await fetch("/api/orders/admin/all", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         setOrders(data);
@@ -21,17 +32,29 @@ export default function OrdersTable() {
     }
   };
 
-  useEffect(() => { fetchOrders(); }, []);
+  useEffect(() => { 
+    fetchOrders(); 
+  }, [token]); // Re-fetch if token changes
 
   const handleUpdateStatus = async (id: string, status: OrderStatus) => {
+    if (!token) return;
     setUpdatingId(id);
+    
     try {
-      const res = await fetch(`/api/admin/orders/${id}`, {
+      const res = await fetch(`/api/orders/admin/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json" 
+        },
         body: JSON.stringify({ status }),
       });
-      if (res.ok) setOrders(prev => prev.map(o => o._id === id ? { ...o, status } : o));
+      
+      if (res.ok) {
+        const updatedOrder = await res.json();
+        // Use the returned order from the backend for the most accurate state
+        setOrders(prev => prev.map(o => o._id === id ? updatedOrder : o));
+      }
     } catch (err) { 
       console.error("Update failed", err); 
     } finally { 
@@ -39,7 +62,11 @@ export default function OrdersTable() {
     }
   };
 
-  if (isLoading) return <div className="p-20 text-center animate-pulse font-serif italic text-stone-400">Opening Ledger...</div>;
+  if (isLoading) return (
+    <div className="p-32 text-center font-serif italic text-stone-400 animate-pulse tracking-widest">
+      Consulting the Ledger...
+    </div>
+  );
 
   return (
     <div className="space-y-6">
