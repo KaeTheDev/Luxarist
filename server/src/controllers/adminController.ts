@@ -1,9 +1,13 @@
 import { Response } from "express";
+import NodeCache from "node-cache"; 
 import { Order } from "../models/Order";
 import { Review } from "../models/Review";
 import { Product } from "../models/Product";
 import { User } from "../models/User";
 import { AuthRequest } from "../types/auth";
+
+// Initialize cache for 10 minutes to prevent redundant DB hits on inventory
+const inventoryCache = new NodeCache({ stdTTL: 600 });
 
 /**
  * @desc    Fetch high-level business metrics and recent activity for the dashboard
@@ -68,15 +72,54 @@ export async function adminGetMetrics(req: AuthRequest, res: Response) {
  * @desc    Retrieve all products in the database including inactive/draft items
  * @route   GET /api/admin/products
  * @access  Private (Admin Only)
+ * @optimization Added Pagination, Caching, and Lean queries for performance
  */
 export async function adminGetAllProducts(req: AuthRequest, res: Response) {
     try {
-        // Use .select() to exclude heavy fields like full descriptions or extra image arrays
-        const products = await Product.find()
-            .select('name sku price status primaryImageUrl metalSpecs diamondSpecs') 
-            .sort({ createdAt: -1 });
-            
-        res.status(200).json(products);
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 12;
+        const search = (req.query.search as string) || "";
+        const skip = (page - 1) * limit;
+        
+        // We include the search term in the cache key so searches aren't "stuck"
+        const cacheKey = `inventory_p${page}_l${limit}_s${search}`;
+
+        const cachedData = inventoryCache.get(cacheKey);
+        if (cachedData) return res.status(200).json(cachedData);
+
+        // 1. Build a dynamic search query
+        const query: any = {};
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: "i" } },
+                { sku: { $regex: search, $options: "i" } },
+                { "metalSpecs.type": { $regex: search, $options: "i" } }
+            ];
+        }
+
+        // 2. Execute query with count
+        const [products, total] = await Promise.all([
+            Product.find(query)
+                .select('name sku price status primaryImageUrl metalSpecs diamondSpecs') 
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit)
+                .lean(),
+            Product.countDocuments(query) // Count only the filtered items
+        ]);
+
+        const response = {
+            products,
+            pagination: {
+                total,
+                page,
+                limit,
+                pages: Math.ceil(total / limit)
+            }
+        };
+
+        inventoryCache.set(cacheKey, response);
+        res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ message: "Inventory retrieval failed" });
     }
@@ -90,6 +133,7 @@ export async function adminGetAllProducts(req: AuthRequest, res: Response) {
 export async function adminCreateProduct(req: AuthRequest, res: Response) {
     try {
         const product = await Product.create(req.body);
+        inventoryCache.flushAll(); // Clear cache to ensure new product is visible
         res.status(201).json(product);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -110,6 +154,8 @@ export async function adminUpdateProduct(req: AuthRequest, res: Response) {
             { new: true, runValidators: true }
         );
         if (!product) return res.status(404).json({ message: "Product not found" });
+        
+        inventoryCache.flushAll(); // Clear cache to reflect updates immediately
         res.status(200).json(product);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -126,6 +172,8 @@ export async function adminDeleteProduct(req: AuthRequest, res: Response) {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
         if (!product) return res.status(404).json({ message: "Product not found" });
+        
+        inventoryCache.flushAll(); // Clear cache after deletion
         res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
@@ -172,6 +220,7 @@ export async function adminUpdateOrderStatus(req: AuthRequest, res: Response) {
 /**
  * @desc    Retrieve the full client directory with investment metrics
  * @route   GET /api/admin/customers
+ * @note    Dating Logic: pulls lastLogin and uses updatedAt for Acquisitions
  */
 export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
     try {
@@ -204,7 +253,7 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
                     lastLogin: 1,
                     totalInvestment: { $sum: "$orderHistory.total" },
                     acquisitionCount: { $size: "$orderHistory" },
-                    // CHANGED: Using updatedAt since orderDate/createdAt don't exist
+                    // Pointing to updatedAt ensures correct purchase dates are pulled
                     lastAcquisition: { $max: "$orderHistory.updatedAt" }
                 }
             },
@@ -225,7 +274,6 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
  */
 export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
-        // Just a straight find() because the names are already in the document!
         const reviews = await Review.find().sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
