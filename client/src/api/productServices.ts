@@ -56,14 +56,14 @@ export interface AdminProductResponse {
 
 /** Fetch all active products */
 export async function fetchProducts(params?: FetchParams): Promise<Product[]> {
-  const response = await api.get("/api/products", { params });
+  const response = await api.get("/products", { params });
   const data = response.data;
   return Array.isArray(data) ? data : data.products || [];
 }
 
 /** Fetch a single product by slug */
 export async function fetchOneProduct(slug: string): Promise<Product> {
-  const response = await api.get(`/api/products/slug/${slug}`);
+  const response = await api.get(`/products/slug/${slug}`);
   return response.data;
 }
 
@@ -72,26 +72,26 @@ export async function fetchCategoryProducts(
   slug: string,
   params?: FetchParams
 ): Promise<Product[]> {
-  const response = await api.get(`/api/products/category/${slug}`, { params });
+  const response = await api.get(`/products/category/${slug}`, { params });
   const data = response.data;
   return Array.isArray(data) ? data : data.products || [];
 }
 
 /** Fetch category details for hero/description */
 export async function fetchCategoryDetail(slug: string): Promise<Category> {
-  const response = await api.get(`/api/categories/${slug}`);
+  const response = await api.get(`/categories/${slug}`);
   return response.data;
 }
 
 /** Fetch all categories */
 export async function fetchAllCategories(): Promise<Category[]> {
-  const response = await api.get("/api/categories");
+  const response = await api.get("/categories");
   return response.data;
 }
 
 /** Fetch featured categories (homepage) */
 export async function fetchFeaturedCategories(): Promise<FeaturedCategory[]> {
-  const response = await api.get("/api/categories/featured");
+  const response = await api.get("/categories/featured");
   return response.data;
 }
 
@@ -104,7 +104,7 @@ export async function adminFetchAllProducts(
   params?: { page?: number; limit?: number; search?: string }
 ): Promise<AdminProductResponse> {
   try {
-    const response = await api.get("/api/admin/products", { params });
+    const response = await api.get("/admin/products", { params });
     return response.data;
   } catch (error: any) {
     console.error("Admin fetch error:", error?.response?.data || error.message);
@@ -117,47 +117,47 @@ export async function adminFetchAllProducts(
 
 /** Create a new product (admin dashboard) */
 export async function adminCreateProduct(productData: Partial<Product>): Promise<Product> {
-  const response = await api.post("/api/admin/products", productData);
+  const response = await api.post("/admin/products", productData);
   return response.data;
 }
 
 /** Update an existing product */
 export async function adminUpdateProduct(id: string, productData: Partial<Product>): Promise<Product> {
-  const response = await api.put(`/api/admin/products/${id}`, productData);
+  const response = await api.put(`/admin/products/${id}`, productData);
   return response.data;
 }
 
 /** Delete a product permanently */
 export async function adminDeleteProduct(id: string): Promise<void> {
-  await api.delete(`/api/admin/products/${id}`);
+  await api.delete(`/admin/products/${id}`);
 }
 
 /** Fetch all orders (admin) */
 export async function adminFetchAllOrders(): Promise<any[]> {
-  const response = await api.get("/api/admin/orders");
+  const response = await api.get("/admin/orders");
   return response.data || [];
 }
 
 /** Update order status */
 export async function adminUpdateOrderStatus(id: string, status: string): Promise<any> {
-  const response = await api.put(`/api/admin/orders/${id}`, { status });
+  const response = await api.put(`/admin/orders/${id}`, { status });
   return response.data;
 }
 
 /** Fetch all customers (admin) */
 export async function adminFetchAllCustomers(): Promise<any[]> {
-  const response = await api.get("/api/admin/customers");
+  const response = await api.get("/admin/customers");
   return response.data || [];
 }
 
 /** Fetch all reviews (admin) */
 export async function adminFetchAllReviews(): Promise<any[]> {
-  const response = await api.get("/api/admin/reviews");
+  const response = await api.get("/admin/reviews");
   return response.data || [];
 }
 
 /** Approve or disapprove a review */
 export async function adminUpdateReviewApproval(id: string, approved: boolean): Promise<any> {
-  const response = await api.put(`/api/admin/reviews/${id}`, { approved });
+  const response = await api.put(`/admin/reviews/${id}`, { approved });
   return response.data;
 }
