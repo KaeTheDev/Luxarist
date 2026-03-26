@@ -37,51 +37,44 @@ export function useProducts(options: ProductOptions = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<any>(null);
+
   // 🧠 Prevent race conditions
   const activeRequest = useRef(0);
 
   const loadData = useCallback(async () => {
-    const requestId = ++activeRequest.current;
-
     setLoading(true);
-
+    const requestId = ++activeRequest.current;
+  
     try {
-      const data = options.isAdmin
-        ? await adminFetchAllProducts()
-        : await fetchProducts(options);
-
-      // ✅ Ignore stale responses
-      if (requestId !== activeRequest.current) return;
-
-      // ✅ HARD GUARANTEE ARRAY
-      const safeData = Array.isArray(data) ? data : [];
-
-      setProducts(safeData);
+      if (options.isAdmin) {
+        const res = await adminFetchAllProducts({ page });
+        if (activeRequest.current !== requestId) return;
+        setProducts(Array.isArray(res.products) ? res.products : []);
+        setPagination(res.pagination);
+      } else {
+        const data = await fetchProducts(options);
+        if (activeRequest.current !== requestId) return;
+        setProducts(Array.isArray(data) ? data : []);
+      }
       setError(null);
     } catch (err: any) {
-      if (requestId !== activeRequest.current) return;
-
-      console.error("Error in useProducts:", err);
-      setError(err?.message || "Failed to load products");
-      setProducts([]); // 🔥 never leave UI in bad state
+      if (activeRequest.current !== requestId) return;
+      console.error("Error in useProducts hook:", err);
+      setError(err.message || "Failed to load products");
+      setProducts([]);
     } finally {
-      if (requestId === activeRequest.current) {
-        setLoading(false);
-      }
+      if (activeRequest.current === requestId) setLoading(false);
     }
-  }, [
-    options.isAdmin,
-    options.isNewArrival,
-    options.limit,
-    options.category,
-  ]);
+  }, [options.isAdmin, options.isNewArrival, options.limit, options.category, page]);
 
+  // 🏁 Auto-fetch when hook mounts or options/page change
   useEffect(() => {
     loadData();
   }, [loadData]);
 
   // --- ADMIN CRUD ACTIONS ---
-
   const addProduct = async (data: Partial<Product>) => {
     const newProduct = await adminCreateProduct(data);
     setProducts((prev) => [newProduct, ...prev]);
@@ -101,5 +94,5 @@ export function useProducts(options: ProductOptions = {}) {
     setProducts((prev) => prev.filter((p) => p._id !== id));
   };
 
-  return { products, loading, error, refresh: loadData, addProduct, editProduct, removeProduct };
+  return { products, loading, error, refresh: loadData, addProduct, editProduct, removeProduct, page, setPage, pagination };
 }

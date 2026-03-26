@@ -6,7 +6,7 @@ import { useProducts } from "../../../../../hooks/useProducts";
 import type { Product } from "../../../shared/types";
 
 export default function InventoryManager() {
-    const { products, loading, error, addProduct, editProduct, removeProduct, refresh } = useProducts({ isAdmin: true });
+    const { products, loading, error, addProduct, editProduct, removeProduct, refresh, page, setPage, pagination } = useProducts({ isAdmin: true });
 
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -127,6 +127,28 @@ export default function InventoryManager() {
                 confirmDeleteId={confirmDeleteId}
                 setConfirmDeleteId={setConfirmDeleteId}
             />
+
+<div className="flex justify-center items-center gap-4 mt-6">
+  <button
+    onClick={() => setPage(page - 1)}
+    disabled={page === 1}
+    className="px-4 py-2 bg-stone-200 rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  <span className="text-sm text-stone-600">
+    Page {pagination?.page || 1} of {pagination?.pages || 1}
+  </span>
+
+  <button
+    onClick={() => setPage(page + 1)}
+    disabled={page === pagination?.pages}
+    className="px-4 py-2 bg-stone-900 text-white rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
 
             <ProductForm 
                 isOpen={isFormOpen} 
