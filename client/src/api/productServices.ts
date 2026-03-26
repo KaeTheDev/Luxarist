@@ -41,6 +41,17 @@ export interface FetchParams {
     page?: number;
 }
 
+export interface AdminProductResponse {
+  products: Product[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
+}
+
+
 /** * --- 1. STOREFRONT / CUSTOMER METHODS ---
  * Logic: Fetches only 'active' status products.
  */
@@ -100,11 +111,26 @@ export async function fetchCategoryProducts(slug: string, params?: FetchParams):
  * Used by: Admin Dashboard, Inventory Management
  */
 
-/** Fetches ALL products for the Admin Table (regardless of status) */
-export async function adminFetchAllProducts(): Promise<Product[]> {
-  // Matches backend: router.get("/products", adminGetAllProducts)
-  const response = await api.get('/api/admin/products');
-  return response.data;
+export async function adminFetchAllProducts(
+  params?: { page?: number; limit?: number; search?: string }
+): Promise<AdminProductResponse> {
+  try {
+    const response = await api.get('/api/admin/products', { params });
+    return response.data;
+  } catch (error: any) {
+    console.error("Admin fetch error:", error?.response?.data || error.message);
+
+    // 🔥 ALWAYS RETURN SAFE SHAPE
+    return {
+      products: [],
+      pagination: {
+        total: 0,
+        page: 1,
+        limit: 12,
+        pages: 1,
+      },
+    };
+  }
 }
 
 /** Creates a new product from the Admin Form */
