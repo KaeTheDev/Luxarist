@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
+import { API_URL } from "../../../../../api/config"; 
 import { User, Mail, DollarSign, Package, Calendar, Clock } from "lucide-react";
 
 interface Customer {
@@ -21,7 +22,7 @@ export default function CustomerDirectory() {
   const fetchCustomers = async () => {
     if (!token) return;
     try {
-      const res = await fetch("/api/admin/customers", {
+      const res = await fetch(`${API_URL}/admin/customers`, {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"

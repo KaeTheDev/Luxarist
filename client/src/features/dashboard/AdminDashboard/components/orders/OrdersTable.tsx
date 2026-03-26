@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
+// 1. Import the centralized API URL
+import { API_URL } from "../../../../../api/config"; 
 import type { Order, OrderStatus } from "../../../shared/types"; 
 import { OrderRow } from "./OrderRow"; 
 import { ExternalLink, Package } from "lucide-react";
@@ -15,8 +17,12 @@ export default function OrdersTable() {
     if (!token) return;
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/orders", {
-        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }
+      // Use the dynamic API_URL instead of the hardcoded string
+      const res = await fetch(`${API_URL}/admin/orders`, {
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          "Content-Type": "application/json" 
+        }
       });
       if (res.ok) {
         const data = await res.json();
@@ -38,9 +44,12 @@ export default function OrdersTable() {
     if (!token) return;
     setUpdatingId(id);
     try {
-      const res = await fetch(`/api/admin/orders/${id}`, {
+      const res = await fetch(`${API_URL}/admin/orders/${id}`, {
         method: "PUT",
-        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          "Content-Type": "application/json" 
+        },
         body: JSON.stringify({ status }),
       });
       if (res.ok) {
