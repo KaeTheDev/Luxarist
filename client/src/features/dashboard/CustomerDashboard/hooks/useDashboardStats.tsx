@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../../context/AuthContext";
 
 // Ensure /api is consistently applied for Local and Production
-const BASE_URL = import.meta.env.DEV ? "http://localhost:3000/api" : `${import.meta.env.VITE_API_URL}/api`;
+const BASE = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
+const BASE_URL = `${BASE.replace(/\/$/, "")}/api`;
 
 interface TimelineEvent { 
   id: string; 

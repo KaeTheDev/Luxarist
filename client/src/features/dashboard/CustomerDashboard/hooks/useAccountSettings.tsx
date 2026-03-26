@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../../context/AuthContext";
 
-const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
+// Replace the old API_URL line with this:
+const BASE = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env.VITE_API_URL;
+const API_URL = `${BASE.replace(/\/$/, "")}/api`;
 
 export interface Address {
     _id: string;
