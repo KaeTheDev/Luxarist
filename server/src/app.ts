@@ -98,25 +98,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev")); // logs details about each HTTP request to console
 
 // Mount Auth Routes Here 👇🏾
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 // Mount Order Routes Here 👇🏾
-app.use("/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Mount Product Routes Here 👇🏾
-app.use("/products", productRoutes);
+app.use("/api/products", productRoutes);
 
 // Mount Category Here 👇🏾
-app.use("/categories", categoryRoutes);
+app.use("/api/categories", categoryRoutes);
 
 // Mount Admin Routes Here 👇🏾
-app.use("/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Mount Review Routes Here 👇🏾
-app.use("/reviews", reviewRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // Mount Test Routes Here 👇🏾 (DELETE LATER)
-app.use('/test', productTestRoutes);
+app.use('/api/test', productTestRoutes);
 
 console.log("app.ts loaded");
 

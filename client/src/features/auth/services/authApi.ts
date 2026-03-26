@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.DEV ? "http://localhost:3000" : import.meta.env
 const API_URL = `${BASE_URL.replace(/\/$/, "")}/api`;
 
 export async function registerUser(data: RegisterFormData) {
-    const response = await fetch(`${API_URL}auth/register`, {
+    const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export async function registerUser(data: RegisterFormData) {
 }
 
 export async function loginUser(data: LoginFormData) {
-    const response = await fetch(`${API_URL}auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
