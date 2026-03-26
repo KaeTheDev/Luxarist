@@ -35,7 +35,7 @@ export default function AdminSettings() {
                     updateProfile={updateProfile} 
                 />
 
-                {/* 2. Security: Keeping your access locked down */}
+                {/* 2. Security: Keeping the access locked down */}
                 <PasswordSection 
                     passwordForm={passwordForm} 
                     setPasswordForm={setPasswordForm} 
