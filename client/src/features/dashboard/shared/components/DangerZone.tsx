@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "../../../../context/AuthContext";
-
-const API_URL = import.meta.env.DEV ? "http://localhost:3000/api" : import.meta.env.VITE_API_URL;
+import { API_URL } from "../../../../api/config"; 
 
 export default function DangerZone() {
     const { token, logout } = useAuth();
@@ -11,16 +10,27 @@ export default function DangerZone() {
     const [error, setError] = useState<string | null>(null);
 
     const handleDelete = async () => {
+        if (!token) return;
         setLoading(true);
         setError(null);
         try {
+            // Use the dynamic API_URL
             const res = await fetch(`${API_URL}/auth/me`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { 
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
             });
-            if (!res.ok) throw new Error("Failed to delete account");
+            
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.message || "Failed to delete account");
+            }
+            
             logout(); // clears context + localStorage, redirects to /login
         } catch (err: any) {
+            console.error("Deletion Error:", err.message);
             setError(err.message);
             setLoading(false);
         }
