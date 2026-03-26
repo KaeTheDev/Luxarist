@@ -2,23 +2,45 @@ import { Package, Star, Calendar, ArrowUpRight } from "lucide-react";
 import { useAuth } from "../../../../../context/AuthContext";
 import { useDashboardStats } from "../../hooks/useDashboardStats";
 
+/**
+ * Helper to transform ISO date to 'Month YYYY' format
+ * Matches the Luxarist minimalist aesthetic.
+ */
 function formatMemberSince(iso: string) {
-    return new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    if (!iso) return "—";
+    return new Date(iso).toLocaleDateString("en-US", { 
+        month: "short", 
+        year: "numeric" 
+    });
 }
 
-export default function ProfileOverview() {
+export default function CollectionOverview() {
     const { user } = useAuth();
     const { stats, loading } = useDashboardStats();
 
+    // Mapping our stats to the high-end card UI
     const userStats = [
-        { label: "Total Orders", value: loading ? "—" : String(stats?.totalOrders ?? 0), icon: <Package size={16} className="text-stone-400" /> },
-        { label: "My Reviews", value: loading ? "—" : String(stats?.totalReviews ?? 0), icon: <Star size={16} className="text-stone-400" /> },
-        { label: "Member Since", value: loading ? "—" : stats ? formatMemberSince(stats.memberSince) : "—", icon: <Calendar size={16} className="text-stone-400" /> },
+        { 
+            label: "Total Orders", 
+            value: loading ? "—" : String(stats?.totalOrders ?? 0), 
+            icon: <Package size={16} className="text-stone-400" /> 
+        },
+        { 
+            label: "My Reviews", 
+            value: loading ? "—" : String(stats?.totalReviews ?? 0), 
+            icon: <Star size={16} className="text-stone-400" /> 
+        },
+        { 
+            label: "Member Since", 
+            value: loading ? "—" : (stats?.memberSince ? formatMemberSince(stats.memberSince) : "—"), 
+            icon: <Calendar size={16} className="text-stone-400" /> 
+        },
     ];
 
     return (
         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            {/* Welcome Header */}
+            
+            {/* --- 1. WELCOME HEADER --- */}
             <header className="flex flex-col gap-2">
                 <div className="hidden md:block">
                     <div className="flex items-center gap-3 mb-3">
@@ -36,13 +58,13 @@ export default function ProfileOverview() {
                     <h1 className="text-3xl font-serif text-stone-900 tracking-tight">
                         Welcome back, <span className="italic">{user?.firstName ?? "..."}</span>
                     </h1>
-                    <p className="text-stone-500 text-xs tracking-widest uppercase mt-2 opacity-70">
+                    <p className="text-stone-50 text-xs tracking-widest uppercase mt-2 opacity-70">
                         Your Personal Collection & Activity
                     </p>
                 </div>
             </header>
 
-            {/* Stat Grid */}
+            {/* --- 2. STAT GRID --- */}
             <section className="grid grid-cols-3 gap-3 md:gap-4">
                 {userStats.map((stat, index) => (
                     <div
@@ -50,6 +72,7 @@ export default function ProfileOverview() {
                         className="group relative p-3 md:p-5 bg-white border border-stone-100 rounded-2xl shadow-sm hover:shadow-lg hover:border-stone-200 transition-all duration-500 flex flex-col justify-between min-w-0"
                     >
                         <div className="flex justify-between items-start w-full">
+                            {/* Icon box swaps color on hover for responsiveness */}
                             <div className="p-2 bg-stone-50 rounded-xl text-stone-400 group-hover:bg-stone-900 group-hover:text-white transition-colors duration-500 shrink-0">
                                 {stat.icon}
                             </div>
@@ -68,7 +91,7 @@ export default function ProfileOverview() {
                 ))}
             </section>
 
-            {/* Activity Feed Section */}
+            {/* --- 3. ACTIVITY FEED SECTION --- */}
             <section className="space-y-8">
                 <div className="flex justify-between items-center border-b border-stone-100 pb-6">
                     <h2 className="text-sm uppercase tracking-[0.3em] font-black text-stone-900">
@@ -79,6 +102,7 @@ export default function ProfileOverview() {
                     </button>
                 </div>
 
+                {/* Empty State / Loading Timeline */}
                 <div className="bg-stone-50/30 rounded-[2.5rem] p-16 border border-dashed border-stone-200 flex flex-col items-center justify-center text-center">
                     <div className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center mb-4">
                         <div className="w-2 h-2 bg-stone-200 rounded-full animate-pulse" />
