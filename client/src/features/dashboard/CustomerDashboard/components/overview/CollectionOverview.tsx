@@ -93,25 +93,34 @@ export default function CollectionOverview() {
 
             {/* --- 3. ACTIVITY FEED SECTION --- */}
             <section className="space-y-8">
-                <div className="flex justify-between items-center border-b border-stone-100 pb-6">
-                    <h2 className="text-sm uppercase tracking-[0.3em] font-black text-stone-900">
-                        Live Timeline
-                    </h2>
-                    <button className="text-[10px] text-stone-400 hover:text-stone-900 transition-colors uppercase tracking-widest font-bold">
-                        View Full History
-                    </button>
-                </div>
+    <div className="flex justify-between items-center border-b border-stone-100 pb-6">
+        <h2 className="text-sm uppercase tracking-[0.3em] font-black text-stone-900">Live Timeline</h2>
+        <button className="text-[10px] text-stone-400 hover:text-stone-900 transition-colors uppercase tracking-widest font-bold">View Full History</button>
+    </div>
 
-                {/* Empty State / Loading Timeline */}
-                <div className="bg-stone-50/30 rounded-[2.5rem] p-16 border border-dashed border-stone-200 flex flex-col items-center justify-center text-center">
-                    <div className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center mb-4">
-                        <div className="w-2 h-2 bg-stone-200 rounded-full animate-pulse" />
-                    </div>
-                    <p className="text-stone-400 italic text-sm max-w-xs leading-relaxed">
-                        Your bespoke timeline is being curated based on your latest acquisitions.
+    <div className="relative ml-4 space-y-10">
+        {/* The Vertical Line */}
+        <div className="absolute left-0 top-2 bottom-2 w-px bg-stone-100" />
+
+        {loading ? (
+            <p className="text-stone-300 italic text-xs ml-8">Curating timeline...</p>
+        ) : stats?.timeline.map((event) => (
+            <div key={event.id} className="relative ml-8 group">
+                {/* The Dot */}
+                <div className="absolute -left-9 top-1.5 w-2 h-2 rounded-full bg-white border-2 border-stone-200 group-hover:border-stone-900 transition-colors" />
+                
+                <div className="flex flex-col gap-1">
+                    <p className="text-[8px] uppercase tracking-[0.2em] text-stone-400 font-bold">
+                        {new Date(event.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                    </p>
+                    <p className="text-sm font-serif italic text-stone-900 group-hover:text-stone-500 transition-colors">
+                        {event.message}
                     </p>
                 </div>
-            </section>
+            </div>
+        ))}
+    </div>
+</section>
         </div>
     );
 }
