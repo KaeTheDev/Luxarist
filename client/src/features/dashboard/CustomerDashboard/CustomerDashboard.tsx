@@ -4,7 +4,7 @@ import DashboardShell from "../shared/components/DashboardShell";
 import MyOrders from "./components/orders/MyOrders";
 import MyReviews from "./components/reviews/MyReviews";
 import AccountSettings from "./components/settings/AccountSettings";
-import ProfileOverview from "./components/overview/CollectionOverview";
+import ProfileOverview from "./components/collection/CollectionOverview";
 
 export default function CustomerDashboard() {
   const { user, isLoading } = useAuth();
