@@ -12,29 +12,19 @@
  */
 
 import { Router } from "express";
-import { getActiveProduct, getActiveProducts, getProductBySlug, getProductsByCategory, getAllProductsAdmin, createProduct, updateProduct, deleteProduct } from "../../controllers/productController";
+import { 
+  getActiveProduct, 
+  getActiveProducts, 
+  getProductBySlug, 
+  getProductsByCategory 
+} from "../../controllers/productController";
 
 const router = Router();
 
-// Public GET all products
-router.get("/", getActiveProducts);
-
-// Public GET a specific category
-router.get("/category/:category", getProductsByCategory);
-
-// Public GET one product by slug
-router.get("/slug/:slug", getProductBySlug);
-
-// Public GET one product
-router.get("/:id", getActiveProduct);
-
-/**
- * --- ADMIN ROUTES (Admin Dashboard) ---
- * Logic: Full CRUD access. In production, wrap these in 'isAdmin' middleware.
- */
-router.get("/admin/all", getAllProductsAdmin); // Admin needs to see inactive items too
-router.post("/admin/create", createProduct);
-router.put("/admin/:id", updateProduct);
-router.delete("/admin/:id", deleteProduct);
+// --- PUBLIC STOREFRONT ROUTES ---
+router.get("/", getActiveProducts); // GET /api/products
+router.get("/slug/:slug", getProductBySlug); // GET /api/products/slug/:slug
+router.get("/category/:category", getProductsByCategory); // GET /api/products/category/:category
+router.get("/:id", getActiveProduct); // GET /api/products/:id
 
 export default router;
