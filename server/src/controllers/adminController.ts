@@ -205,17 +205,17 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Fetch all client reviews for moderation
+ * @desc    Fetch all client reviews for moderation (with populated names)
  * @route   GET /api/admin/reviews
  * @access  Private (Admin Only)
  */
 export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
+        // Just a straight find() because the names are already in the document!
         const reviews = await Review.find().sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Server error";
-        res.status(500).json({ message, error: message });
+        res.status(500).json({ message: "Server error" });
     }
 }
 

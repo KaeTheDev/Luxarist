@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Star } from "lucide-react";
 import type { ReactNode } from "react";
 import { LayoutDashboard, ShoppingBag, Users, Settings, Package, LogOut, Heart, ChevronRight, ArrowLeft } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -28,6 +28,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
         { label: 'Inventory', href: '/admin/products', icon: <Package size={18} /> },
         { label: 'Orders', href: '/admin/orders', icon: <ShoppingBag size={18} /> },
         { label: 'Customers', href: '/admin/customers', icon: <Users size={18} /> },
+        { label: 'Reviews', href: '/admin/reviews', icon: <Star size={18} /> },
     ];
 
     const customerLinks: NavItem[] = [
@@ -36,7 +37,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
         { label: 'Settings', href: '/dashboard/settings', icon: <Settings size={18} /> },
     ];
 
-    const links = role === 'admin' ? adminLinks : customerLinks;
+    const links = role === 'admin' ? adminLinks : customerLinks; 
 
     // Helper to close sidebar on mobile after clicking a link
     const handleLinkClick = () => setIsSidebarOpen(false);

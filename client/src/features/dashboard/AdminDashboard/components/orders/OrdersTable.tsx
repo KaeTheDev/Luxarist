@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../../../../context/AuthContext";
 import type { Order, OrderStatus } from "../../../shared/types"; 
 import { OrderRow } from "./OrderRow"; 
@@ -8,40 +8,52 @@ export default function OrdersTable() {
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   
-  // Destructure the token from your context
-  const { token } = useAuth();
+  // Destructure token AND isLoading from AuthContext
+  const { token, isLoading: authLoading } = useAuth();
 
-  const fetchOrders = async () => {
-    if (!token) return; // Guard clause if token isn't loaded yet
+  // Memoize the fetch to prevent unnecessary re-renders
+  const fetchOrders = useCallback(async () => {
+    if (!token) return;
     
+    setIsLoading(true);
     try {
-      const res = await fetch("/api/orders/admin/all", {
+      const res = await fetch("/api/admin/orders", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         }
       });
+
       if (res.ok) {
         const data = await res.json();
         setOrders(data);
+      } else {
+        const errorData = await res.json();
+        console.error("Vault Access Denied:", errorData.message);
       }
     } catch (err) { 
-      console.error("Fetch failed", err); 
+      console.error("Network or Proxy Failure:", err); 
     } finally { 
       setIsLoading(false); 
     }
-  };
+  }, [token]);
 
   useEffect(() => { 
-    fetchOrders(); 
-  }, [token]); // Re-fetch if token changes
+    // Only fetch if auth is done loading and we have a token
+    if (!authLoading && token) {
+      fetchOrders(); 
+    } else if (!authLoading && !token) {
+        // If auth finished and there's no token, stop the spinner
+        setIsLoading(false);
+    }
+  }, [token, authLoading, fetchOrders]);
 
   const handleUpdateStatus = async (id: string, status: OrderStatus) => {
     if (!token) return;
     setUpdatingId(id);
     
     try {
-      const res = await fetch(`/api/orders/admin/${id}`, {
+      const res = await fetch(`/api/admin/orders/${id}`, {
         method: "PUT",
         headers: { 
           "Authorization": `Bearer ${token}`,
@@ -52,7 +64,6 @@ export default function OrdersTable() {
       
       if (res.ok) {
         const updatedOrder = await res.json();
-        // Use the returned order from the backend for the most accurate state
         setOrders(prev => prev.map(o => o._id === id ? updatedOrder : o));
       }
     } catch (err) { 
@@ -62,7 +73,8 @@ export default function OrdersTable() {
     }
   };
 
-  if (isLoading) return (
+  // If Auth is still checking the session, or the API is fetching
+  if (isLoading || authLoading) return (
     <div className="p-32 text-center font-serif italic text-stone-400 animate-pulse tracking-widest">
       Consulting the Ledger...
     </div>
@@ -90,14 +102,22 @@ export default function OrdersTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-50">
-            {orders.map((order) => (
-              <OrderRow 
-                key={order._id} 
-                order={order} 
-                isUpdating={updatingId === order._id} 
-                onUpdate={handleUpdateStatus} 
-              />
-            ))}
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <OrderRow 
+                  key={order._id} 
+                  order={order} 
+                  isUpdating={updatingId === order._id} 
+                  onUpdate={handleUpdateStatus} 
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-8 py-20 text-center text-stone-400 font-serif italic">
+                  No acquisitions found in the archive.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
