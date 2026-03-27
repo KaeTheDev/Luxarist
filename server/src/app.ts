@@ -97,27 +97,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev")); // logs details about each HTTP request to console
 
-// Mount Auth Routes Here 👇🏾
+/// --- ROUTE MOUNTING ---
+
+// 1. Auth (Login/Register)
 app.use("/api/auth", authRoutes);
 
-// Mount Order Routes Here 👇🏾
-app.use("/api/orders", orderRoutes);
-
-// Mount Product Routes Here 👇🏾
-app.use("/api/products", productRoutes);
-
-// Mount Category Here 👇🏾
-app.use("/api/categories", categoryRoutes);
-
-// Mount Admin Routes Here 👇🏾
+// 2. Admin (Management Suite)
+// This handles /api/admin/orders, /api/admin/products, etc.
 app.use("/api/admin", adminRoutes);
 
-// Mount Review Routes Here 👇🏾
+// 3. Customer Orders (Personal Data)
+// This handles /api/orders/customer/:customerId
+app.use("/api/orders", orderRoutes);
+
+// 4. Public Content
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/reviews", reviewRoutes);
 
-// Mount Test Routes Here 👇🏾 (DELETE LATER)
+// 5. Test Routes
 app.use('/api/test', productTestRoutes);
 
-console.log("app.ts loaded");
+console.log("Luxarist API: app.ts loaded successfully");
 
 export default app;

@@ -7,6 +7,7 @@ import ReviewsTable from "./components/reviews/ReviewsTable";
 import InventoryManager from "./components/products/InventoryManager";
 import CustomerDirectory from "./components/customers/CustomerDirectory";
 import AdminSettings from "./components/settings/AdminSettings";
+import OrderDetail from "./components/orders/OrderDetail";
 
 export default function AdminDashboard() {
 
@@ -30,6 +31,9 @@ export default function AdminDashboard() {
 
                 {/* URL: /admin/orders */}
                 <Route path="orders" element={<OrdersTable />} />
+
+                {/* URL: /admin/orders/:id */}
+                <Route path="orders/:id" element={<OrderDetail />} />
 
                 {/* URL: /admin/customers */}
                 <Route path="customers" element={<CustomerDirectory />} />

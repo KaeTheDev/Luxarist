@@ -2,7 +2,10 @@ import { Router } from "express";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 import { z } from "zod";
-import { adminGetAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminGetAllOrders, adminUpdateOrderStatus, adminGetAllCustomers, adminGetAllReviews, adminUpdateReviewApproval, adminGetMetrics } from "../../controllers/adminController";
+
+import adminOrderRoutes from "./admin/order.routes";
+
+import { adminGetAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminGetAllCustomers, adminGetAllReviews, adminUpdateReviewApproval, adminGetMetrics } from "../../controllers/adminController";
 
 const router = Router();
 
@@ -50,28 +53,33 @@ const createProductSchema = z.object({
 });
 
 const updateProductSchema = createProductSchema.partial();
-const updateOrderStatusSchema = z.object({ status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) });
 const updateReviewApprovalSchema = z.object({ approved: z.boolean() });
 
-// --- ROUTES ---
+// ==========================================
+// 1. ORDERS (NESTED ROUTING)
+// ==========================================
+// This one line replaces all previous /orders routes in this file.
+// It maps everything to /api/admin/orders/...
+router.use("/orders", adminOrderRoutes);
 
-// Metrics
+// ==========================================
+// 2. METRICS
+// ==========================================
 router.get("/metrics", authMiddleware, adminOnly, adminGetMetrics);
 
-// Products CRUD
+// ==========================================
+// 3. PRODUCTS CRUD
+// ==========================================
 router.get("/products", authMiddleware, adminOnly, adminGetAllProducts);
 router.post("/products", authMiddleware, adminOnly, validateBody(createProductSchema), adminCreateProduct);
 router.put("/products/:id", authMiddleware, adminOnly, validateBody(updateProductSchema), adminUpdateProduct);
 router.delete("/products/:id", authMiddleware, adminOnly, adminDeleteProduct);
 
-// Orders
-router.get("/orders", authMiddleware, adminOnly, adminGetAllOrders);
-router.put("/orders/:id", authMiddleware, adminOnly, validateBody(updateOrderStatusSchema), adminUpdateOrderStatus);
-
-// Customers
+// ==========================================
+// 4. CUSTOMERS & REVIEWS
+// ==========================================
 router.get("/customers", authMiddleware, adminOnly, adminGetAllCustomers);
 
-// Reviews
 router.get("/reviews", authMiddleware, adminOnly, adminGetAllReviews);
 router.put("/reviews/:id", authMiddleware, adminOnly, validateBody(updateReviewApprovalSchema), adminUpdateReviewApproval);
 

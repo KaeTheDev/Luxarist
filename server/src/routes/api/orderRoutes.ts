@@ -1,10 +1,15 @@
 import { Router } from "express";
-import { getMyOrders } from "../../controllers/orderController";
-import { authMiddleware } from "../../middleware/auth";
+import { getAllOrdersAdmin, getOrderById, updateOrderStatus } from "../../controllers/orderController";
+import { authMiddleware, adminOnly } from "../../middleware/auth";
 
 const router = Router();
 
-// CLIENT SIDE: Get orders for a customer
-router.get("/customer/:customerId", authMiddleware, getMyOrders);
+// Apply Admin Lock to ALL routes in this file
+router.use(authMiddleware);
+router.use(adminOnly);
+
+router.get("/", getAllOrdersAdmin);         // GET /api/admin/orders
+router.get("/:id", getOrderById);           // GET /api/admin/orders/:id
+router.put("/:id", updateOrderStatus);       // PUT /api/admin/orders/:id
 
 export default router;
