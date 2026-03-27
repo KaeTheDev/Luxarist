@@ -63,6 +63,8 @@ export interface IProduct {
   specsFromAttributes: boolean;
   sku: string;
   slug: string;
+  averageRating: number;
+  totalReviews: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -115,8 +117,14 @@ const productSchema = new Schema<IProduct>(
     specsFromAttributes:{ type: Boolean, default: true },
     sku:                { type: String, required: true, unique: true },
     slug:               { type: String, unique: true },
+    averageRating:      { type: Number, default: 0 },
+    totalReviews:       { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+    toJSON: { virtuals: true }, 
+    toObject: { virtuals: true } 
+  } 
 );
 
 productSchema.pre('save', function () {
@@ -125,6 +133,10 @@ productSchema.pre('save', function () {
   }
 });
 
-productSchema.index({ category: 1 });
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'productId'
+});
 
 export const Product = model<IProduct>('Product', productSchema);
