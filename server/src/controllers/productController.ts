@@ -107,26 +107,33 @@ export const getActiveProduct = async (req: Request, res: Response) => {
 };
 
 // GET /products/slug/:slug
-export const getProductBySlug = async(req: Request, res: Response) => {
+export const getProductBySlug = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
 
-    if(!slug || typeof slug !== "string"){
+    if (!slug || typeof slug !== "string") {
       return res.status(400).json({ message: "A valid product slug is required" });
     }
 
-    // Fetch the product by slug and populate category details
-   const product = await Product.findOne({ slug: slug, status: "active" })
-  .populate("category", "name slug");
+    // Fetch the product and populate the 'reviews' virtual
+    const product = await Product.findOne({ slug: slug, status: "active" })
+      .populate("category", "name slug")
+      .populate({
+        path: 'reviews',
+        // CRITICAL: Only pull in reviews that an admin has vetted
+        match: { approved: true }, 
+        // Optional: Sort so the newest acquisitions appear first
+        options: { sort: { createdAt: -1 } }
+      });
 
-    if(!product) {
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
     res.status(200).json(product);
-  } catch(error: any) {
-    console.error(error);
-    res.status(500).json({ message: "Server error fetching product by slug" });
+  } catch (error: any) {
+    console.error("Error fetching product by slug:", error);
+    res.status(500).json({ message: "Server error fetching product details" });
   }
 };
 
