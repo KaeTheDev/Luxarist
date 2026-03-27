@@ -9,13 +9,14 @@ export interface IProductItem {
 
 // The Shape of a Review Document
 export interface IReview extends Document {
-    products: IProductItem[];
-    customerId: string;
-    customerFirstName: string;
-    customerLastName: string;
+    productId: Types.ObjectId;
+    customerId: Types.ObjectId;
+    customerName: string;
     rating: number;
+    title: string;
     comment: string;
     date: Date;
+    isVerified: boolean;
     approved: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -31,18 +32,20 @@ const productItemSchema = new Schema<IProductItem>({
 
 // Mongoose Schema = enforces this shape at DB level
 const reviewSchema = new Schema<IReview>({
-    customerId: { type: String, required: true, index: true },
-    products: {
-        type: [productItemSchema],
-        required: true,
-        validate: [(val: IProductItem[]) => val.length > 0, 'Review must be linked to at least one product']
+   productId: {
+    type: Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+    index: true
+   },
+
+
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
-    customerFirstName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    customerLastName: {
+    customerName: {
         type: String,
         required: true,
         trim: true
@@ -53,17 +56,24 @@ const reviewSchema = new Schema<IReview>({
         min: 1,
         max: 5
     },
+    title: {
+        type: String,
+        required: true,
+        trim: true
+    },
     comment: {
         type: String,
         required: true,
         trim: true
     },
-    date: {
-        type: Date,
-        default: Date.now,
-        required: true
+    isVerified: { 
+        type: Boolean, 
+        default: false 
     },
-    approved: { type: Boolean, default: false }
+    approved: { 
+        type: Boolean, 
+        default: false 
+    },
 }, {
     timestamps: true
 })
