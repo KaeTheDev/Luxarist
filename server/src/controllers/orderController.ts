@@ -1,11 +1,13 @@
 import { Response } from "express";
 import { Order } from "../models/Order";
 import { AuthRequest } from "../types/auth";
+import * as orderService from "../services/orderService";
 
-/**
- * Fetch all orders for a specific user.
- * GET /api/orders/:customerId
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// Existing controllers (unchanged in behaviour)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /api/orders/customer/:customerId
 export async function getMyOrders(req: AuthRequest, res: Response) {
   try {
     const { customerId } = req.params;
@@ -17,14 +19,11 @@ export async function getMyOrders(req: AuthRequest, res: Response) {
     const orders = await Order.find({ customerId: customerId as string }).sort({ orderDate: -1 });
     return res.status(200).json(orders);
   } catch (error: any) {
-    return res.status(500).json({ message: "Error fetching orders", error: error.message });
+    return res.status(500).json({ message: "Error fetching orders.", error: error.message });
   }
 }
 
-/**
- * Fetch ALL orders in the system (Admin Only).
- * GET /api/admin/orders
- */
+// GET /api/admin/orders
 export async function getAllOrdersAdmin(req: AuthRequest, res: Response) {
   try {
     if (req.user?.role !== "admin") {
@@ -38,29 +37,22 @@ export async function getAllOrdersAdmin(req: AuthRequest, res: Response) {
   }
 }
 
-/**
- * Update Order Status (Admin Only)
- * PUT /api/admin/orders/:id
- */
+// PUT /api/admin/orders/:id
 export async function updateOrderStatus(req: AuthRequest, res: Response) {
   try {
-    const { id } = req.params;
-    const { status } = req.body;
-
     if (req.user?.role !== "admin") {
       return res.status(403).json({ message: "Management access required." });
     }
 
-    // Validate that the status matches our defined Enum
-    const allowedStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
-    if (!allowedStatuses.includes(status)) {
+    const allowedStatuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+    if (!allowedStatuses.includes(req.body.status)) {
       return res.status(400).json({ message: "Invalid status value." });
     }
 
     const updatedOrder = await Order.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true } // Returns the document AFTER update so UI gets fresh data
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
     );
 
     if (!updatedOrder) {
@@ -70,5 +62,22 @@ export async function updateOrderStatus(req: AuthRequest, res: Response) {
     return res.status(200).json(updatedOrder);
   } catch (error: any) {
     return res.status(500).json({ message: "Update failed.", error: error.message });
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// New — delegates to orderService
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /api/orders/verify-purchase/:productId
+export async function verifyPurchase(req: AuthRequest, res: Response) {
+  try {
+    const result = await orderService.verifyPurchase(
+      req.user!.id,
+      req.params.productId as string
+    );
+    return res.status(200).json(result);
+  } catch (error: any) {
+    return res.status(500).json({ message: "Error verifying purchase.", error: error.message });
   }
 }

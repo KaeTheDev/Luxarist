@@ -1,105 +1,115 @@
 import { Response } from "express";
-import { Review } from "../models/Review";
-import { Product } from "../models/Product";
 import { AuthRequest } from "../types/auth";
+import * as reviewService from "../services/reviewService";
 
-/**
- * Fetch all reviews submitted by a specific user.
- * GET /api/reviews/customer/:userId
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// Shared error handler — reads statusCode attached to service errors
+// ─────────────────────────────────────────────────────────────────────────────
+function handleError(res: Response, error: any) {
+  const status = error?.statusCode ?? 500;
+  const message = error?.message ?? "An unexpected error occurred.";
+  return res.status(status).json({ message });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Client controllers
+// ─────────────────────────────────────────────────────────────────────────────
+
+// POST /api/reviews
+export async function createReview(req: AuthRequest, res: Response) {
+  try {
+    const review = await reviewService.createReview({
+      productId: req.body.productId,
+      customerId: req.user!.id,
+      customerName: req.body.customerName,  // client must send this — user token only carries id + role
+      rating: Number(req.body.rating),
+      title: req.body.title,
+      comment: req.body.comment,
+    });
+    return res.status(201).json({
+      message: "Review submitted and is pending approval.",
+      review,
+    });
+  } catch (error: any) {
+    // Mongoose unique index violation
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "You have already reviewed this product." });
+    }
+    return handleError(res, error);
+  }
+}
+
+// GET /api/reviews/product/:productId
+export async function getApprovedReviewsByProduct(req: AuthRequest, res: Response) {
+  try {
+    const reviews = await reviewService.getApprovedReviewsByProduct(req.params.productId as string);
+    return res.status(200).json(reviews);
+  } catch (error: any) {
+    return handleError(res, error);
+  }
+}
+
+// GET /api/reviews/customer/:userId
 export async function getMyReviews(req: AuthRequest, res: Response) {
   try {
-    const { userId } = req.params;
-    
-    if (!userId) {
-      return res.status(400).json({ message: "Valid User ID is required." });
-    }
-
-    // 1. Fetch reviews and populate the associated Product
-    const reviews = await Review.find({ customerId: userId })
-      .populate({
-        path: "productId",
-        select: "name primaryImageUrl", // Get only what we need for the UI
-      })
-      .sort({ createdAt: -1 });
-
-    // 2. Format the response to match your frontend expectation
-    const formattedReviews = reviews.map((rev) => {
-      const product = rev.productId as any;
-
-      return {
-        _id: rev._id,
-        productId: product?._id || rev.productId,
-        productName: product?.name || "Luxarist Piece",
-        productImage: product?.primaryImageUrl || "https://placehold.co/400",
-        customerName: rev.customerName, // Now uses the combined string from the model
-        rating: rev.rating,
-        title: rev.title,
-        comment: rev.comment,
-        isVerified: rev.isVerified,
-        isApproved: rev.approved,
-        createdAt: rev.createdAt,
-      };
-    });
-
-    return res.status(200).json(formattedReviews);
+    const reviews = await reviewService.getReviewsByCustomer(req.params.userId as string);
+    return res.status(200).json(reviews);
   } catch (error: any) {
-    console.error("Review Fetch Error:", error);
-    return res.status(500).json({ message: "Error fetching reviews", error: error.message });
+    return handleError(res, error);
   }
 }
-/**
- * Update a review by ID.
- * PUT /api/reviews/:reviewId
- */
+
+// PUT /api/reviews/:reviewId
 export async function updateReview(req: AuthRequest, res: Response) {
   try {
-    const { reviewId } = req.params;
-    const { rating, comment, title } = req.body;
-
-    const review = await Review.findById(reviewId);
-    if (!review) return res.status(404).json({ message: "Review not found." });
-
-    const isOwner = req.user && String(req.user.id) === String(review.customerId);
-    const isAdmin = req.user?.role === "admin";
-
-    if (!isOwner && !isAdmin) {
-      return res.status(403).json({ message: "Unauthorized." });
-    }
-
-    // Update fields
-    if (rating) review.rating = rating;
-    if (comment) review.comment = comment;
-    if (title) review.title = title;
-
-    await review.save();
+    const review = await reviewService.updateReview(
+      req.params.reviewId as string,
+      req.body,
+      req.user!.id,
+      req.user!.role
+    );
     return res.status(200).json(review);
   } catch (error: any) {
-    return res.status(500).json({ message: "Update failed", error: error.message });
+    return handleError(res, error);
   }
 }
 
-/**
- * Delete a review by ID.
- * DELETE /api/reviews/:reviewId
- */
+// DELETE /api/reviews/:reviewId
 export async function deleteReview(req: AuthRequest, res: Response) {
   try {
-    const { reviewId } = req.params;
-    const review = await Review.findById(reviewId);
-
-    if (!review) return res.status(404).json({ message: "Review not found." });
-
-    const isOwner = req.user && String(req.user.id) === String(review.customerId);
-    const isAdmin = req.user?.role === "admin";
-
-    if (!isOwner && !isAdmin) {
-      return res.status(403).json({ message: "Unauthorized." });
-    }
-
-    await Review.findByIdAndDelete(reviewId);
+    await reviewService.deleteReview(req.params.reviewId as string, req.user!.id, req.user!.role);
     return res.status(200).json({ message: "Review deleted successfully." });
   } catch (error: any) {
-    return res.status(500).json({ message: "Delete failed", error: error.message });
+    return handleError(res, error);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Admin controllers
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /api/admin/reviews/pending
+export async function getPendingReviews(req: AuthRequest, res: Response) {
+  try {
+    if (req.user?.role !== "admin") {
+      return res.status(403).json({ message: "Management access required." });
+    }
+    const reviews = await reviewService.getPendingReviews();
+    return res.status(200).json(reviews);
+  } catch (error: any) {
+    return handleError(res, error);
+  }
+}
+
+// PATCH /api/admin/reviews/:reviewId/approve
+export async function approveReview(req: AuthRequest, res: Response) {
+  try {
+    if (req.user?.role !== "admin") {
+      return res.status(403).json({ message: "Management access required." });
+    }
+    const review = await reviewService.approveReview(req.params.reviewId as string);
+    return res.status(200).json({ message: "Review approved.", review });
+  } catch (error: any) {
+    return handleError(res, error);
   }
 }

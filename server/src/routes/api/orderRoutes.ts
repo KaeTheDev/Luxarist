@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getMyOrders } from "../../controllers/orderController";
+import { getMyOrders, verifyPurchase } from "../../controllers/orderController";
 import { authMiddleware } from "../../middleware/auth";
 
 const router = Router();
 
-// CLIENT SIDE: Get orders for a customer
 router.get("/customer/:customerId", authMiddleware, getMyOrders);
+router.get("/verify-purchase/:productId", authMiddleware, verifyPurchase);
 
 export default router;
