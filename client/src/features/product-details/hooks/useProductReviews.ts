@@ -17,8 +17,8 @@
  */
 
 import { useEffect, useState, useCallback } from "react";
-import { useAuth } from "../context/AuthContext";
-import { API_URL, getAuthHeaders } from "../api/config";
+import { useAuth } from "../../../context/AuthContext";
+import { API_URL, getAuthHeaders } from "../../../api/config";
  
 // ─────────────────────────────────────────────────────────────────────────────
 // Types scoped to this feature — mirrors the fields returned by reviewService
