@@ -277,7 +277,9 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
  */
 export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
-        const reviews = await Review.find().sort({ createdAt: -1 });
+        const reviews = await Review.find()
+            .populate("productId", "name")
+            .sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
         res.status(500).json({ message: "Server error" });

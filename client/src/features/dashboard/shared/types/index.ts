@@ -141,3 +141,17 @@ export interface DashboardData {
     date: string;
   }>;
 }
+
+export interface PopulatedReview {
+  _id: string;
+  customerName: string;
+  productId: {
+    _id: string;
+    name: string;
+  } | null;
+  rating: number;
+  comment: string;
+  approved: boolean;
+  isVerified: boolean;
+  createdAt: string;
+}
