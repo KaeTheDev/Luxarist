@@ -60,7 +60,7 @@ export default function ReviewsTable() {
     );
 
     return (
-        <div className="space-y-10 animate-in fade-in duration-700 pb-20">
+        <div className="space-y-10 pb-20">
             {/* Header Section */}
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-2">
                 <div>
