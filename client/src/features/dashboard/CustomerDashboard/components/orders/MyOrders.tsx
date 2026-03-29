@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMyOrders } from "../../hooks/useMyOrders";
 import { Loader2, ArrowLeft } from "lucide-react";
-import OrderDetails from "./OrderDetails";
+import CustomerOrderDetails from "./CustomerOrderDetails";
 import OrderCard from "./OrderCard";
 
 export default function MyOrders() {
@@ -25,7 +25,7 @@ export default function MyOrders() {
                 >
                     <ArrowLeft size={16} /> Back to History
                 </button>
-                {currentOrder && <OrderDetails order={currentOrder} />}
+                {currentOrder && <CustomerOrderDetails order={currentOrder} />}
             </div>
         );
     }

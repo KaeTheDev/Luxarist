@@ -3,7 +3,7 @@ import type { Order } from "../../../shared/types";
 
 interface OrderDetailsProps { order: Order; }
 
-export default function OrderDetails({ order }: OrderDetailsProps) {
+export default function CustomerOrderDetails({ order }: OrderDetailsProps) {
   return (
     <div className="space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-2 duration-500">
       
