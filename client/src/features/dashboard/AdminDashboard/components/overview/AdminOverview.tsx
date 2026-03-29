@@ -6,7 +6,7 @@ export default function AdminOverview() {
   const { data, isLoading } = useAdminMetrics();
 
   return (
-    <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+    <div className="space-y-16 animate-in fade-in duration-700">
       
       {/* Page Header */}
       <header className="flex flex-col gap-2">

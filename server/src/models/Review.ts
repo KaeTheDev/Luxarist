@@ -1,71 +1,68 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-// The Shape of a Product Item
-export interface IProductItem {
-    productId: Types.ObjectId;
-    productName: string;
-    productImage?: string;
-}
-
-// The Shape of a Review Document
 export interface IReview extends Document {
-    products: IProductItem[];
-    customerId: string;
-    customerFirstName: string;
-    customerLastName: string;
-    rating: number;
-    comment: string;
-    date: Date;
-    approved: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+  productId: Types.ObjectId;
+  customerId: Types.ObjectId;
+  customerName: string;
+  rating: number;
+  title: string;
+  comment: string;
+  isVerified: boolean;
+  approved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Sub-schema for items to keep the main schema clean
-const productItemSchema = new Schema<IProductItem>({
-    productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-    productName: { type: String, required: true },
-    productImage: { type: String }
-}, { _id: false });
-
-
-// Mongoose Schema = enforces this shape at DB level
-const reviewSchema = new Schema<IReview>({
-    customerId: { type: String, required: true, index: true },
-    products: {
-        type: [productItemSchema],
-        required: true,
-        validate: [(val: IProductItem[]) => val.length > 0, 'Review must be linked to at least one product']
+const reviewSchema = new Schema<IReview>(
+  {
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+      index: true,
     },
-    customerFirstName: {
-        type: String,
-        required: true,
-        trim: true
+    customerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    customerLastName: {
-        type: String,
-        required: true,
-        trim: true
+    customerName: {
+      type: String,
+      required: true,
+      trim: true,
     },
     rating: {
-        type: Number,
-        required: true,
-        min: 1,
-        max: 5
+      type: Number,
+      required: [true, "Rating is required"],
+      min: [1, "Rating must be at least 1"],
+      max: [5, "Rating must be at most 5"],
+    },
+    title: {
+      type: String,
+      required: [true, "Review title is required"],
+      trim: true,
+      maxlength: [120, "Title cannot exceed 120 characters"],
     },
     comment: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: [true, "Review comment is required"],
+      trim: true,
+      maxlength: [2000, "Comment cannot exceed 2000 characters"],
     },
-    date: {
-        type: Date,
-        default: Date.now,
-        required: true
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
-    approved: { type: Boolean, default: false }
-}, {
-    timestamps: true
-})
+    approved: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export const Review = model<IReview>('Review', reviewSchema);
+// Prevents a user submitting more than one review per product at the DB level
+reviewSchema.index({ productId: 1, customerId: 1 }, { unique: true });
+
+export const Review = model<IReview>("Review", reviewSchema);

@@ -8,7 +8,6 @@ import { AuthRequest } from "../types/auth";
 
 // Initialize cache for 10 minutes to prevent redundant DB hits on inventory
 const inventoryCache = new NodeCache({ stdTTL: 600 });
-
 /**
  * @desc    Fetch high-level business metrics and recent activity for the dashboard
  * @route   GET /api/admin/metrics
@@ -29,7 +28,9 @@ export async function adminGetMetrics(req: AuthRequest, res: Response) {
             Review.find()
                 .sort({ createdAt: -1 })
                 .limit(5)
-                .select("customerFirstName customerLastName rating comment date products"),
+                // FIXED: Selection matches new Review Schema
+                .select("customerName rating comment createdAt productId")
+                .populate("productId", "name"), // Populating to get the Product name for the title
         ]);
 
         const recentActivity = [
@@ -45,11 +46,13 @@ export async function adminGetMetrics(req: AuthRequest, res: Response) {
             ...recentReviews.map(r => ({
                 type: "review" as const,
                 id: r._id,
-                title: r.products[0]?.productName ?? "Product Review",
-                subtitle: `${r.customerFirstName} ${r.customerLastName}`,
-                value: `${r.rating}/5`,
+                // FIXED: Accessing product name via populated productId
+                title: (r.productId as any)?.name ?? "Product Review",
+                // FIXED: Using unified customerName
+                subtitle: r.customerName,
+                value: `${r.rating}/5 stars`,
                 status: null,
-                date: r.date,
+                date: r.createdAt,
             })),
         ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
          .slice(0, 8);
@@ -274,7 +277,9 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
  */
 export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
-        const reviews = await Review.find().sort({ createdAt: -1 });
+        const reviews = await Review.find()
+            .populate("productId", "name")
+            .sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
         res.status(500).json({ message: "Server error" });

@@ -1,58 +1,64 @@
-import { ExternalLink } from "lucide-react";
+/**
+ * Purpose: Renders a single order row inside the admin orders table.
+ *
+ * Responsibilities:
+ * - Display order reference, client name and email, total, status, and date.
+ * - Provide an inline status selector that calls onUpdate on change.
+ * - Call onView when the view button is clicked, delegating the detail
+ *   drill-down entirely to the parent OrdersTable.
+ *
+ * Usage:
+ *   <OrderRow
+ *     order={order}
+ *     isUpdating={updatingId === order._id}
+ *     onUpdate={handleUpdateStatus}
+ *     onView={(id) => setSelectedOrderId(id)}
+ *   />
+ */
+
+import { Eye } from "lucide-react";
 import type { Order, OrderStatus } from "../../../shared/types";
 import { ORDER_STATUS_CONFIG } from "../../../../../constants/orderConfig";
-
+ 
 interface OrderRowProps {
   order: Order;
   isUpdating: boolean;
   onUpdate: (id: string, status: OrderStatus) => void;
+  onView: (id: string) => void;
 }
-
-export const OrderRow = ({ order, isUpdating, onUpdate }: OrderRowProps) => {
+ 
+export function OrderRow({ order, isUpdating, onUpdate, onView }: OrderRowProps) {
   const config = ORDER_STATUS_CONFIG[order.status] || ORDER_STATUS_CONFIG.Pending;
   const StatusIcon = config.icon;
-
-  /**
-   * Placeholder: In v2.0, this will open a SideSheet or Modal 
-   * with the full shipping address and itemized manifest.
-   */
-  const handleOpenManifest = () => {
-    console.log(`%c [MANIFEST] Reference: #${order.orderNumber} `, 'background: #1c1917; color: #fafaf9; font-weight: bold;');
-    console.table({
-      ID: order._id,
-      Client: `${order.customerFirstName} ${order.customerLastName}`,
-      Email: order.customerEmail,
-      Total: `$${order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
-      Status: order.status,
-      Items: order.items?.length || 0,
-      Date: new Date(order.orderDate).toLocaleString()
-    });
-    
-    // Quick alert so you know the button is connected correctly
-    alert(`Consulting the digital manifest for #${order.orderNumber}.\nFull data has been logged to the browser console.`);
-  };
-
+ 
   return (
     <tr className="group hover:bg-stone-50/50 transition-colors border-b border-stone-50 last:border-0">
+ 
       {/* REFERENCE */}
       <td className="px-10 py-8 whitespace-nowrap">
-        <span className="text-sm font-black text-stone-900 tracking-tighter">#{order.orderNumber}</span>
-        <p className="text-[10px] text-stone-400 font-medium uppercase tracking-widest mt-0.5">{order.items?.length || 0} Items</p>
+        <span className="text-sm font-black text-stone-900 tracking-tighter">
+          #{order.orderNumber}
+        </span>
+        <p className="text-[10px] text-stone-400 font-medium uppercase tracking-widest mt-0.5">
+          {order.items?.length || 0} Items
+        </p>
       </td>
-
+ 
       {/* CLIENT */}
       <td className="px-10 py-8 whitespace-nowrap">
-        <p className="text-sm font-medium text-stone-800">{order.customerFirstName} {order.customerLastName}</p>
+        <p className="text-sm font-medium text-stone-800">
+          {order.customerFirstName} {order.customerLastName}
+        </p>
         <p className="text-[10px] text-stone-400 lowercase italic">{order.customerEmail}</p>
       </td>
-
-      {/* INVESTMENT (TOTAL) */}
+ 
+      {/* TOTAL */}
       <td className="px-10 py-8 whitespace-nowrap">
         <span className="text-sm font-black text-stone-900">
           ${order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       </td>
-
+ 
       {/* STATUS SELECTOR */}
       <td className="px-10 py-8">
         <div className="relative inline-block">
@@ -66,32 +72,35 @@ export const OrderRow = ({ order, isUpdating, onUpdate }: OrderRowProps) => {
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
-          <StatusIcon 
-            size={12} 
-            className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity ${isUpdating ? 'opacity-30' : 'opacity-70'}`} 
+          <StatusIcon
+            size={12}
+            className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity ${
+              isUpdating ? "opacity-30" : "opacity-70"
+            }`}
           />
         </div>
       </td>
-
+ 
       {/* DATE */}
       <td className="px-10 py-8 text-xs text-stone-500 font-serif italic whitespace-nowrap">
-        {new Date(order.orderDate).toLocaleDateString(undefined, { 
-          month: "short", 
-          day: "numeric", 
-          year: "numeric" 
+        {new Date(order.orderDate).toLocaleDateString(undefined, {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
         })}
       </td>
-
-      {/* ACTIONS */}
+ 
+      {/* VIEW */}
       <td className="pl-10 pr-16 py-8 text-right whitespace-nowrap">
-        <button 
-          onClick={handleOpenManifest}
+        <button
+          onClick={() => onView(order._id)}
           className="p-2.5 rounded-full transition-all hover:scale-110 active:scale-95 shadow-sm border border-stone-100 text-stone-300 hover:text-stone-900 bg-white group-hover:text-stone-400"
-          title="Consult Manifest"
+          title="View Order Details"
         >
-          <ExternalLink size={16} />
+          <Eye size={16} />
         </button>
       </td>
+ 
     </tr>
   );
-};
+}

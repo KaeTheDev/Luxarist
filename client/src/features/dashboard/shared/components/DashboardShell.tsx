@@ -102,7 +102,7 @@ export default function DashboardShell({ children, role, title }: DashboardShell
 
         <section className="flex-1 overflow-y-auto bg-stone-50/40">
           <div className="max-w-7xl mx-auto p-8 lg:p-16">
-            <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000 ease-out">{children}</div>
+          <div>{children}</div>
           </div>
         </section>
       </main>
