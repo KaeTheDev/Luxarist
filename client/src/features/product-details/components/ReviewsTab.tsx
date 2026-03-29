@@ -24,7 +24,7 @@ import { ReflectionForm } from "./ReflectionForm";
 interface ReviewsTabProps {
   productId: string;
 }
- 
+
 export function ReviewsTab({ productId }: ReviewsTabProps) {
   const { isAuthenticated } = useAuth();
   const {

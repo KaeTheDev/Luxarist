@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ReviewCard from "./ReviewCard";
+import CustomerReviewCard from "./CustomerReviewCard";
 import ReviewDetails from "./ReviewDetails";
 import { MessageSquare, Loader2, Star, ArrowLeft } from "lucide-react";
 import { useReviews } from "../../hooks/useReviews";
@@ -89,7 +89,7 @@ const { token } = useAuth();
           <div className="divide-y divide-stone-50">
             {reviews.map((review) => (
                 <div key={review._id} onClick={() => setSelectedReviewId(review._id)} className="cursor-pointer">
-                  <ReviewCard review={review} /> 
+                  <CustomerReviewCard review={review} /> 
                 </div>
             ))}
           </div>
