@@ -18,12 +18,13 @@ import { DesktopNav } from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 import { useAuth } from "../../../context/AuthContext";
 import { useCart } from "../../../context/CartContext";
-
+ 
 interface NavbarProps {
   onOpenAuth: () => void;
+  onOpenCart: () => void;
 }
-
-export function Navbar({ onOpenAuth }: NavbarProps) {
+ 
+export function Navbar({ onOpenAuth, onOpenCart }: NavbarProps) {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { cartCount } = useCart();
  
@@ -55,8 +56,12 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
         {/* RIGHT */}
         <div className="flex items-center gap-6 md:flex-1 justify-end">
  
-          {/* Cart — badge shows live count from CartContext */}
-          <button className="relative flex items-center hover:opacity-60 transition-opacity">
+          {/* Cart button — opens CartDrawer, shows live count badge */}
+          <button
+            onClick={onOpenCart}
+            className="relative flex items-center hover:opacity-60 transition-opacity"
+            aria-label="Open cart"
+          >
             <img
               src="/assets/icons/icon-cart.svg"
               alt="cart"
