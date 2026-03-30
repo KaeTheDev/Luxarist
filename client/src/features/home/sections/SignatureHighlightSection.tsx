@@ -13,12 +13,13 @@
 
 import { useNavigate } from "react-router-dom";
 import { useSiteContent } from "../../../hooks/useSiteContent";
+import { SignatureHighlightSkeleton } from "../../../common/ui/SignatureHighlightSkeleton";
 
 export function SignatureHighlightSection() {
   const navigate = useNavigate();
   const { signature, loading } = useSiteContent();
 
-  if (loading) return null;
+  if (loading) return <SignatureHighlightSkeleton />;
 
   const ctaTarget = signature.productId
     ? `/product/${signature.productId.slug}`

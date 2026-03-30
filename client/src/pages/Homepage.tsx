@@ -69,20 +69,10 @@ export function Homepage({ onOpenAuth }: HomepageProps) {
     getInitialData();
   },[]);
 
-  // Loading Guard First
-  if(loading) {
-    return (
-    <div className="h-screen flex items-center justify-center tracking-[0.3em] uppercase text-[10px] text-gray-400">
-      Loading Luxarist...
-    </div>
-    );
-  }
-
   // Find the signature product from the fetched list
   const signatureProduct = products.find(
     (p) => p.slug === 'triangular-bezel-diamond-necklace'
   );
-
 
   return (
     <>
