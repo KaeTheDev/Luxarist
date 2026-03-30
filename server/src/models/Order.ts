@@ -21,6 +21,7 @@ export interface IOrder extends Document {
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
     items: IOrderItem[];
     total: number;
+    shippingAddress: string;
 }
 
 // Sub-schema for items to keep the main schema clean
