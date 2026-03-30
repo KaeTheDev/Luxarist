@@ -19,45 +19,49 @@ import { Link } from "react-router-dom";
 import { useFeaturedCategories } from "../../../hooks/useFeaturedCategories";
 import { CATEGORY_LAYOUTS, CATEGORY_ORDER } from "../../../constants/categoryLayouts";
 import type { FeaturedCategory } from "../../../types/FeaturedCategory";
- 
+import { BentoGridSkeleton } from "../../../common/ui/BentoGridSkeleton";
+
 const FEATURED_LIMIT = 5;
- 
+
 export function FeaturedCollectionsSection() {
   const { categories, loading, error } = useFeaturedCategories();
- 
-  if (loading) return <p>Loading featured collections...</p>;
+
+  if (loading) return <BentoGridSkeleton />;
   if (error) return <p>{error}</p>;
- 
+
   const sorted = [...categories]
     .sort((a, b) => (CATEGORY_ORDER[a.name] ?? 99) - (CATEGORY_ORDER[b.name] ?? 99))
     .slice(0, FEATURED_LIMIT);
- 
+
   const hasMore = categories.length > FEATURED_LIMIT;
- 
+
   return (
     <section className="w-full bg-white py-10 px-4 sm:px-6 lg:px-8">
- 
-{/* Section Header */}
-<div className="max-w-7xl mx-auto mb-12 flex flex-col items-center">
-  <div className="text-center"> {/* Removed sm:text-left */}
-    <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
-      Featured Collections
-    </h2>
-    <p className="mt-3 text-sm sm:text-base text-gray-600">
-      Explore our handpicked selection of fine jewelry.
-    </p>
-  </div>
 
-  {hasMore && (
-    <Link
-      to="/collections"
-      className="mt-4 text-[11px] uppercase tracking-[0.2em] font-black text-stone-400 hover:text-stone-900 transition-colors"
-    >
-      View All Collections →
-    </Link>
-  )}
-</div>
- 
+      {/* Section Header */}
+      <div className="max-w-7xl mx-auto mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="text-center sm:text-left">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
+              Featured Collections
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-gray-600">
+              Explore our handpicked selection of fine jewelry.
+            </p>
+          </div>
+
+          {/* Conditional View All link — only shown when >5 categories exist */}
+          {hasMore && (
+            <Link
+              to="/collections"
+              className="text-[11px] uppercase tracking-[0.2em] font-black text-stone-400 hover:text-stone-900 transition-colors whitespace-nowrap self-center sm:self-end"
+            >
+              View All Collections →
+            </Link>
+          )}
+        </div>
+      </div>
+
       {/* Bento Grid */}
       <div className="grid gap-4 w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] lg:auto-rows-[300px]">
         {sorted.map((cat: FeaturedCategory) => {
@@ -73,10 +77,10 @@ export function FeaturedCollectionsSection() {
                 alt={cat.name}
                 className="absolute inset-0 w-full h-full object-cover"
               />
- 
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
- 
+
               {/* Text Content */}
               <div className="relative z-10 w-full flex items-end justify-between">
                 <div className="flex flex-col gap-1">
@@ -98,7 +102,7 @@ export function FeaturedCollectionsSection() {
           );
         })}
       </div>
- 
+
     </section>
   );
 }
