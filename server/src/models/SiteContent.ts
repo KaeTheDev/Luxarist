@@ -23,10 +23,11 @@ export interface IHeroContent {
 export interface ISignatureContent {
   productId: Types.ObjectId | null;
   customImageUrl: string;
-  heading: string;
-  subheading: string;
-  bodyText: string;
-  ctaText: string;
+  eyebrow: string;       // e.g. "TIMELESS ELEGANCE"
+  heading: string;       // h2 — section title
+  subheading: string;    // h3 — product name
+  bodyText: string;      // paragraph
+  ctaText: string;       // button label
 }
  
 export interface ISiteContent extends Document {
@@ -48,6 +49,7 @@ const heroSchema = new Schema<IHeroContent>({
 const signatureSchema = new Schema<ISignatureContent>({
   productId:      { type: Schema.Types.ObjectId, ref: "Product", default: null },
   customImageUrl: { type: String, default: "https://ik.imagekit.io/gwbd4eva2026/misc/signature.png" },
+  eyebrow:        { type: String, default: "Timeless Elegance" },
   heading:        { type: String, default: "The Necklace That Defines the Brand" },
   subheading:     { type: String, default: "Luxury Necklace" },
   bodyText:       { type: String, default: "Experience timeless elegance and unmatched craftsmanship, designed to elevate every moment." },

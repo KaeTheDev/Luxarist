@@ -32,14 +32,13 @@ export interface SignatureContent {
     primaryImageUrl: string;
   } | null;
   customImageUrl: string;
+  eyebrow: string;
   heading: string;
   subheading: string;
   bodyText: string;
   ctaText: string;
 }
  
-// Defaults mirror the Mongoose schema defaults so the UI never breaks
-// if the API hasn't been seeded yet
 const HERO_DEFAULTS: HeroContent = {
   videoUrl: "https://ik.imagekit.io/gwbd4eva2026/hero.mp4",
   fallbackImageUrl: "https://ik.imagekit.io/gwbd4eva2026/hero/hero.png",
@@ -52,6 +51,7 @@ const HERO_DEFAULTS: HeroContent = {
 const SIGNATURE_DEFAULTS: SignatureContent = {
   productId: null,
   customImageUrl: "https://ik.imagekit.io/gwbd4eva2026/misc/signature.png",
+  eyebrow: "Timeless Elegance",
   heading: "The Necklace That Defines the Brand",
   subheading: "Luxury Necklace",
   bodyText: "Experience timeless elegance and unmatched craftsmanship, designed to elevate every moment.",
