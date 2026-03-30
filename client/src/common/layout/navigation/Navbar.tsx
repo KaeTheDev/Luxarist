@@ -7,7 +7,7 @@
  * - Responsive Switching: Toggles between MobileNav and DesktopNav based on screen breakpoints.
  * - Brand Identity: Displays the centralized Luxarist logo with a fixed-center mobile layout.
  * - Cart Badge: Shows a live item count from CartContext on the cart icon.
- * - Action Hooks: Provides entry points for the Cart and Profile management systems.
+ * - Cart Trigger: Calls openCart from CartContext when the cart icon is clicked.
  *
  * @layout
  * - Uses a sticky-ready flexbox container with a max-width of 7xl for consistent alignment.
@@ -21,12 +21,11 @@ import { useCart } from "../../../context/CartContext";
  
 interface NavbarProps {
   onOpenAuth: () => void;
-  onOpenCart: () => void;
 }
  
-export function Navbar({ onOpenAuth, onOpenCart }: NavbarProps) {
+export function Navbar({ onOpenAuth }: NavbarProps) {
   const { user, isAuthenticated, isLoading } = useAuth();
-  const { cartCount } = useCart();
+  const { cartCount, openCart } = useCart();
  
   const dashboardPath = user?.role === "admin" ? "/admin" : "/dashboard";
  
@@ -56,9 +55,9 @@ export function Navbar({ onOpenAuth, onOpenCart }: NavbarProps) {
         {/* RIGHT */}
         <div className="flex items-center gap-6 md:flex-1 justify-end">
  
-          {/* Cart button — opens CartDrawer, shows live count badge */}
+          {/* Cart button — opens CartDrawer via CartContext */}
           <button
-            onClick={onOpenCart}
+            onClick={openCart}
             className="relative flex items-center hover:opacity-60 transition-opacity"
             aria-label="Open cart"
           >
