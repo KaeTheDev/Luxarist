@@ -134,7 +134,7 @@ export default function CartPage() {
                   {/* Name, size, unit price + remove on mobile */}
                   <div className="flex-1 min-w-0">
                     <Link
-                      to={`/products/${item.slug}`}
+                      to={`/product/${item.slug}`}
                       className="text-sm font-semibold text-stone-900 hover:text-stone-600 transition-colors line-clamp-2"
                     >
                       {item.name}
