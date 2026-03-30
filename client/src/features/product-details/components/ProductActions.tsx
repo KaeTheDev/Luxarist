@@ -4,9 +4,10 @@
  * Responsibilities:
  * - Manage local quantity state and pass it to QuantitySelector.
  * - Call addItem from CartContext when "Add to Cart" is clicked.
+ * - Call openCart immediately after addItem so the drawer slides out as feedback.
  * - Disable the Add to Cart button until a size is selected (when sizes exist).
  * - Render favorite and share secondary actions.
- * - Show a brief "Added!" confirmation after a successful addItem call.
+ * - Show a brief "Added!" confirmation on the button after a successful addItem.
  *
  * Usage:
  *   <ProductActions
@@ -25,7 +26,7 @@ import { ProductVariantSelector, type ProductCategory } from "./ProductVariantSe
 import { QuantitySelector } from "../../../common/ui/QuantitySelector";
 import { useCart } from "../../../context/CartContext";
 import type { Product } from "../../dashboard/shared/types";
-
+ 
 interface ActionProps {
   product: Product;
   selectedVariant: string | null;
@@ -34,12 +35,12 @@ interface ActionProps {
   onFavorite: () => void;
   onShare: () => void;
 }
-
-export function ProductActions({ product, selectedVariant, setSelectedVariant, isFavorited, onFavorite, onShare}: ActionProps) {
-  const { addItem } = useCart();
+ 
+export function ProductActions({ product, selectedVariant, setSelectedVariant, isFavorited, onFavorite, onShare }: ActionProps) {
+  const { addItem, openCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
-
+ 
   const isOneSize = !product.sizes || product.sizes.length === 0;
   const isButtonDisabled = !isOneSize && !selectedVariant;
   const showSizeGuide =
@@ -60,7 +61,10 @@ export function ProductActions({ product, selectedVariant, setSelectedVariant, i
       quantity,
     });
  
-    // Brief confirmation flash
+    // Open the cart drawer immediately as visual feedback
+    openCart();
+ 
+    // Brief button confirmation flash
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -97,7 +101,7 @@ export function ProductActions({ product, selectedVariant, setSelectedVariant, i
         <button
           onClick={handleAddToCart}
           disabled={isButtonDisabled}
-          className={`w-full py-4 flex items-center justify-center gap-2 font-medium uppercase tracking-widest text-xs transition-all ${
+          className={`w-full py-4 flex items-center justify-center gap-2 font-medium uppercase tracking-widest text-xs transition-all duration-300 ${
             added
               ? "bg-green-600 text-white"
               : isButtonDisabled
