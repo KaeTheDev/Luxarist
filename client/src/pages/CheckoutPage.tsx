@@ -66,10 +66,10 @@ export default function CheckoutPage() {
    
     // ── Form update helpers ────────────────────────────────────────────────────
     const updateShipping = (field: keyof ShippingForm, value: string) =>
-      setShipping((prev) => ({ ...prev, [field]: value }));
-   
-    const updatePayment = (field: keyof PaymentForm, value: string) =>
-      setPayment((prev) => ({ ...prev, [field]: value }));
+        setShipping((prev: ShippingForm) => ({ ...prev, [field]: value }));
+      
+      const updatePayment = (field: keyof PaymentForm, value: string) =>
+        setPayment((prev: PaymentForm) => ({ ...prev, [field]: value }));
    
     // ── Validation ─────────────────────────────────────────────────────────────
     function validate(): string | null {
