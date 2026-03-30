@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { Menu, X, Star, LayoutDashboard, ShoppingBag, Users, Settings, Package, LogOut, Heart, ChevronRight, ArrowLeft, Layout } from "lucide-react";
+import { Menu, X, Star, LayoutDashboard, ShoppingBag, Users, Settings, Package, LogOut, Heart, ChevronRight, ArrowLeft, Layout, Folders } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
 
@@ -17,8 +17,9 @@ export default function DashboardShell({ children, role, title }: DashboardShell
     { label: "Inventory",    href: "/admin/products",  icon: <Package size={18} /> },
     { label: "Orders",       href: "/admin/orders",    icon: <ShoppingBag size={18} /> },
     { label: "Customers",    href: "/admin/customers", icon: <Users size={18} /> },
-    { label: "Reviews",      href: "/admin/reviews",   icon: <Star size={18} /> },
-    { label: "Site Content", href: "/admin/content",   icon: <Layout size={18} /> },
+    { label: "Reviews",      href: "/admin/reviews",     icon: <Star size={18} /> },
+    { label: "Categories",   href: "/admin/categories",  icon: <Folders size={18} /> },
+    { label: "Site Content", href: "/admin/content",     icon: <Layout size={18} /> },
     { label: "Settings",     href: "/admin/settings",  icon: <Settings size={18} /> },
   ];
 

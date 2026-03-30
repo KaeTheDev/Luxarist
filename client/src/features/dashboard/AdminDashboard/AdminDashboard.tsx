@@ -8,6 +8,7 @@ import InventoryManager from "./components/products/InventoryManager";
 import CustomerDirectory from "./components/customers/CustomerDirectory";
 import AdminSettings from "./components/settings/AdminSettings";
 import SiteContentManager from "./components/content/SiteContentManager";
+import CategoryManager from "./components/categories/CategoryManager";
 
 export default function AdminDashboard() {
   const { user, isLoading } = useAuth();
@@ -35,6 +36,9 @@ export default function AdminDashboard() {
 
         {/* URL: /admin/reviews */}
         <Route path="reviews" element={<ReviewsTable />} />
+
+        {/* URL: /admin/categories */}
+        <Route path="categories" element={<CategoryManager />} />
 
         {/* URL: /admin/content */}
         <Route path="content" element={<SiteContentManager />} />
