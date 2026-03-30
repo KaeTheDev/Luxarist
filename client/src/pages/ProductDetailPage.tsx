@@ -1,3 +1,10 @@
+/**
+ * @name ProductDetailPage
+ * @description The primary product detail view. Fetches a single product by slug
+ * and renders the full page — gallery, info, tabs, and recommendations.
+ * Shows ProductDetailSkeleton while loading to prevent layout shift.
+ */
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Product } from "../features/dashboard/shared/types";
@@ -6,6 +13,7 @@ import { ProductImageGallery } from "../features/product-details/components/Prod
 import { ProductDetailsTab } from "../features/product-details/components/ProductDetailsTab";
 import { fetchOneProduct } from "../api/productServices";
 import { ProductRecommendations } from "../features/product-details/ProductRecommendations";
+import { ProductDetailSkeleton } from "../common/ui/ProductDetailSkeleton";
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -17,7 +25,6 @@ export function ProductDetailPage() {
       if (!slug) return;
       try {
         setLoading(true);
-        // Call the service: fetchProductBySlug
         const data = await fetchOneProduct(slug);
         setProduct(data);
       } catch (err) {
@@ -29,16 +36,13 @@ export function ProductDetailPage() {
     getProduct();
   }, [slug]);
 
-  if (loading)
-    return (
-      <div className="p-20 text-center font-medium tracking-widest uppercase text-xs text-gray-400">
-        Loading Luxury piece...
-      </div>
-    );
-  if (!product)
+  if (loading) return <ProductDetailSkeleton />;
+
+  if (!product) {
     return (
       <div className="p-20 text-center text-gray-500">Product not found.</div>
     );
+  }
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -48,7 +52,7 @@ export function ProductDetailPage() {
         <ProductInformation product={product} />
       </div>
 
-      {/* Lower Section: Centered Tab Section */}
+      {/* Lower Section: Tabs */}
       <div className="mt-12 max-w-4xl mx-auto border-t border-gray-100 pt-12 w-full">
         <ProductDetailsTab product={product} />
       </div>
