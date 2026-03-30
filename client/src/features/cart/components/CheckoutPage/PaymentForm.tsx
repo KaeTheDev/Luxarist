@@ -14,7 +14,7 @@
  */
 
 import { Lock } from "lucide-react";
-import { type PaymentForm as PaymentFormType, INPUT_CLASS } from "../../types/checkout";
+import { type PaymentForm as PaymentFormType, INPUT_CLASS } from "./checkout";
 
 interface PaymentFormProps {
     values: PaymentFormType;

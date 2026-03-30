@@ -19,7 +19,7 @@ import { Lock, CheckCircle2, ArrowLeft } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { API_URL, getAuthHeaders } from "../api/config";
-import type { ShippingForm, PaymentForm } from "../features/cart/types/checkout";
+import type { ShippingForm, PaymentForm } from "../features/cart/components/CheckoutPage/checkout";
 import { ShippingForm as ShippingFormSection } from "../features/cart/components/CheckoutPage/ShippingForm";
 import { PaymentForm as PaymentFormSection } from "../features/cart/components/CheckoutPage/PaymentForm";
 import { OrderSummary } from "../features/cart/components/CheckoutPage/OrderSummary";
