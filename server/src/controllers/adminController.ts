@@ -3,6 +3,7 @@ import NodeCache from "node-cache";
 import { Order } from "../models/Order";
 import { Review } from "../models/Review";
 import { Product } from "../models/Product";
+import { Category } from "../models/Category";
 import { User } from "../models/User";
 import { AuthRequest } from "../types/auth";
 
@@ -306,3 +307,76 @@ export async function adminUpdateReviewApproval(req: AuthRequest, res: Response)
         res.status(500).json({ message, error: message });
     }
 }
+
+/**
+ * @desc    Create a new category
+ * @route   POST /api/admin/categories
+ * @access  Private (Admin Only)
+ */
+export async function adminCreateCategory(req: AuthRequest, res: Response) {
+    try {
+      const { name, slug, featuredImage, heroImage, description, isFeatured } = req.body;
+   
+      const existing = await Category.findOne({ slug });
+      if (existing) {
+        return res.status(400).json({ message: "A category with this slug already exists." });
+      }
+   
+      const category = await Category.create({
+        name,
+        slug: slug || name.toLowerCase().replace(/\s+/g, "-"),
+        featuredImage,
+        heroImage,
+        description,
+        isFeatured: isFeatured ?? false,
+      });
+   
+      return res.status(201).json(category);
+    } catch (error: any) {
+      return res.status(500).json({ message: "Failed to create category.", error: error.message });
+    }
+  }
+   
+  /**
+   * @desc    Update an existing category
+   * @route   PUT /api/admin/categories/:id
+   * @access  Private (Admin Only)
+   */
+  export async function adminUpdateCategory(req: AuthRequest, res: Response) {
+    try {
+      const { name, slug, featuredImage, heroImage, description, isFeatured } = req.body;
+   
+      const category = await Category.findByIdAndUpdate(
+        req.params.id,
+        { name, slug, featuredImage, heroImage, description, isFeatured },
+        { new: true, runValidators: true }
+      );
+   
+      if (!category) {
+        return res.status(404).json({ message: "Category not found." });
+      }
+   
+      return res.status(200).json(category);
+    } catch (error: any) {
+      return res.status(500).json({ message: "Failed to update category.", error: error.message });
+    }
+  }
+   
+  /**
+   * @desc    Delete a category
+   * @route   DELETE /api/admin/categories/:id
+   * @access  Private (Admin Only)
+   */
+  export async function adminDeleteCategory(req: AuthRequest, res: Response) {
+    try {
+      const category = await Category.findByIdAndDelete(req.params.id);
+   
+      if (!category) {
+        return res.status(404).json({ message: "Category not found." });
+      }
+   
+      return res.status(200).json({ message: "Category deleted successfully." });
+    } catch (error: any) {
+      return res.status(500).json({ message: "Failed to delete category.", error: error.message });
+    }
+  }
