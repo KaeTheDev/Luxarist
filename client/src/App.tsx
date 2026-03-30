@@ -15,6 +15,9 @@ import { FavoritesPage } from "./pages/FavoritesPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import OurStoryPage from "./pages/OurStoryPage";
+import ContactPage from "./pages/ContactPage";
+import ComingSoonPage from "./pages/ComingSoonPage";
 
 // Auth
 import AuthModal from "./features/auth/components/AuthModal";
@@ -68,6 +71,16 @@ export default function App() {
           {/* Auth Pages */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          {/* Company and Support Pages */}
+          <Route path="/about" element={<OurStoryPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/sustainability" element={<ComingSoonPage title="Sustainability" />} />
+          <Route path="/craftsmanship" element={<ComingSoonPage title="Craftsmanship" />} />
+          <Route path="/shipping" element={<ComingSoonPage title="Shipping & Returns" />} />
+          <Route path="/care-guide" element={<ComingSoonPage title="Care Guide" />} />
+          <Route path="/privacy" element={<ComingSoonPage title="Privacy Policy" description="Our full privacy policy is being prepared. For any data or privacy enquiries please contact us at hello@luxarist.com." />} />
+          <Route path="/terms" element={<ComingSoonPage title="Terms of Service" description="Our terms of service are being prepared. For any legal enquiries please contact us at hello@luxarist.com." />} />
         </Route>
 
         {/* Private Dashboard Routes
