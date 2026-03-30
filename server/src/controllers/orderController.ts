@@ -85,14 +85,7 @@ export async function verifyPurchase(req: AuthRequest, res: Response) {
 // POST /api/orders
 export async function createOrder(req: AuthRequest, res: Response) {
   try {
-    const {
-      customerFirstName,
-      customerLastName,
-      customerEmail,
-      items,
-      total,
-      shippingAddress,
-    } = req.body;
+    const { customerFirstName, customerLastName, customerEmail, items, total, shippingAddress } = req.body;
  
     // Generate a unique order number: LUX- + last 8 chars of timestamp + random suffix
     const orderNumber = `LUX-${Date.now().toString().slice(-6)}-${Math.floor(
@@ -112,7 +105,7 @@ export async function createOrder(req: AuthRequest, res: Response) {
       shippingAddress,
       status: "Pending",
     });
- 
+
     return res.status(201).json(order);
   } catch (error: any) {
     return res
