@@ -2,7 +2,21 @@ import { Router } from "express";
 import { authMiddleware, adminOnly } from "../../middleware/auth";
 import { validateBody } from "../../middleware/validate";
 import { z } from "zod";
-import { adminGetAllProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminGetAllOrders, adminUpdateOrderStatus, adminGetAllCustomers, adminGetAllReviews, adminUpdateReviewApproval, adminGetMetrics } from "../../controllers/adminController";
+import {
+  adminGetAllProducts,
+  adminCreateProduct,
+  adminUpdateProduct,
+  adminDeleteProduct,
+  adminGetAllOrders,
+  adminUpdateOrderStatus,
+  adminGetAllCustomers,
+  adminGetAllReviews,
+  adminUpdateReviewApproval,
+  adminGetMetrics,
+  adminCreateCategory,
+  adminUpdateCategory,
+  adminDeleteCategory,
+} from "../../controllers/adminController";
 
 const router = Router();
 
@@ -50,8 +64,21 @@ const createProductSchema = z.object({
 });
 
 const updateProductSchema = createProductSchema.partial();
-const updateOrderStatusSchema = z.object({ status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]) });
+
+const updateOrderStatusSchema = z.object({
+  status: z.enum(["Pending", "Processing", "Shipped", "Delivered", "Cancelled"])
+});
+
 const updateReviewApprovalSchema = z.object({ approved: z.boolean() });
+
+const categorySchema = z.object({
+  name: z.string().min(1),
+  slug: z.string().optional(),
+  featuredImage: z.string().min(1),
+  heroImage: z.string().min(1),
+  description: z.string().min(1),
+  isFeatured: z.boolean().default(false),
+});
 
 // --- ROUTES ---
 
@@ -63,6 +90,11 @@ router.get("/products", authMiddleware, adminOnly, adminGetAllProducts);
 router.post("/products", authMiddleware, adminOnly, validateBody(createProductSchema), adminCreateProduct);
 router.put("/products/:id", authMiddleware, adminOnly, validateBody(updateProductSchema), adminUpdateProduct);
 router.delete("/products/:id", authMiddleware, adminOnly, adminDeleteProduct);
+
+// Categories CRUD
+router.post("/categories", authMiddleware, adminOnly, validateBody(categorySchema), adminCreateCategory);
+router.put("/categories/:id", authMiddleware, adminOnly, validateBody(categorySchema.partial()), adminUpdateCategory);
+router.delete("/categories/:id", authMiddleware, adminOnly, adminDeleteCategory);
 
 // Orders
 router.get("/orders", authMiddleware, adminOnly, adminGetAllOrders);
