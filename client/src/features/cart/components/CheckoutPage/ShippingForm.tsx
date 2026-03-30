@@ -10,8 +10,7 @@
  *   <ShippingForm values={shipping} onChange={updateShipping} />
  */
 
-import type { ShippingForm as ShippingFormType } from "../../types/checkout";
-import { INPUT_CLASS } from "../../types/checkout";
+import { type ShippingForm as ShippingFormType, INPUT_CLASS } from "../../types/checkout";
 
 interface ShippingFormProps {
     values: ShippingFormType;
