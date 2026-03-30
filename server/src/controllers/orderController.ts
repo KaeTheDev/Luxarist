@@ -81,3 +81,35 @@ export async function verifyPurchase(req: AuthRequest, res: Response) {
     return res.status(500).json({ message: "Error verifying purchase.", error: error.message });
   }
 }
+
+// POST /api/orders
+export async function createOrder(req: AuthRequest, res: Response) {
+  try {
+    const { customerFirstName, customerLastName, customerEmail, items, total, shippingAddress } = req.body;
+ 
+    // Generate a unique order number: LUX- + last 8 chars of timestamp + random suffix
+    const orderNumber = `LUX-${Date.now().toString().slice(-6)}-${Math.floor(
+      Math.random() * 1000
+    )
+      .toString()
+      .padStart(3, "0")}`;
+ 
+    const order = await Order.create({
+      orderNumber,
+      customerId: req.user!.id,
+      customerFirstName,
+      customerLastName,
+      customerEmail,
+      items,
+      total,
+      shippingAddress,
+      status: "Pending",
+    });
+
+    return res.status(201).json(order);
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: "Failed to create order.", error: error.message });
+  }
+}

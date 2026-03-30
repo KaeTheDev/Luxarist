@@ -14,6 +14,7 @@ import { NewArrivalsPage } from "./pages/NewArrivalsPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 // Auth
 import AuthModal from "./features/auth/components/AuthModal";
@@ -61,6 +62,7 @@ export default function App() {
           {/* User Features */}
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/cart" element={<CartPage />} /> 
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/product/:slug" element={<ProductDetailPage />} />
 
           {/* Auth Pages */}
