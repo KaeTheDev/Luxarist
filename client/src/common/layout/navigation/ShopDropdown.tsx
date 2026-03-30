@@ -110,25 +110,8 @@ export function ShopDropdown() {
               </li>
             </>
           )}
- 
-          {/* Always show View All when not loading and we have categories */}
-          {!loading && !hasMore && categories.length > 0 && (
-            <>
-              <li className="mx-6 my-2 border-t border-gray-100" />
-              <li>
-                <Link
-                  to="/collections"
-                  className="block px-6 py-2 text-sm text-gray-400 hover:bg-gray-50 hover:text-black transition-all duration-200"
-                  onClick={closeDropdown}
-                >
-                  View All →
-                </Link>
-              </li>
-            </>
-          )}
         </ul>
       )}
- 
     </li>
   );
 }
