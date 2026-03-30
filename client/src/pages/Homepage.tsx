@@ -90,7 +90,7 @@ export function Homepage({ onOpenAuth }: HomepageProps) {
       <FeaturedCollectionsSection />
 
       {/* Only show if the API actually returned this product */}
-      {signatureProduct && <SignatureHighlightSection product={signatureProduct} />}
+      {signatureProduct && <SignatureHighlightSection />}
       <NewArrivalsSection 
       products={products.filter(p => p.isNewArrival)} 
       loading={loading}
