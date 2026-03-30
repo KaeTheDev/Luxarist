@@ -48,16 +48,16 @@ export function Footer() {
     ];
    
     const companyLinks = [
-      { label: "Our Story", to: "/" },
-      { label: "Craftsmanship", to: "/" },
-      { label: "Sustainability", to: "/" },
-    ];
-   
-    const supportLinks = [
-      { label: "Contact Us", to: "/" },
-      { label: "Shipping & Returns", to: "/" },
-      { label: "Care Guide", to: "/" },
-    ];
+        { label: "Our Story", to: "/about" },
+        { label: "Craftsmanship", to: "/craftsmanship" },
+        { label: "Sustainability", to: "/sustainability" },
+      ];
+      
+      const supportLinks = [
+        { label: "Contact Us", to: "/contact" },
+        { label: "Shipping & Returns", to: "/shipping" },
+        { label: "Care Guide", to: "/care-guide" },
+      ];
    
     return (
       <footer className="w-full bg-black text-white border-t border-white/10">
@@ -159,8 +159,8 @@ export function Footer() {
               © 2026 Luxarist. All rights reserved.
             </p>
             <div className="flex gap-8 text-[10px] uppercase tracking-[0.3em] text-gray-600">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
             </div>
           </div>
    
