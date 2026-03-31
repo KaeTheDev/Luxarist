@@ -69,18 +69,13 @@ export function Homepage({ onOpenAuth }: HomepageProps) {
     getInitialData();
   },[]);
 
-  // Find the signature product from the fetched list
-  const signatureProduct = products.find(
-    (p) => p.slug === 'triangular-bezel-diamond-necklace'
-  );
-
   return (
     <>
       <HeroSection />
       <FeaturedCollectionsSection />
 
       {/* Only show if the API actually returned this product */}
-      {signatureProduct && <SignatureHighlightSection />}
+       <SignatureHighlightSection />
       <NewArrivalsSection 
       products={products.filter(p => p.isNewArrival)} 
       loading={loading}
