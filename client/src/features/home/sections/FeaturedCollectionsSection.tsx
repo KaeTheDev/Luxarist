@@ -40,8 +40,8 @@ export function FeaturedCollectionsSection() {
 
       {/* Section Header */}
       <div className="max-w-7xl mx-auto mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div className="text-center sm:text-left">
+      <div className="flex flex-col items-center gap-4">
+      <div className="text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
               Featured Collections
             </h2>
