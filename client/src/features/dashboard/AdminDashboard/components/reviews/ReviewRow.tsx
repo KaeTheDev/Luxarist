@@ -1,40 +1,50 @@
 /**
- * Purpose: Renders a single review row inside the admin Testimonial Moderation table.
- *
- * Responsibilities:
- * - Display customer name, product name, star rating, comment, and approval status.
- * - Render an approve/hide toggle button that calls onToggle with the review id
- *   and current approval state.
- * - Read customerName directly from the Review schema (single string field).
- * - Read product name from the populated productId object returned by the backend.
- *
- * Usage:
- *   <ReviewRow review={review} onToggle={(id, currentStatus) => handleToggle(id, currentStatus)} />
+ * Purpose: Renders a single review row in the admin moderation table.
+ * Reads field names that match the actual Review mongoose schema:
+ * customerName (string), productId (populated object), rating, title, comment, approved.
  */
 
 import { Check, X, Star } from "lucide-react";
-import type { PopulatedReview } from "../../../shared/types";
-
+ 
+// Typed interface matching the populated API response shape
+interface PopulatedReview {
+  _id: string;
+  customerName: string;
+  productId: {
+    _id: string;
+    name: string;
+    primaryImageUrl?: string;
+    slug?: string;
+  } | null;
+  rating: number;
+  title: string;
+  comment: string;
+  approved: boolean;
+  isVerified: boolean;
+  createdAt: string;
+}
+ 
 interface ReviewRowProps {
   review: PopulatedReview;
   onToggle: (id: string, status: boolean) => void;
 }
-
+ 
 export function ReviewRow({ review, onToggle }: ReviewRowProps) {
-  const customerDisplayName = review.customerName || "Unknown Client";
-  const productDisplayName = review.productId?.name || "Luxarist Piece";
+  const productName = review.productId?.name ?? "Luxarist Piece";
  
   return (
     <tr className="group hover:bg-stone-50/50 transition-colors border-b border-stone-50 last:border-0">
  
       {/* CUSTOMER */}
       <td className="px-10 py-8 whitespace-nowrap">
-        <p className="text-sm font-medium text-stone-900">{customerDisplayName}</p>
+        <p className="text-sm font-medium text-stone-900">
+          {review.customerName}
+        </p>
       </td>
  
       {/* PRODUCT */}
       <td className="px-10 py-8 text-sm text-stone-600 font-light italic whitespace-nowrap">
-        {productDisplayName}
+        {productName}
       </td>
  
       {/* RATING */}
@@ -49,6 +59,11 @@ export function ReviewRow({ review, onToggle }: ReviewRowProps) {
             />
           ))}
         </div>
+      </td>
+ 
+      {/* TITLE */}
+      <td className="px-10 py-8 text-xs text-stone-700 font-medium whitespace-nowrap">
+        {review.title}
       </td>
  
       {/* COMMENT */}
@@ -77,7 +92,7 @@ export function ReviewRow({ review, onToggle }: ReviewRowProps) {
               : "text-stone-300 hover:text-emerald-500 hover:border-emerald-100"
           }`}
         >
-          {review.approved ? <X size={16} /> : <Check size={16} />}
+          {review.approved ? <X size={14} /> : <Check size={14} />}
         </button>
       </td>
  
