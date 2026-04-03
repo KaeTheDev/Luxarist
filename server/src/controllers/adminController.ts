@@ -272,14 +272,14 @@ export async function adminGetAllCustomers(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Fetch all client reviews for moderation (with populated names)
+ * @desc    Fetch all reviews for admin moderation with populated product name
  * @route   GET /api/admin/reviews
  * @access  Private (Admin Only)
  */
 export async function adminGetAllReviews(req: AuthRequest, res: Response) {
     try {
         const reviews = await Review.find()
-            .populate("productId", "name")
+            .populate("productId", "name primaryImageUrl slug")
             .sort({ createdAt: -1 });
         res.status(200).json(reviews);
     } catch (error) {
@@ -288,19 +288,37 @@ export async function adminGetAllReviews(req: AuthRequest, res: Response) {
 }
 
 /**
- * @desc    Toggle approval status to show or hide a review on the storefront
+ * @desc    Toggle approval status and recalculate product rating
  * @route   PUT /api/admin/reviews/:id
  * @access  Private (Admin Only)
  */
 export async function adminUpdateReviewApproval(req: AuthRequest, res: Response) {
     try {
         const { approved } = req.body;
+ 
         const review = await Review.findByIdAndUpdate(
             req.params.id,
             { approved },
             { new: true, runValidators: true }
         );
+ 
         if (!review) return res.status(404).json({ message: "Review not found" });
+ 
+        // Recalculate product rating after every approval toggle
+        const approvedReviews = await Review.find({
+            productId: review.productId,
+            approved: true,
+        }).select("rating");
+ 
+        const totalReviews = approvedReviews.length;
+        const averageRating = totalReviews > 0
+            ? parseFloat(
+                (approvedReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
+              )
+            : 0;
+ 
+        await Product.findByIdAndUpdate(review.productId, { averageRating, totalReviews });
+ 
         res.status(200).json(review);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Server error";
